@@ -4,15 +4,23 @@ import PokeDex from "./screens/PokeDex";
 import Abilities from "./screens/Abilities";
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {appColor} from "./constants/colors";
+import AppLoading from 'expo-app-loading';
+import {DotGothic16_400Regular, useFonts} from '@expo-google-fonts/dotgothic16';
 
 const Tab = createBottomTabNavigator();
 
 export default function App() {
+    let [fontsLoaded] = useFonts({DotGothic16_400Regular});
+
+    if (!fontsLoaded) {
+        return <AppLoading/>;
+    }
+
     return (
         <NavigationContainer>
             <Tab.Navigator
                 screenOptions={({route}) => ({
-                    tabBarIcon: ({focused, color, size}) => {
+                    tabBarIcon: ({color, size}) => {
                         let iconName;
 
                         if (route.name === 'PokeDex') {
@@ -24,21 +32,25 @@ export default function App() {
                         // You can return any component that you like here!
                         return <Ionicons name={iconName} size={size} color={color}/>;
                     },
-                    tabBarActiveTintColor: appColor.headerTint,
+                    tabBarActiveTintColor: appColor.tabBarActive,
                     tabBarInactiveTintColor: 'gray',
                     headerStyle: {
-                        backgroundColor: appColor.background,
-                        borderBottomWidth: 1.5,
-                        borderBottomColor: appColor.border
+                        backgroundColor: appColor.headerBg,
+                        borderBottomWidth: 0.5,
+                        borderBottomColor: appColor.border,
                     },
-                    headerTintColor: '#10162f',
+                    headerTintColor: appColor.headerFont,
                     headerTitleStyle: {
-                        fontWeight: 'bold'
+                        fontFamily: 'DotGothic16_400Regular'
                     },
                     tabBarStyle: {
-                        backgroundColor: appColor.background,
-                        borderTopWidth: 1.5,
-                        borderTopColor: appColor.border
+                        backgroundColor: appColor.headerBg,
+                        borderTopWidth: 0.5,
+                        borderTopColor: appColor.border,
+                        paddingBottom: 5
+                    },
+                    tabBarLabelStyle: {
+                        fontFamily: 'DotGothic16_400Regular'
                     }
                 })}
             >
