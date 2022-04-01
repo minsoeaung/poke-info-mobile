@@ -36,7 +36,7 @@ export default function App() {
                     tabBarInactiveTintColor: 'gray',
                     headerStyle: {
                         backgroundColor: appColor.headerBg,
-                        borderBottomWidth: 0.5,
+                        borderBottomWidth: 1,
                         borderBottomColor: appColor.border,
                     },
                     headerTintColor: appColor.headerFont,
@@ -45,7 +45,7 @@ export default function App() {
                     },
                     tabBarStyle: {
                         backgroundColor: appColor.headerBg,
-                        borderTopWidth: 0.5,
+                        borderTopWidth: 1,
                         borderTopColor: appColor.border,
                         paddingBottom: 5
                     },
