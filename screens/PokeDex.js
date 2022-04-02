@@ -3,7 +3,7 @@ import {useEffect, useState} from "react";
 import PokemonCard from "../components/PokemonCard";
 import {appColor} from "../constants/colors";
 
-export default function PokeDex() {
+export default function PokeDex({navigation}) {
     const [next, setNext] = useState('https://pokeapi.co/api/v2/pokemon?limit=27');
     const [page, setPage] = useState(1);
     const [fetching, setFetching] = useState(false);
@@ -22,7 +22,7 @@ export default function PokeDex() {
         })();
     }, [page]);
 
-    const renderItem = ({item}) => <PokemonCard url={item.url}/>;
+    const renderItem = ({item}) => <PokemonCard url={item.url} navigation={navigation}/>;
 
     return (
         <View style={styles.container}>

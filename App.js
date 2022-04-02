@@ -1,13 +1,55 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import PokeDex from "./screens/PokeDex";
 import Abilities from "./screens/Abilities";
-import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
-import {appColor} from "./constants/colors";
 import AppLoading from 'expo-app-loading';
 import {DotGothic16_400Regular, useFonts} from '@expo-google-fonts/dotgothic16';
+import Pokemon from "./screens/Pokemon";
+import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
+import {appColor} from "./constants/colors";
+import MyText from "./components/MyText";
+import {Pressable} from "react-native";
 
 const Tab = createBottomTabNavigator();
+const PokeDexStack = createNativeStackNavigator();
+
+const PokeDexStackScreen = () => (
+    <PokeDexStack.Navigator
+        initialRouteName="PokeDex"
+        screenOptions={{
+            headerStyle: {
+                backgroundColor: appColor.headerBg,
+            },
+            headerTintColor: appColor.headerFont,
+            headerTitleStyle: {
+                fontFamily: 'DotGothic16_400Regular',
+            }
+        }}
+    >
+        <PokeDexStack.Screen name="PokeDex" component={PokeDex} options={{title: 'PokeDex'}}/>
+        <PokeDexStack.Screen
+            name="Pokemon"
+            component={Pokemon}
+            options={({navigation, route}) => ({
+                headerLeft: props => (
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <MyText
+                            style={{
+                                fontFamily: 'DotGothic16_400Regular',
+                                fontSize: 24,
+                                color: 'tomato',
+                            }}
+                        >
+                            {'<   '}
+                        </MyText>
+                    </Pressable>
+                )
+            })}
+        />
+    </PokeDexStack.Navigator>
+)
+
 
 export default function App() {
     let [fontsLoaded] = useFonts({DotGothic16_400Regular});
@@ -20,6 +62,16 @@ export default function App() {
         <NavigationContainer>
             <Tab.Navigator
                 screenOptions={({route}) => ({
+                    headerShown: false,
+                    tabBarStyle: {
+                        backgroundColor: appColor.headerBg,
+                        borderTopWidth: 1,
+                        borderTopColor: appColor.border,
+                        paddingBottom: 5
+                    },
+                    tabBarLabelStyle: {
+                        fontFamily: 'DotGothic16_400Regular'
+                    },
                     tabBarIcon: ({color, size}) => {
                         let iconName;
 
@@ -34,29 +86,11 @@ export default function App() {
                     },
                     tabBarActiveTintColor: appColor.tabBarActive,
                     tabBarInactiveTintColor: 'gray',
-                    headerStyle: {
-                        backgroundColor: appColor.headerBg,
-                        borderBottomWidth: 1,
-                        borderBottomColor: appColor.border,
-                    },
-                    headerTintColor: appColor.headerFont,
-                    headerTitleStyle: {
-                        fontFamily: 'DotGothic16_400Regular'
-                    },
-                    tabBarStyle: {
-                        backgroundColor: appColor.headerBg,
-                        borderTopWidth: 1,
-                        borderTopColor: appColor.border,
-                        paddingBottom: 5
-                    },
-                    tabBarLabelStyle: {
-                        fontFamily: 'DotGothic16_400Regular'
-                    }
                 })}
             >
                 <Tab.Screen
                     name="PokeDex"
-                    component={PokeDex}
+                    component={PokeDexStackScreen}
                     options={{title: 'PokeDex'}}
                 />
                 <Tab.Screen
