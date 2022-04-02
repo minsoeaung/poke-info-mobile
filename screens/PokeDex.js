@@ -33,7 +33,11 @@ export default function PokeDex({navigation}) {
                 numColumns={3}
                 onEndReached={() => setPage(page + 1)}
                 onEndReachedThreshold={1}
-                ListFooterComponent={fetching && <ActivityIndicator color={appColor.border}/>}
+                ListFooterComponent={
+                    fetching && (
+                        <ActivityIndicator color={appColor.border} style={{marginBottom: 5}}/>
+                    )
+                }
             />
         </View>
     )

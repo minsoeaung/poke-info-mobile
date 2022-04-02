@@ -65,9 +65,9 @@ export default function App() {
                     headerShown: false,
                     tabBarStyle: {
                         backgroundColor: appColor.headerBg,
-                        borderTopWidth: 1,
-                        borderTopColor: appColor.border,
-                        paddingBottom: 5
+                        paddingBottom: 5,
+                        borderTopWidth: 0.2,
+                        borderTopColor: appColor.border
                     },
                     tabBarLabelStyle: {
                         fontFamily: 'DotGothic16_400Regular'

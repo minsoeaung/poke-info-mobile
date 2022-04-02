@@ -48,8 +48,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-evenly',
         margin: 5,
-        borderWidth: 1,
+        borderWidth: 0.2,
         borderColor: appColor.border,
+        elevation: 5
     },
     imageContainer: {
         borderRadius: 20,

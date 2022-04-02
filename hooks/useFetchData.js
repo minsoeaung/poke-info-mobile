@@ -6,12 +6,14 @@ const useFetchData = (url, refresh) => {
     const [data, setData] = useState(null);
 
     useEffect(() => {
+        let isMounted = true;
+
         (async () => {
             try {
                 if (url) {
                     const res = await fetch(url);
                     const data = await res.json();
-                    setData(data);
+                    isMounted && setData(data);
                 }
             } catch (e) {
 
@@ -20,6 +22,10 @@ const useFetchData = (url, refresh) => {
             }
 
         })();
+
+        return () => {
+            isMounted = false;
+        }
     }, [url, refresh]);
 
     return {data, error, isLoading};
