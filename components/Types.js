@@ -10,13 +10,12 @@ export default function Types({types, isBig = false}) {
                     <MyText
                         style={{
                             backgroundColor: typeBg[type.type.name],
-                            fontFamily: 'DotGothic16_400Regular',
                             paddingHorizontal: 10,
                             paddingVertical: 7,
                             borderRadius: 5,
                             color: 'white',
                             marginRight: 15,
-                            elevation: 5
+                            elevation: 5,
                         }}
                     >
                         {type.type.name}
@@ -32,14 +31,14 @@ export default function Types({types, isBig = false}) {
                 <MyText
                     style={{
                         backgroundColor: typeBg[type.type.name],
-                        fontFamily: 'DotGothic16_400Regular',
                         paddingHorizontal: 5,
-                        paddingVertical: 1,
+                        paddingVertical: 2,
                         borderBottomLeftRadius: index === 0 ? 5 : 0,
                         borderTopLeftRadius: index === 0 ? 5 : 0,
                         borderTopRightRadius: index === types.length - 1 ? 5 : 0,
                         borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
                         color: 'white',
+                        fontSize: 10
                     }}
                 >
                     {type.type.name}

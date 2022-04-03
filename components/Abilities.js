@@ -9,7 +9,6 @@ export default function Abilities({abilities}) {
                     <MyText
                         style={{
                             backgroundColor: '#2f4f4f',
-                            fontFamily: 'DotGothic16_400Regular',
                             paddingHorizontal: 10,
                             paddingVertical: 7,
                             borderRadius: 5,

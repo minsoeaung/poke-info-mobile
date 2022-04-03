@@ -1,5 +1,14 @@
 import {Text} from 'react-native';
 
 export default function MyText(props) {
-    return <Text style={{fontFamily: 'DotGothic16_400Regular'}} {...props}>{props.children}</Text>
+    const {style} = props;
+
+    return (
+        <Text
+            {...props}
+            style={{...style, fontFamily: 'DotGothic16_400Regular'}}
+        >
+            {props.children}
+        </Text>
+    )
 }

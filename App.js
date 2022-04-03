@@ -24,6 +24,7 @@ const PokeDexStackScreen = () => (
             headerTintColor: appColor.headerFont,
             headerTitleStyle: {
                 fontFamily: 'DotGothic16_400Regular',
+                fontSize: 30
             }
         }}
     >
@@ -36,12 +37,11 @@ const PokeDexStackScreen = () => (
                     <Pressable onPress={() => navigation.goBack()}>
                         <MyText
                             style={{
-                                fontFamily: 'DotGothic16_400Regular',
                                 fontSize: 24,
                                 color: 'tomato',
                             }}
                         >
-                            {'<   '}
+                            {'<  '}
                         </MyText>
                     </Pressable>
                 )
