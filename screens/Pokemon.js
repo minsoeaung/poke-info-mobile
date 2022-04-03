@@ -26,20 +26,26 @@ export default function Pokemon({route, navigation}) {
                         }}
                     />
                 </View>
-                <Description
-                    label='type'
-                    value={<Types types={data.types} navigation={navigation} isBig/>}
-                />
-                <Description
-                    label='abilities'
-                    value={<Abilities abilities={data.abilities}/>}
-                />
-                <Description label='height' value={<MyText>{getHeightInFeetAndInches(data.height)}</MyText>}/>
-                <Description label='weight' value={<MyText>{getWeightInLbs(data.weight)}</MyText>}/>
-                <Description label='base-experience' value={<MyText>{data.base_experience}</MyText>}/>
-                {data.stats.map(({base_stat, stat}) => (
-                    <Description label={stat.name} value={<MyText>{base_stat}</MyText>} noBorder/>
-                ))}
+                <View style={{
+                    borderWidth: 0.5,
+                    borderRadius: 10,
+                    backgroundColor: appColor.headerBg
+                }}>
+                    <Description
+                        label='type'
+                        value={<Types types={data.types} navigation={navigation} isBig/>}
+                    />
+                    <Description
+                        label='abilities'
+                        value={<Abilities abilities={data.abilities}/>}
+                    />
+                    <Description label='height' value={<MyText>{getHeightInFeetAndInches(data.height)}</MyText>}/>
+                    <Description label='weight' value={<MyText>{getWeightInLbs(data.weight)}</MyText>}/>
+                    <Description label='base-experience' value={<MyText>{data.base_experience}</MyText>}/>
+                    {data.stats.map(({base_stat, stat}) => (
+                        <Description label={stat.name} value={<MyText>{base_stat}</MyText>} noBorder/>
+                    ))}
+                </View>
             </ScrollView>
         </View>
     )
@@ -49,6 +55,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 10,
+        paddingBottom: 10
     },
     imageContainer: {
         width: Dimensions.get('window').width - 70,
