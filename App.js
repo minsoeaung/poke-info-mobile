@@ -10,6 +10,7 @@ import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {appColor} from "./constants/colors";
 import MyText from "./components/MyText";
 import {Pressable} from "react-native";
+import Type from "./screens/Type";
 
 const Tab = createBottomTabNavigator();
 const PokeDexStack = createNativeStackNavigator();
@@ -25,15 +26,33 @@ const PokeDexStackScreen = () => (
             headerTitleStyle: {
                 fontFamily: 'DotGothic16_400Regular',
                 fontSize: 30
-            }
+            },
         }}
     >
         <PokeDexStack.Screen name="PokeDex" component={PokeDex} options={{title: 'PokeDex'}}/>
         <PokeDexStack.Screen
             name="Pokemon"
             component={Pokemon}
-            options={({navigation, route}) => ({
-                headerLeft: props => (
+            options={({navigation}) => ({
+                headerLeft: () => (
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <MyText
+                            style={{
+                                fontSize: 24,
+                                color: 'tomato',
+                            }}
+                        >
+                            {'<  '}
+                        </MyText>
+                    </Pressable>
+                )
+            })}
+        />
+        <PokeDexStack.Screen
+            name='Type'
+            component={Type}
+            options={({navigation}) => ({
+                headerLeft: () => (
                     <Pressable onPress={() => navigation.goBack()}>
                         <MyText
                             style={{

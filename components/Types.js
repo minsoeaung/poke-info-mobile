@@ -1,25 +1,35 @@
 import MyText from "./MyText";
-import {StyleSheet, View} from "react-native";
-import {appColor, typeBg} from "../constants/colors";
+import {Pressable, StyleSheet, View} from "react-native";
+import {typeBg} from "../constants/colors";
 
-export default function Types({types, isBig = false}) {
+export default function Types({types, isBig = false, navigation}) {
     if (isBig) {
         return (
             <View style={styles.typeContainer}>
-                {types.map((type, index) => (
-                    <MyText
-                        style={{
-                            backgroundColor: typeBg[type.type.name],
-                            paddingHorizontal: 10,
-                            paddingVertical: 7,
-                            borderRadius: 5,
-                            color: 'white',
-                            marginRight: 15,
-                            elevation: 5,
+                {types.map(({type}) => (
+                    <Pressable
+                        onPress={() => {
+                            navigation.navigate('Type', {name: type.name, url: type.url})
                         }}
                     >
-                        {type.type.name}
-                    </MyText>
+                        {({pressed}) => (
+                            <MyText
+                                style={{
+                                    backgroundColor: pressed
+                                        ? 'rgb(130,183,255)'
+                                        : typeBg[type.name],
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 7,
+                                    borderRadius: 5,
+                                    color: 'white',
+                                    marginRight: 15,
+                                    elevation: 5,
+                                }}
+                            >
+                                {type.name}
+                            </MyText>
+                        )}
+                    </Pressable>
                 ))}
             </View>
         )

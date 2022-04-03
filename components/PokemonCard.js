@@ -51,10 +51,10 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: appColor.border,
         elevation: 5,
-        borderRadius: 10
+        borderRadius: 1
     },
     imageContainer: {
-        borderRadius: 10,
+        borderRadius: 20,
         backgroundColor: '#fff',
         width: '80%',
         height: '60%'

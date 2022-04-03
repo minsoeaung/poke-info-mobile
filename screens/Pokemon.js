@@ -2,7 +2,7 @@ import {Dimensions, Image, ScrollView, StyleSheet, View} from "react-native";
 import {useEffect} from "react";
 import {appColor, cardBg} from "../constants/colors";
 import Types from "../components/Types";
-import Description from "../components/Descritpion";
+import Description from "../components/Description";
 import Abilities from "../components/Abilities";
 import MyText from "../components/MyText";
 import getHeightInFeetAndInches from "../utils/getHeightInFeetAndInches";
@@ -27,16 +27,19 @@ export default function Pokemon({route, navigation}) {
                     />
                 </View>
                 <Description
-                    label='Type'
-                    value={<Types types={data.types} isBig/>}
+                    label='type'
+                    value={<Types types={data.types} navigation={navigation} isBig/>}
                 />
                 <Description
-                    label='Abilities'
+                    label='abilities'
                     value={<Abilities abilities={data.abilities}/>}
                 />
-                <Description label='Height' value={<MyText>{getHeightInFeetAndInches(data.height)}</MyText>}/>
-                <Description label='Weight' value={<MyText>{getWeightInLbs(data.weight)}</MyText>}/>
-                <Description label='Base experience' value={<MyText>{data.base_experience}</MyText>}/>
+                <Description label='height' value={<MyText>{getHeightInFeetAndInches(data.height)}</MyText>}/>
+                <Description label='weight' value={<MyText>{getWeightInLbs(data.weight)}</MyText>}/>
+                <Description label='base-experience' value={<MyText>{data.base_experience}</MyText>}/>
+                {data.stats.map(({base_stat, stat}) => (
+                    <Description label={stat.name} value={<MyText>{base_stat}</MyText>} noBorder/>
+                ))}
             </ScrollView>
         </View>
     )
@@ -45,7 +48,7 @@ export default function Pokemon({route, navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 10
+        paddingHorizontal: 10,
     },
     imageContainer: {
         width: Dimensions.get('window').width - 70,
@@ -65,12 +68,4 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         resizeMode: 'contain'
     },
-    types: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        backgroundColor: appColor.headerBg,
-        paddingLeft: 10,
-        paddingVertical: 10,
-        borderRadius: 15,
-    }
 })
