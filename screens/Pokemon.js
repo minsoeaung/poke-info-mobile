@@ -26,11 +26,7 @@ export default function Pokemon({route, navigation}) {
                         }}
                     />
                 </View>
-                <View style={{
-                    borderWidth: 0.5,
-                    borderRadius: 10,
-                    backgroundColor: appColor.headerBg
-                }}>
+                <View style={styles.descriptionContainer}>
                     <Description
                         label='type'
                         value={<Types types={data.types} navigation={navigation} isBig/>}
@@ -54,8 +50,7 @@ export default function Pokemon({route, navigation}) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingHorizontal: 10,
-        paddingBottom: 10
+        paddingHorizontal: 10
     },
     imageContainer: {
         width: Dimensions.get('window').width - 70,
@@ -75,4 +70,10 @@ const styles = StyleSheet.create({
         alignSelf: 'center',
         resizeMode: 'contain'
     },
+    descriptionContainer: {
+        borderWidth: 0.5,
+        borderRadius: 10,
+        backgroundColor: appColor.headerBg,
+        marginBottom: 10
+    }
 })
