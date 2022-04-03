@@ -74,6 +74,6 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 10,
         backgroundColor: appColor.headerBg,
-        marginBottom: 10
+        marginBottom: 10,
     }
 })

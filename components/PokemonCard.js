@@ -5,11 +5,11 @@ import MyText from "./MyText";
 import Types from "./Types";
 
 export default function PokemonCard({url, navigation}) {
-    const {isLoading, error, data} = useFetchData(url);
+    const {isLoading, data} = useFetchData(url);
 
     if (isLoading) {
         return (
-            <View style={styles.container}>
+            <View style={{...styles.container, elevation: 0}}>
                 <ActivityIndicator color={appColor.border}/>
             </View>
         )
