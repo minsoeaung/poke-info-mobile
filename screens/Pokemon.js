@@ -1,8 +1,12 @@
 import {Dimensions, Image, ScrollView, StyleSheet, View} from "react-native";
 import {useEffect} from "react";
 import {appColor, cardBg} from "../constants/colors";
-import MyText from "../components/MyText";
 import Types from "../components/Types";
+import Description from "../components/Descritpion";
+import Abilities from "../components/Abilities";
+import MyText from "../components/MyText";
+import getHeightInFeetAndInches from "../utils/getHeightInFeetAndInches";
+import getWeightInLbs from '../utils/getWeightInLbs';
 
 export default function Pokemon({route, navigation}) {
     const {data} = route.params;
@@ -22,14 +26,17 @@ export default function Pokemon({route, navigation}) {
                         }}
                     />
                 </View>
-                <View style={styles.types}>
-                    <View style={{flex: 1}}>
-                        <MyText>Type</MyText>
-                    </View>
-                    <View style={{flex: 3, borderLeftWidth: 1, borderLeftColor: appColor.border}}>
-                        <Types types={data.types} isBig/>
-                    </View>
-                </View>
+                <Description
+                    label='Type'
+                    value={<Types types={data.types} isBig/>}
+                />
+                <Description
+                    label='Abilities'
+                    value={<Abilities abilities={data.abilities}/>}
+                />
+                <Description label='Height' value={<MyText>{getHeightInFeetAndInches(data.height)}</MyText>}/>
+                <Description label='Weight' value={<MyText>{getWeightInLbs(data.weight)}</MyText>}/>
+                <Description label='Base experience' value={<MyText>{data.base_experience}</MyText>}/>
             </ScrollView>
         </View>
     )
@@ -49,7 +56,7 @@ const styles = StyleSheet.create({
         flex: 1,
         alignSelf: 'center',
         marginTop: 10,
-        marginBottom: 20
+        marginBottom: 20,
     },
     image: {
         width: Dimensions.get('window').width - 1,

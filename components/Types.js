@@ -1,6 +1,6 @@
 import MyText from "./MyText";
 import {StyleSheet, View} from "react-native";
-import {typeBg} from "../constants/colors";
+import {appColor, typeBg} from "../constants/colors";
 
 export default function Types({types, isBig = false}) {
     if (isBig) {
@@ -12,10 +12,11 @@ export default function Types({types, isBig = false}) {
                             backgroundColor: typeBg[type.type.name],
                             fontFamily: 'DotGothic16_400Regular',
                             paddingHorizontal: 10,
-                            paddingVertical: 5,
+                            paddingVertical: 7,
                             borderRadius: 5,
                             color: 'white',
-                            marginHorizontal: 5
+                            marginRight: 15,
+                            elevation: 5
                         }}
                     >
                         {type.type.name}
