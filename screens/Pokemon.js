@@ -7,14 +7,36 @@ import Abilities from "../components/Abilities";
 import MyText from "../components/MyText";
 import getHeightInFeetAndInches from "../utils/getHeightInFeetAndInches";
 import getWeightInLbs from '../utils/getWeightInLbs';
+import useFetchData from "../hooks/useFetchData";
+import LoadingText from "../components/LoadingText";
 
 export default function Pokemon({route, navigation}) {
-    const {data} = route.params;
+    const {data, name, url} = route.params;
 
     useEffect(() => {
-        navigation.setOptions({title: data.name})
+        navigation.setOptions({title: data ? data.name : name})
     }, []);
 
+    if (data) {
+        return <PokemonDetail data={data} navigation={navigation}/>
+    } else {
+        return <PokemonWithFetching url={url} navigation={navigation}/>
+    }
+}
+
+function PokemonWithFetching({url, navigation}) {
+    const {isLoading, data} = useFetchData(url);
+
+    if (isLoading) {
+        return <LoadingText/>
+    }
+
+    return (
+        <PokemonDetail data={data} navigation={navigation}/>
+    )
+}
+
+function PokemonDetail({data, navigation}) {
     return (
         <View style={{...styles.container, backgroundColor: cardBg[data.types[0].type.name]}}>
             <ScrollView>

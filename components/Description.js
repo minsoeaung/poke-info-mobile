@@ -1,7 +1,7 @@
 import {StyleSheet, View} from "react-native";
 import MyText from "./MyText";
 
-export default function Description({label, value, noBorder}) {
+export default function Description({label, value, noBorder, labelFlex = 2, valueFlex = 3}) {
     return (
         <View
             style={{
@@ -10,10 +10,10 @@ export default function Description({label, value, noBorder}) {
                 borderColor: 'tomato'
             }}
         >
-            <View style={styles.label}>
+            <View style={{flex: labelFlex}}>
                 <MyText>{label}</MyText>
             </View>
-            <View style={styles.value}>
+            <View style={{flex: valueFlex}}>
                 {value}
             </View>
         </View>
@@ -26,11 +26,5 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 10,
         marginHorizontal: 10,
-    },
-    label: {
-        flex: 2
-    },
-    value: {
-        flex: 3
     }
 })

@@ -5,6 +5,7 @@ import useFetchData from "../hooks/useFetchData";
 import LoadingText from "../components/LoadingText";
 import Description from "../components/Description";
 import {appColor, typeBg} from "../constants/colors";
+import getFormattedName from "../utils/getFormattedName";
 
 export default function Type({route, navigation}) {
     const {name, url} = route.params;
@@ -14,6 +15,10 @@ export default function Type({route, navigation}) {
         navigation.setOptions({title: name})
     }, []);
 
+    const goToPokemon = (name, url) => () => {
+        navigation.push('Pokemon', {name, url});
+    }
+
     if (isLoading) {
         return <LoadingText/>
     }
@@ -21,7 +26,7 @@ export default function Type({route, navigation}) {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.dmgRelationContainer}>
-                <MyText style={styles.relationTitle}>Attack</MyText>
+                <MyText style={styles.cardTitle}>Attack</MyText>
                 <Description
                     label='2x damage'
                     value={<Types types={data.damage_relations.double_damage_to} navigation={navigation}/>}
@@ -41,7 +46,7 @@ export default function Type({route, navigation}) {
             </View>
 
             <View style={styles.dmgRelationContainer}>
-                <MyText style={styles.relationTitle}>Defense</MyText>
+                <MyText style={styles.cardTitle}>Defense</MyText>
                 <Description
                     label='2x damage'
                     value={<Types types={data.damage_relations.double_damage_from} navigation={navigation}/>}
@@ -59,7 +64,43 @@ export default function Type({route, navigation}) {
                     />
                 )}
             </View>
+
+            <View style={styles.dmgRelationContainer}>
+                <MyText style={styles.cardTitle}>{getFormattedName(name)} Pokémon</MyText>
+                {data.pokemon.map(({pokemon}, index) => (
+                    <Pokemon
+                        key={pokemon.name}
+                        name={pokemon.name}
+                        url={pokemon.url}
+                        noBorder={index === data.pokemon.length - 1}
+                        goToPokemon={goToPokemon}
+                    />
+                ))}
+            </View>
         </ScrollView>
+    )
+}
+
+function Pokemon({name, url, noBorder = false, goToPokemon}) {
+    return (
+        <Pressable onPress={goToPokemon(name, url)}>
+            {({pressed}) => (
+                <View
+                    style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-between',
+                        borderBottomWidth: noBorder ? 0 : 1,
+                        borderColor: 'tomato',
+                        paddingVertical: 20,
+                        marginHorizontal: 10,
+                    }}
+                >
+                    <MyText style={{color: pressed ? 'tomato' : 'black'}}>{getFormattedName(name)}</MyText>
+                    <MyText style={{color: pressed ? 'tomato' : 'black'}}>{'>'}</MyText>
+                </View>
+            )}
+        </Pressable>
     )
 }
 
@@ -112,12 +153,12 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap',
     },
     dmgRelationContainer: {
-        marginBottom: 10,
+        marginBottom: 20,
         backgroundColor: appColor.headerBg,
         borderRadius: 10,
-        borderWidth: 0.5
+        borderWidth: 0.5,
     },
-    relationTitle: {
+    cardTitle: {
         fontSize: 20,
         margin: 10,
         color: '#000'
