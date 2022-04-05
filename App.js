@@ -11,6 +11,7 @@ import {appColor} from "./constants/colors";
 import MyText from "./components/MyText";
 import {Pressable} from "react-native";
 import Type from "./screens/Type";
+import Ability from "./screens/Ability";
 
 const Tab = createBottomTabNavigator();
 const PokeDexStack = createNativeStackNavigator();
@@ -51,6 +52,24 @@ const PokeDexStackScreen = () => (
         <PokeDexStack.Screen
             name='Type'
             component={Type}
+            options={({navigation}) => ({
+                headerLeft: () => (
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <MyText
+                            style={{
+                                fontSize: 24,
+                                color: 'tomato',
+                            }}
+                        >
+                            {'<  '}
+                        </MyText>
+                    </Pressable>
+                )
+            })}
+        />
+        <PokeDexStack.Screen
+            name="Ability"
+            component={Ability}
             options={({navigation}) => ({
                 headerLeft: () => (
                     <Pressable onPress={() => navigation.goBack()}>

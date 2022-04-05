@@ -12,7 +12,7 @@ export default function Type({route, navigation}) {
     const {isLoading, data} = useFetchData(url);
 
     useEffect(() => {
-        navigation.setOptions({title: name})
+        navigation.setOptions({title: getFormattedName(name)})
     }, []);
 
     const goToPokemon = (name, url) => () => {
@@ -81,7 +81,7 @@ export default function Type({route, navigation}) {
     )
 }
 
-function Pokemon({name, url, noBorder = false, goToPokemon}) {
+export function Pokemon({name, url, noBorder = false, goToPokemon}) {
     return (
         <Pressable onPress={goToPokemon(name, url)}>
             {({pressed}) => (

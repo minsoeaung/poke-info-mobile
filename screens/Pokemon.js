@@ -9,12 +9,13 @@ import getHeightInFeetAndInches from "../utils/getHeightInFeetAndInches";
 import getWeightInLbs from '../utils/getWeightInLbs';
 import useFetchData from "../hooks/useFetchData";
 import LoadingText from "../components/LoadingText";
+import getFormattedName from "../utils/getFormattedName";
 
 export default function Pokemon({route, navigation}) {
     const {data, name, url} = route.params;
 
     useEffect(() => {
-        navigation.setOptions({title: data ? data.name : name})
+        navigation.setOptions({title: data ? getFormattedName(data.name) : getFormattedName(name)})
     }, []);
 
     if (data) {
@@ -55,7 +56,7 @@ function PokemonDetail({data, navigation}) {
                     />
                     <Description
                         label='abilities'
-                        value={<Abilities abilities={data.abilities}/>}
+                        value={<Abilities abilities={data.abilities} navigation={navigation}/>}
                     />
                     <Description label='height' value={<MyText>{getHeightInFeetAndInches(data.height)}</MyText>}/>
                     <Description label='weight' value={<MyText>{getWeightInLbs(data.weight)}</MyText>}/>
