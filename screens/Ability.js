@@ -16,9 +16,14 @@ export default function Ability({navigation, route}) {
 
     useEffect(() => {
         if (data) {
-            setFlavorText(data.flavor_text_entries[0]['flavor_text'].replace('\n', ' '));
-            const en = data.effect_entries.find(e => e.language.name === 'en');
-            setEffectEntry(en.effect);
+            const enFlavorText = data.flavor_text_entries.find(e => e.language.name === 'en');
+            if (enFlavorText) {
+                setFlavorText(enFlavorText.flavor_text.replace('\n', ' '));
+            }
+            const enEffect = data.effect_entries.find(e => e.language.name === 'en');
+            if (enEffect) {
+                setEffectEntry(enEffect.effect);
+            }
         }
     }, [data])
 
@@ -37,16 +42,17 @@ export default function Ability({navigation, route}) {
     return (
         <ScrollView style={styles.container}>
             <View style={styles.card}>
-                <MyText style={styles.description}>{flavorText}</MyText>
-                <MyText style={styles.description}>{effectEntry}</MyText>
+                {flavorText.length > 0 && <MyText style={styles.description}>{flavorText}</MyText>}
+                {effectEntry.length > 0 && <MyText style={styles.description}>{effectEntry}</MyText>}
             </View>
             <View style={styles.card}>
                 <MyText style={styles.cardTitle}>Pokémon with this ability</MyText>
-                {data.pokemon.map(({pokemon}, index) => (
+                {data.pokemon.map(({pokemon, is_hidden}, index) => (
                     <Pokemon
                         key={pokemon.name}
                         name={pokemon.name}
                         url={pokemon.url}
+                        isHidden={is_hidden}
                         noBorder={index === data.pokemon.length - 1}
                         goToPokemon={goToPokemon}
                     />

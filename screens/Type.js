@@ -6,6 +6,8 @@ import LoadingText from "../components/LoadingText";
 import Description from "../components/Description";
 import {appColor, typeBg} from "../constants/colors";
 import getFormattedName from "../utils/getFormattedName";
+import SmallGreyText from "../components/SmallGreyText";
+import TypeSlot from "../components/TypeSlot";
 
 export default function Type({route, navigation}) {
     const {name, url} = route.params;
@@ -67,11 +69,12 @@ export default function Type({route, navigation}) {
 
             <View style={styles.dmgRelationContainer}>
                 <MyText style={styles.cardTitle}>{getFormattedName(name)} Pokémon</MyText>
-                {data.pokemon.map(({pokemon}, index) => (
+                {data.pokemon.map(({pokemon, slot}, index) => (
                     <Pokemon
                         key={pokemon.name}
                         name={pokemon.name}
                         url={pokemon.url}
+                        typeSlot={slot}
                         noBorder={index === data.pokemon.length - 1}
                         goToPokemon={goToPokemon}
                     />
@@ -81,7 +84,7 @@ export default function Type({route, navigation}) {
     )
 }
 
-export function Pokemon({name, url, noBorder = false, goToPokemon}) {
+export function Pokemon({name, url, noBorder = false, goToPokemon, isHidden, typeSlot}) {
     return (
         <Pressable onPress={goToPokemon(name, url)}>
             {({pressed}) => (
@@ -96,8 +99,12 @@ export function Pokemon({name, url, noBorder = false, goToPokemon}) {
                         marginHorizontal: 10,
                     }}
                 >
-                    <MyText style={{color: pressed ? 'tomato' : 'black'}}>{getFormattedName(name)}</MyText>
-                    <MyText style={{color: pressed ? 'tomato' : 'black'}}>{'>'}</MyText>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <MyText style={{color: pressed ? 'tomato' : 'black'}}>{getFormattedName(name)}</MyText>
+                        {isHidden && <SmallGreyText text='   (Hidden ability)'/>}
+                        {typeSlot && <TypeSlot slot={typeSlot}/>}
+                    </View>
+                    <MyText style={{color: pressed ? 'tomato' : 'black'}}>{'     >'}</MyText>
                 </View>
             )}
         </Pressable>

@@ -26,7 +26,7 @@ const PokeDexStackScreen = () => (
             headerTintColor: appColor.headerFont,
             headerTitleStyle: {
                 fontFamily: 'DotGothic16_400Regular',
-                fontSize: 30
+                fontSize: 22
             },
         }}
     >

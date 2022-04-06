@@ -1,5 +1,6 @@
 import {Pressable, View} from "react-native";
 import MyText from "./MyText";
+import SmallGreyText from "./SmallGreyText";
 
 export default function Abilities({abilities, navigation}) {
     const goToAbility = (name, url) => () => {
@@ -33,7 +34,10 @@ export default function Abilities({abilities, navigation}) {
                             >
                                 {ability.ability.name}
                             </MyText>
-                            <MyText>{ability.is_hidden && ' (Hidden)'}</MyText>
+                            <View>
+                                <SmallGreyText text={`  Slot: ${ability.slot}`}/>
+                                {ability.is_hidden && <SmallGreyText text=' (Hidden)'/>}
+                            </View>
                         </>
                     )}
                 </Pressable>
