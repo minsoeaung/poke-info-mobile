@@ -15,6 +15,7 @@ import Ability from "./screens/Ability";
 
 const Tab = createBottomTabNavigator();
 const PokeDexStack = createNativeStackNavigator();
+const AbilityStack = createNativeStackNavigator();
 
 const PokeDexStackScreen = () => (
     <PokeDexStack.Navigator
@@ -86,8 +87,43 @@ const PokeDexStackScreen = () => (
             })}
         />
     </PokeDexStack.Navigator>
-)
+);
 
+const AbilityStackScreen = () => (
+    <AbilityStack.Navigator
+        initialRouteName="Abilities"
+        screenOptions={{
+            headerStyle: {
+                backgroundColor: appColor.headerBg,
+            },
+            headerTintColor: appColor.headerFont,
+            headerTitleStyle: {
+                fontFamily: 'DotGothic16_400Regular',
+                fontSize: 22
+            },
+        }}
+    >
+        <PokeDexStack.Screen name="Abilities" component={Abilities} options={{title: 'Abilities'}}/>
+        <PokeDexStack.Screen
+            name="Ability"
+            component={Ability}
+            options={({navigation}) => ({
+                headerLeft: () => (
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <MyText
+                            style={{
+                                fontSize: 24,
+                                color: 'tomato',
+                            }}
+                        >
+                            {'<  '}
+                        </MyText>
+                    </Pressable>
+                )
+            })}
+        />
+    </AbilityStack.Navigator>
+);
 
 export default function App() {
     let [fontsLoaded] = useFonts({DotGothic16_400Regular});
@@ -113,9 +149,9 @@ export default function App() {
                     tabBarIcon: ({color, size}) => {
                         let iconName;
 
-                        if (route.name === 'PokeDex') {
+                        if (route.name === 'PokeDexTab') {
                             iconName = 'pokemon-go';
-                        } else if (route.name === 'Abilities') {
+                        } else if (route.name === 'AbilitiesTab') {
                             iconName = 'alpha-a-box-outline';
                         }
 
@@ -127,13 +163,13 @@ export default function App() {
                 })}
             >
                 <Tab.Screen
-                    name="PokeDex"
+                    name="PokeDexTab"
                     component={PokeDexStackScreen}
                     options={{title: 'PokeDex'}}
                 />
                 <Tab.Screen
-                    name="Abilities"
-                    component={Abilities}
+                    name="AbilitiesTab"
+                    component={AbilityStackScreen}
                     options={{title: 'Abilities'}}
                 />
             </Tab.Navigator>

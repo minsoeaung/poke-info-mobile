@@ -46,7 +46,6 @@ export default function Ability({navigation, route}) {
                 {effectEntry.length > 0 && <MyText style={styles.description}>{effectEntry}</MyText>}
                 <View style={{...styles.description, flexDirection: 'row', justifyContent: 'space-between'}}>
                     <MyText>Originated generation: {data.generation.name}</MyText>
-                    <MyText>{'>'}</MyText>
                 </View>
             </View>
             <View style={styles.card}>
