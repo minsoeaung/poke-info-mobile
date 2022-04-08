@@ -7,16 +7,33 @@ import Types from "./Types";
 export default function PokemonCard({url, navigation}) {
     const {isLoading, data} = useFetchData(url);
 
+    const goToPokemon = () => {
+        const payload = {
+            name: data.name,
+            sprites: {
+                other: {
+                    'official-artwork': {
+                        'front_default': data.sprites.other['official-artwork']['front_default']
+                    }
+                }
+            },
+            types: data.types,
+            abilities: data.abilities,
+            height: data.height,
+            weight: data.weight,
+            'base_experience': data.base_experience,
+            stats: data.stats
+        }
+
+        navigation.navigate('PokemonDetail', {data: payload});
+    }
+
     if (isLoading) {
         return (
             <View style={{...styles.container, elevation: 0}}>
                 <ActivityIndicator color={appColor.border}/>
             </View>
         )
-    }
-
-    const goToPokemon = () => {
-        navigation.navigate('PokemonDetail', {data});
     }
 
     return (
