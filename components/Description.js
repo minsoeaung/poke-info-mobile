@@ -11,7 +11,7 @@ export default function Description({label, value, noBorder, labelFlex = 2, valu
             }}
         >
             <View style={{flex: labelFlex}}>
-                <MyText>{label}</MyText>
+                <MyText style={styles.secondary}>{label}</MyText>
             </View>
             <View style={{flex: valueFlex}}>
                 {value}
@@ -26,5 +26,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 10,
         marginHorizontal: 10,
+    },
+    secondary: {
+        color: 'grey'
     }
 })

@@ -12,13 +12,13 @@ import MyText from "./components/MyText";
 import {Pressable} from "react-native";
 import TypeDetail from "./screens/TypeDetail";
 import AbilityDetail from "./screens/AbilityDetail";
+import ItemList from "./screens/ItemList";
 
 const Tab = createBottomTabNavigator();
-const PokeDexStack = createNativeStackNavigator();
-const AbilityStack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator();
 
 const PokeDexStackScreen = () => (
-    <PokeDexStack.Navigator
+    <Stack.Navigator
         initialRouteName="PokeDex"
         screenOptions={{
             headerStyle: {
@@ -31,8 +31,8 @@ const PokeDexStackScreen = () => (
             },
         }}
     >
-        <PokeDexStack.Screen name="PokeDex" component={PokeDex} options={{title: 'PokeDex'}}/>
-        <PokeDexStack.Screen
+        <Stack.Screen name="PokeDex" component={PokeDex} options={{title: 'PokeDex'}}/>
+        <Stack.Screen
             name="PokemonDetail"
             component={PokemonDetail}
             options={({navigation}) => ({
@@ -50,7 +50,7 @@ const PokeDexStackScreen = () => (
                 )
             })}
         />
-        <PokeDexStack.Screen
+        <Stack.Screen
             name='TypeDetail'
             component={TypeDetail}
             options={({navigation}) => ({
@@ -68,7 +68,7 @@ const PokeDexStackScreen = () => (
                 )
             })}
         />
-        <PokeDexStack.Screen
+        <Stack.Screen
             name="AbilityDetail"
             component={AbilityDetail}
             options={({navigation}) => ({
@@ -86,11 +86,11 @@ const PokeDexStackScreen = () => (
                 )
             })}
         />
-    </PokeDexStack.Navigator>
+    </Stack.Navigator>
 );
 
 const AbilityStackScreen = () => (
-    <AbilityStack.Navigator
+    <Stack.Navigator
         initialRouteName="AbilityList"
         screenOptions={{
             headerStyle: {
@@ -103,8 +103,8 @@ const AbilityStackScreen = () => (
             },
         }}
     >
-        <PokeDexStack.Screen name="Abilities" component={AbilityList} options={{title: 'Abilities'}}/>
-        <PokeDexStack.Screen
+        <Stack.Screen name="Abilities" component={AbilityList} options={{title: 'Abilities'}}/>
+        <Stack.Screen
             name="AbilityDetail"
             component={AbilityDetail}
             options={({navigation}) => ({
@@ -122,7 +122,7 @@ const AbilityStackScreen = () => (
                 )
             })}
         />
-        <PokeDexStack.Screen
+        <Stack.Screen
             name="PokemonDetail"
             component={PokemonDetail}
             options={({navigation}) => ({
@@ -140,7 +140,7 @@ const AbilityStackScreen = () => (
                 )
             })}
         />
-        <PokeDexStack.Screen
+        <Stack.Screen
             name='TypeDetail'
             component={TypeDetail}
             options={({navigation}) => ({
@@ -158,8 +158,26 @@ const AbilityStackScreen = () => (
                 )
             })}
         />
-    </AbilityStack.Navigator>
+    </Stack.Navigator>
 );
+
+const ItemStackScreen = () => (
+    <Stack.Navigator
+        initialRouteName="ItemList"
+        screenOptions={{
+            headerStyle: {
+                backgroundColor: appColor.headerBg,
+            },
+            headerTintColor: appColor.headerFont,
+            headerTitleStyle: {
+                fontFamily: 'DotGothic16_400Regular',
+                fontSize: 22
+            },
+        }}
+    >
+        <Stack.Screen name="ItemList" component={ItemList} options={{title: 'Items'}}/>
+    </Stack.Navigator>
+)
 
 export default function App() {
     let [fontsLoaded] = useFonts({DotGothic16_400Regular});
@@ -189,9 +207,10 @@ export default function App() {
                             iconName = 'pokemon-go';
                         } else if (route.name === 'AbilitiesTab') {
                             iconName = 'alpha-a-box-outline';
+                        } else if (route.name === 'ItemsTab') {
+                            iconName = 'toolbox-outline';
                         }
 
-                        // You can return any component that you like here!
                         return <Ionicons name={iconName} size={size} color={color}/>;
                     },
                     tabBarActiveTintColor: appColor.tabBarActive,
@@ -207,6 +226,11 @@ export default function App() {
                     name="AbilitiesTab"
                     component={AbilityStackScreen}
                     options={{title: 'Abilities'}}
+                />
+                <Tab.Screen
+                    name="ItemsTab"
+                    component={ItemStackScreen}
+                    options={{title: 'Items'}}
                 />
             </Tab.Navigator>
         </NavigationContainer>
