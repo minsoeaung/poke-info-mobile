@@ -16,7 +16,7 @@ export default function PokemonCard({url, navigation}) {
     }
 
     const goToPokemon = () => {
-        navigation.navigate('Pokemon', {data});
+        navigation.navigate('PokemonDetail', {data});
     }
 
     return (
@@ -51,7 +51,6 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderColor: appColor.border,
         elevation: 5,
-        borderRadius: 1
     },
     imageContainer: {
         borderRadius: 20,

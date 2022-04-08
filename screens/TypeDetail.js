@@ -9,7 +9,7 @@ import getFormattedName from "../utils/getFormattedName";
 import SmallGreyText from "../components/SmallGreyText";
 import TypeSlot from "../components/TypeSlot";
 
-export default function Type({route, navigation}) {
+export default function TypeDetail({route, navigation}) {
     const {name, url} = route.params;
     const {isLoading, data} = useFetchData(url);
 
@@ -18,7 +18,7 @@ export default function Type({route, navigation}) {
     }, []);
 
     const goToPokemon = (name, url) => () => {
-        navigation.push('Pokemon', {name, url});
+        navigation.push('PokemonDetail', {name, url});
     }
 
     if (isLoading) {
@@ -117,7 +117,7 @@ function Types({types, navigation}) {
             {types.map(type => (
                 <Pressable
                     onPress={() => {
-                        navigation.push('Type', {name: type.name, url: type.url})
+                        navigation.push('TypeDetail', {name: type.name, url: type.url})
                     }}
                 >
                     {({pressed}) => (

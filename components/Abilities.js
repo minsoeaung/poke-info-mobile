@@ -4,7 +4,7 @@ import SmallGreyText from "./SmallGreyText";
 
 export default function Abilities({abilities, navigation}) {
     const goToAbility = (name, url) => () => {
-        navigation.push('Ability', {name, url});
+        navigation.push('AbilityDetail', {name, url});
     }
 
     return (

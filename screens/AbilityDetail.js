@@ -5,9 +5,9 @@ import useFetchData from "../hooks/useFetchData";
 import LoadingText from "../components/LoadingText";
 import {appColor} from "../constants/colors";
 import MyText from "../components/MyText";
-import {Pokemon} from "./Type";
+import {Pokemon} from "./TypeDetail";
 
-export default function Ability({navigation, route}) {
+export default function AbilityDetail({navigation, route}) {
     const [flavorText, setFlavorText] = useState('');
     const [effectEntry, setEffectEntry] = useState('');
     const {name, url} = route.params;
@@ -32,7 +32,7 @@ export default function Ability({navigation, route}) {
     }, []);
 
     const goToPokemon = (name, url) => () => {
-        navigation.push('Pokemon', {name, url});
+        navigation.push('PokemonDetail', {name, url});
     }
 
     if (isLoading) {

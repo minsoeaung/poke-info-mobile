@@ -4618,13 +4618,6 @@ react-is@^17.0.1:
   resolved "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-native-big-list@^1.5.4:
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/react-native-big-list/-/react-native-big-list-1.5.4.tgz#7bd55a27a06a595a62d3a215b48d74565bff1e3e"
-  integrity sha512-nZNwuuGBhkDVbOQ0OKP219rYn+xc6Rdf3XKbpr0x2neivE6vgIgz3u7dBtbzBa6d5XQxvGw+xUru5jG0H3+olg==
-  dependencies:
-    prop-types "^15.7.2"
-
 react-native-codegen@^0.0.6:
   version "0.0.6"
   resolved "https://registry.npmjs.org/react-native-codegen/-/react-native-codegen-0.0.6.tgz"

@@ -11,7 +11,7 @@ import useFetchData from "../hooks/useFetchData";
 import LoadingText from "../components/LoadingText";
 import getFormattedName from "../utils/getFormattedName";
 
-export default function Pokemon({route, navigation}) {
+export default function PokemonDetail({route, navigation}) {
     const {data, name, url} = route.params;
 
     useEffect(() => {
@@ -19,7 +19,7 @@ export default function Pokemon({route, navigation}) {
     }, []);
 
     if (data) {
-        return <PokemonDetail data={data} navigation={navigation}/>
+        return <PokemonDetails data={data} navigation={navigation}/>
     } else {
         return <PokemonWithFetching url={url} navigation={navigation}/>
     }
@@ -33,11 +33,11 @@ function PokemonWithFetching({url, navigation}) {
     }
 
     return (
-        <PokemonDetail data={data} navigation={navigation}/>
+        <PokemonDetails data={data} navigation={navigation}/>
     )
 }
 
-function PokemonDetail({data, navigation}) {
+function PokemonDetails({data, navigation}) {
     return (
         <View style={{...styles.container, backgroundColor: cardBg[data.types[0].type.name]}}>
             <ScrollView>

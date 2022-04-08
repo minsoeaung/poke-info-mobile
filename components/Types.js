@@ -9,7 +9,7 @@ export default function Types({types, isBig = false, navigation}) {
                 {types.map(({type}) => (
                     <Pressable
                         onPress={() => {
-                            navigation.push('Type', {name: type.name, url: type.url})
+                            navigation.push('TypeDetail', {name: type.name, url: type.url})
                         }}
                     >
                         {({pressed}) => (

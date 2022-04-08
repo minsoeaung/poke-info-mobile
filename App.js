@@ -2,16 +2,16 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import PokeDex from "./screens/PokeDex";
-import Abilities from "./screens/Abilities";
+import AbilityList from "./screens/AbilityList";
 import AppLoading from 'expo-app-loading';
 import {DotGothic16_400Regular, useFonts} from '@expo-google-fonts/dotgothic16';
-import Pokemon from "./screens/Pokemon";
+import PokemonDetail from "./screens/PokemonDetail";
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import {appColor} from "./constants/colors";
 import MyText from "./components/MyText";
 import {Pressable} from "react-native";
-import Type from "./screens/Type";
-import Ability from "./screens/Ability";
+import TypeDetail from "./screens/TypeDetail";
+import AbilityDetail from "./screens/AbilityDetail";
 
 const Tab = createBottomTabNavigator();
 const PokeDexStack = createNativeStackNavigator();
@@ -33,8 +33,8 @@ const PokeDexStackScreen = () => (
     >
         <PokeDexStack.Screen name="PokeDex" component={PokeDex} options={{title: 'PokeDex'}}/>
         <PokeDexStack.Screen
-            name="Pokemon"
-            component={Pokemon}
+            name="PokemonDetail"
+            component={PokemonDetail}
             options={({navigation}) => ({
                 headerLeft: () => (
                     <Pressable onPress={() => navigation.goBack()}>
@@ -51,8 +51,8 @@ const PokeDexStackScreen = () => (
             })}
         />
         <PokeDexStack.Screen
-            name='Type'
-            component={Type}
+            name='TypeDetail'
+            component={TypeDetail}
             options={({navigation}) => ({
                 headerLeft: () => (
                     <Pressable onPress={() => navigation.goBack()}>
@@ -69,8 +69,8 @@ const PokeDexStackScreen = () => (
             })}
         />
         <PokeDexStack.Screen
-            name="Ability"
-            component={Ability}
+            name="AbilityDetail"
+            component={AbilityDetail}
             options={({navigation}) => ({
                 headerLeft: () => (
                     <Pressable onPress={() => navigation.goBack()}>
@@ -91,7 +91,7 @@ const PokeDexStackScreen = () => (
 
 const AbilityStackScreen = () => (
     <AbilityStack.Navigator
-        initialRouteName="Abilities"
+        initialRouteName="AbilityList"
         screenOptions={{
             headerStyle: {
                 backgroundColor: appColor.headerBg,
@@ -103,10 +103,46 @@ const AbilityStackScreen = () => (
             },
         }}
     >
-        <PokeDexStack.Screen name="Abilities" component={Abilities} options={{title: 'Abilities'}}/>
+        <PokeDexStack.Screen name="Abilities" component={AbilityList} options={{title: 'Abilities'}}/>
         <PokeDexStack.Screen
-            name="Ability"
-            component={Ability}
+            name="AbilityDetail"
+            component={AbilityDetail}
+            options={({navigation}) => ({
+                headerLeft: () => (
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <MyText
+                            style={{
+                                fontSize: 24,
+                                color: 'tomato',
+                            }}
+                        >
+                            {'<  '}
+                        </MyText>
+                    </Pressable>
+                )
+            })}
+        />
+        <PokeDexStack.Screen
+            name="PokemonDetail"
+            component={PokemonDetail}
+            options={({navigation}) => ({
+                headerLeft: () => (
+                    <Pressable onPress={() => navigation.goBack()}>
+                        <MyText
+                            style={{
+                                fontSize: 24,
+                                color: 'tomato',
+                            }}
+                        >
+                            {'<  '}
+                        </MyText>
+                    </Pressable>
+                )
+            })}
+        />
+        <PokeDexStack.Screen
+            name='TypeDetail'
+            component={TypeDetail}
             options={({navigation}) => ({
                 headerLeft: () => (
                     <Pressable onPress={() => navigation.goBack()}>

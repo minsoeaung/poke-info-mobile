@@ -13,7 +13,9 @@ const useFetchData = (url, refresh) => {
                 if (url) {
                     const res = await fetch(url);
                     const data = await res.json();
-                    isMounted && setData(data);
+                    if (data && isMounted) {
+                        setData(data);
+                    }
                 }
             } catch (e) {
 
