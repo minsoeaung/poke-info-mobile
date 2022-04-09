@@ -62,7 +62,7 @@ function PokemonDetails({data, navigation}) {
                     <Description label='weight' value={<MyText>{getWeightInLbs(data.weight)}</MyText>}/>
                     <Description label='base-experience' value={<MyText>{data.base_experience}</MyText>}/>
                     {data.stats.map(({base_stat, stat}) => (
-                        <Description label={stat.name} value={<MyText>{base_stat}</MyText>} noBorder/>
+                        <Description key={stat.name} label={stat.name} value={<MyText>{base_stat}</MyText>} noBorder/>
                     ))}
                 </View>
             </ScrollView>

@@ -11,6 +11,7 @@ export default function Abilities({abilities, navigation}) {
         <View style={{alignItems: 'flex-start'}}>
             {abilities.map((ability, index) => (
                 <Pressable
+                    key={ability.ability.name}
                     style={{
                         flexDirection: 'row',
                         alignItems: 'center'

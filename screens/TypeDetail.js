@@ -116,6 +116,7 @@ function Types({types, navigation}) {
         <View style={styles.typeContainer}>
             {types.map(type => (
                 <Pressable
+                    key={type.name}
                     onPress={() => {
                         navigation.push('TypeDetail', {name: type.name, url: type.url})
                     }}

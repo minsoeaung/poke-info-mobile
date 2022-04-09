@@ -8,6 +8,7 @@ export default function Types({types, isBig = false, navigation}) {
             <View style={styles.typeContainer}>
                 {types.map(({type}) => (
                     <Pressable
+                        key={type.name}
                         onPress={() => {
                             navigation.push('TypeDetail', {name: type.name, url: type.url})
                         }}
@@ -39,6 +40,7 @@ export default function Types({types, isBig = false, navigation}) {
         <View style={styles.typeContainer}>
             {types.map((type, index) => (
                 <MyText
+                    key={type.type.name}
                     style={{
                         backgroundColor: typeBg[type.type.name],
                         paddingHorizontal: 5,
