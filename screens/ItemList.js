@@ -1,5 +1,4 @@
 import {StyleSheet, View} from "react-native";
-import MyText from "../components/MyText";
 
 export default function ItemList() {
     return (

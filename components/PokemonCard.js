@@ -3,9 +3,10 @@ import {ActivityIndicator, Image, Pressable, StyleSheet, View} from 'react-nativ
 import {appColor, cardBg} from "../constants/colors";
 import MyText from "./MyText";
 import Types from "./Types";
+import ErrorDisplay from "./ErrorDisplay";
 
 export default function PokemonCard({url, navigation}) {
-    const {isLoading, data} = useFetchData(url);
+    const {isLoading, error, data} = useFetchData(url);
 
     const goToPokemon = () => {
         const payload = {
@@ -34,6 +35,10 @@ export default function PokemonCard({url, navigation}) {
                 <ActivityIndicator color={appColor.border}/>
             </View>
         )
+    }
+
+    if (error) {
+        return <ErrorDisplay error={error}/>
     }
 
     return (

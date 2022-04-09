@@ -8,10 +8,11 @@ import {appColor, typeBg} from "../constants/colors";
 import getFormattedName from "../utils/getFormattedName";
 import SmallGreyText from "../components/SmallGreyText";
 import TypeSlot from "../components/TypeSlot";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 export default function TypeDetail({route, navigation}) {
     const {name, url} = route.params;
-    const {isLoading, data} = useFetchData(url);
+    const {isLoading, error, data} = useFetchData(url);
 
     useEffect(() => {
         navigation.setOptions({title: getFormattedName(name)})
@@ -23,6 +24,10 @@ export default function TypeDetail({route, navigation}) {
 
     if (isLoading) {
         return <LoadingText/>
+    }
+
+    if (error) {
+        return <ErrorDisplay error={error}/>
     }
 
     return (

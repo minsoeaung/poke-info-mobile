@@ -18,7 +18,7 @@ const useFetchData = (url, refresh) => {
                     }
                 }
             } catch (e) {
-
+                setError('No internet connection.');
             } finally {
                 setIsLoading(false);
             }

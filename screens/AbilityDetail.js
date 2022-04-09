@@ -6,13 +6,14 @@ import LoadingText from "../components/LoadingText";
 import {appColor} from "../constants/colors";
 import MyText from "../components/MyText";
 import {Pokemon} from "./TypeDetail";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 export default function AbilityDetail({navigation, route}) {
     const [flavorText, setFlavorText] = useState('');
     const [effectEntry, setEffectEntry] = useState('');
     const {name, url} = route.params;
 
-    const {isLoading, data} = useFetchData(url);
+    const {isLoading, error, data} = useFetchData(url);
 
     useEffect(() => {
         if (data) {
@@ -37,6 +38,10 @@ export default function AbilityDetail({navigation, route}) {
 
     if (isLoading) {
         return <LoadingText/>
+    }
+
+    if (error) {
+        return <ErrorDisplay error={error}/>
     }
 
     return (

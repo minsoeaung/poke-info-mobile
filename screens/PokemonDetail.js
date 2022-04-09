@@ -10,6 +10,7 @@ import getWeightInLbs from '../utils/getWeightInLbs';
 import useFetchData from "../hooks/useFetchData";
 import LoadingText from "../components/LoadingText";
 import getFormattedName from "../utils/getFormattedName";
+import ErrorDisplay from "../components/ErrorDisplay";
 
 export default function PokemonDetail({route, navigation}) {
     const {data, name, url} = route.params;
@@ -26,10 +27,14 @@ export default function PokemonDetail({route, navigation}) {
 }
 
 function PokemonWithFetching({url, navigation}) {
-    const {isLoading, data} = useFetchData(url);
+    const {isLoading, error, data} = useFetchData(url);
 
     if (isLoading) {
         return <LoadingText/>
+    }
+
+    if (error) {
+        return <ErrorDisplay error={error}/>
     }
 
     return (
