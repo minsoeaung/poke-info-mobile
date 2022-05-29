@@ -1,7 +1,18 @@
 import { PokeAPI } from 'pokeapi-types';
 
-type PokemonDetailScreen = {
-    data: PokeAPI.Pokemon;
+export type PokemonType = Omit<PokeAPI.Pokemon, 'sprites'> & {
+    sprites: {
+        front_default?: string;
+        other: {
+            'official-artwork': {
+                front_default: string;
+            };
+        };
+    };
+};
+
+type PokemonDetailScreenParams = {
+    data: PokemonType;
 } & PokeAPI.NamedAPIResource;
 
 export type NativeStackParamList = {
@@ -9,7 +20,7 @@ export type NativeStackParamList = {
     AbilityList: undefined;
     ItemList: undefined;
 
-    PokemonDetail: PokemonDetailScreen;
+    PokemonDetail: PokemonDetailScreenParams;
     TypeDetail: PokeAPI.NamedAPIResource;
     AbilityDetail: PokeAPI.NamedAPIResource;
 };

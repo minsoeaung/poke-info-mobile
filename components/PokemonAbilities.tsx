@@ -7,26 +7,29 @@ import { NativeStackParamList } from '../types';
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
 
-export default function Abilities({
-    abilities,
-}: {
+type Props = {
     abilities: PokeAPI.PokemonAbility[];
-}) {
+};
+
+export default function PokemonAbilities({ abilities }: Props) {
     const navigation =
         useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
-    const goToAbility = (name: string, url: string) => {
+    const goToAbilityDetailScreen = (name: string, url: string) => {
         navigation.push('AbilityDetail', { name, url });
     };
 
     return (
-        <View style={{ alignItems: 'flex-start' }}>
+        <View style={styles.container}>
             {abilities.map((ability, index) => (
                 <Pressable
                     key={ability.ability.name}
-                    style={styles.button}
+                    style={styles.ability}
                     onPress={() =>
-                        goToAbility(ability.ability.name, ability.ability.url)
+                        goToAbilityDetailScreen(
+                            ability.ability.name,
+                            ability.ability.url,
+                        )
                     }>
                     {({ pressed }) => (
                         <>
@@ -61,7 +64,10 @@ export default function Abilities({
 }
 
 const styles = StyleSheet.create({
-    button: {
+    container: {
+        alignItems: 'flex-start',
+    },
+    ability: {
         flexDirection: 'row',
         alignItems: 'center',
     },

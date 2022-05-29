@@ -61,9 +61,9 @@ export default function AbilityList({ navigation }: Props) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.searchBoxContainer}>
+            <View style={styles.searchInputWrap}>
                 <TextInput
-                    style={styles.input}
+                    style={styles.searchInput}
                     onChangeText={onChangeText}
                     placeholder="Search..."
                 />
@@ -99,13 +99,13 @@ const styles = StyleSheet.create({
         paddingVertical: 20,
         marginHorizontal: 10,
     },
-    searchBoxContainer: {
+    searchInputWrap: {
         backgroundColor: appColor.headerBg,
         borderRadius: 10,
         borderWidth: 0.5,
         marginBottom: 10,
     },
-    input: {
+    searchInput: {
         height: 40,
         padding: 10,
         fontFamily: fonts.fontDotGothic,

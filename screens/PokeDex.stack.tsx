@@ -1,8 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
-import { Pressable } from 'react-native';
 
-import MyText from '../components/MyText';
+import ScreenBackButton from '../components/ScreenBackButton';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import { NativeStackParamList } from '../types';
@@ -12,23 +11,6 @@ import PokemonDetail from './PokemonDetail';
 import TypeDetail from './TypeDetail';
 
 const Stack = createNativeStackNavigator<NativeStackParamList>();
-
-// @ts-ignore
-const customBackButton = ({ navigation }) => {
-    return {
-        headerLeft: () => (
-            <Pressable onPress={() => navigation.goBack()}>
-                <MyText
-                    style={{
-                        fontSize: 24,
-                        color: 'tomato',
-                    }}>
-                    {'<  '}
-                </MyText>
-            </Pressable>
-        ),
-    };
-};
 
 export const PokeDexStack: React.FC = () => {
     return (
@@ -48,17 +30,17 @@ export const PokeDexStack: React.FC = () => {
             <Stack.Screen
                 name="PokemonDetail"
                 component={PokemonDetail}
-                options={customBackButton}
+                options={ScreenBackButton}
             />
             <Stack.Screen
                 name="TypeDetail"
                 component={TypeDetail}
-                options={customBackButton}
+                options={ScreenBackButton}
             />
             <Stack.Screen
                 name="AbilityDetail"
                 component={AbilityDetail}
-                options={customBackButton}
+                options={ScreenBackButton}
             />
         </Stack.Navigator>
     );

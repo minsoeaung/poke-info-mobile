@@ -9,14 +9,14 @@ import MyText from './MyText';
 
 type Props = {
     types: PokeAPI.PokemonType[];
-    isBig?: boolean;
+    isInScreen?: boolean;
 };
 
-export default function Types({ types, isBig = false }: Props) {
+export default function PokemonTypes({ types, isInScreen = false }: Props) {
     const navigation =
         useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
-    if (isBig) {
+    if (isInScreen) {
         return (
             <View style={styles.typeContainer}>
                 {types.map(({ type }) => (

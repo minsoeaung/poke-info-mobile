@@ -1,6 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PokeAPI } from 'pokeapi-types';
 import {
     ActivityIndicator,
     Image,
@@ -11,13 +10,13 @@ import {
 
 import { appColor, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList } from '../types';
+import { NativeStackParamList, PokemonType } from '../types';
 import ErrorDisplay from './ErrorDisplay';
 import MyText from './MyText';
-import Types from './Types';
+import PokemonTypes from './PokemonTypes';
 
 export default function PokemonCard({ url }: { url: string }) {
-    const { isLoading, error, data } = useFetchData<PokeAPI.Pokemon>(url);
+    const { isLoading, error, data } = useFetchData<PokemonType>(url);
 
     const navigation =
         useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
@@ -25,9 +24,8 @@ export default function PokemonCard({ url }: { url: string }) {
     const goToPokemonDetail = () => {
         if (!data) return;
 
-        const payload: PokeAPI.Pokemon = {
+        const payload: Partial<PokemonType> = {
             name: data.name,
-            // @ts-ignore
             sprites: {
                 other: {
                     'official-artwork': {
@@ -51,7 +49,7 @@ export default function PokemonCard({ url }: { url: string }) {
 
     if (isLoading) {
         return (
-            <View style={{ ...styles.container, elevation: 0 }}>
+            <View style={[styles.container, { elevation: 0 }]}>
                 <ActivityIndicator color={appColor.border} />
             </View>
         );
@@ -72,14 +70,14 @@ export default function PokemonCard({ url }: { url: string }) {
                         : cardColor[data!.types[0].type.name],
                 },
             ]}>
-            <MyText>{data!.name}</MyText>
+            <MyText style={styles.name}>{data!.name}</MyText>
             <View style={styles.imageContainer}>
                 <Image
                     style={styles.image}
                     source={{ uri: data!.sprites['front_default'] }}
                 />
             </View>
-            <Types types={data!.types} />
+            <PokemonTypes types={data!.types} />
         </Pressable>
     );
 }
@@ -104,5 +102,8 @@ const styles = StyleSheet.create({
     image: {
         width: '100%',
         height: '100%',
+    },
+    name: {
+        letterSpacing: 1,
     },
 });

@@ -3,19 +3,18 @@ import {
     NativeStackNavigationProp,
     NativeStackScreenProps,
 } from '@react-navigation/native-stack';
-import { PokeAPI } from 'pokeapi-types';
 import { useEffect } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
 
-import Abilities from '../components/Abilities';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
-import Types from '../components/Types';
+import PokemonAbilities from '../components/PokemonAbilities';
+import PokemonTypes from '../components/PokemonTypes';
 import { appColor, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList } from '../types';
+import { NativeStackParamList, PokemonType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import getHeightInFeetAndInches from '../utils/getHeightInFeetAndInches';
 import getWeightInLbs from '../utils/getWeightInLbs';
@@ -25,7 +24,9 @@ type Props = NativeStackScreenProps<NativeStackParamList, 'PokemonDetail'>;
 export default function PokemonDetail({ route }: Props) {
     const { data, name, url } = route.params;
     const navigation =
-        useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+        useNavigation<
+            NativeStackNavigationProp<NativeStackParamList, 'PokemonDetail'>
+        >();
 
     useEffect(() => {
         navigation.setOptions({
@@ -41,7 +42,7 @@ export default function PokemonDetail({ route }: Props) {
 }
 
 function PokemonWithFetching({ url }: { url: string }) {
-    const { isLoading, error, data } = useFetchData<PokeAPI.Pokemon>(url);
+    const { isLoading, error, data } = useFetchData<PokemonType>(url);
 
     if (isLoading) {
         return <LoadingText />;
@@ -53,7 +54,7 @@ function PokemonWithFetching({ url }: { url: string }) {
     return <PokemonDetails data={data} />;
 }
 
-function PokemonDetails({ data }: { data: PokeAPI.Pokemon | null }) {
+function PokemonDetails({ data }: { data: PokemonType | null }) {
     if (!data) {
         return null;
     }
@@ -78,11 +79,11 @@ function PokemonDetails({ data }: { data: PokeAPI.Pokemon | null }) {
                 <View style={styles.descriptionContainer}>
                     <Description
                         label="type"
-                        value={<Types types={data.types} isBig />}
+                        value={<PokemonTypes types={data.types} isInScreen />}
                     />
                     <Description
                         label="abilities"
-                        value={<Abilities abilities={data.abilities} />}
+                        value={<PokemonAbilities abilities={data.abilities} />}
                     />
                     <Description
                         label="height"

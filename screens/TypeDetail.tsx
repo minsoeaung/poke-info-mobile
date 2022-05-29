@@ -106,7 +106,7 @@ export default function TypeDetail({ route, navigation }: Props) {
 
             <View style={styles.dmgRelationContainer}>
                 <MyText style={styles.cardTitle}>
-                    {getFormattedName(name)} Pokémon
+                    {getFormattedName(name) + ' Pokémon'}
                 </MyText>
                 {data!.pokemon.map(({ pokemon, slot }, index) => (
                     <Pokemon
@@ -181,7 +181,9 @@ type TypesProps = {
 
 function Types({ types }: TypesProps) {
     const navigation =
-        useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+        useNavigation<
+            NativeStackNavigationProp<NativeStackParamList, 'TypeDetail'>
+        >();
 
     return (
         <View style={styles.typeContainer}>

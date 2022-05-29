@@ -12,13 +12,14 @@ const BottomTabs = createBottomTabNavigator();
 
 export const BottomTabsNavigator: React.FC = () => {
     return (
+        // @ts-ignore
         <BottomTabs.Navigator
             screenOptions={({ route }) => ({
                 headerShown: false,
                 tabBarStyle: {
                     backgroundColor: appColor.headerBg,
                     paddingBottom: 5,
-                    borderTopWidth: 0.2,
+                    borderTopWidth: 0.5,
                     borderTopColor: appColor.border,
                 },
                 tabBarLabelStyle: {
@@ -46,9 +47,21 @@ export const BottomTabsNavigator: React.FC = () => {
                 tabBarActiveTintColor: appColor.tabBarActive,
                 tabBarInactiveTintColor: 'gray',
             })}>
-            <BottomTabs.Screen name="PokeDexTab" component={PokeDexStack} />
-            <BottomTabs.Screen name="AbilitiesTab" component={AbilitiesStack} />
-            <BottomTabs.Screen name="ItemsTab" component={ItemsStack} />
+            <BottomTabs.Screen
+                name="PokeDexTab"
+                component={PokeDexStack}
+                options={{ title: 'PokeDex' }}
+            />
+            <BottomTabs.Screen
+                name="AbilitiesTab"
+                component={AbilitiesStack}
+                options={{ title: 'Abilities' }}
+            />
+            <BottomTabs.Screen
+                name="ItemsTab"
+                component={ItemsStack}
+                options={{ title: 'Items' }}
+            />
         </BottomTabs.Navigator>
     );
 };

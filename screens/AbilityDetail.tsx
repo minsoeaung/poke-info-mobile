@@ -72,7 +72,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
                         },
                     ]}>
                     <MyText>
-                        Originated generation: {data!.generation.name}
+                        {'Originated generation: ' + data!.generation.name}
                     </MyText>
                 </View>
             </View>

@@ -20,11 +20,13 @@ export default function Description({
 }: DescriptionProps) {
     return (
         <View
-            style={{
-                ...styles.types,
-                borderBottomWidth: noBorder ? 0 : 1,
-                borderColor: 'tomato',
-            }}>
+            style={[
+                styles.types,
+                {
+                    borderBottomWidth: noBorder ? 0 : 1,
+                    borderColor: 'tomato',
+                },
+            ]}>
             <View style={{ flex: labelFlex }}>
                 <MyText style={styles.secondary}>{label}</MyText>
             </View>
