@@ -4,6 +4,7 @@ import { PokeAPI } from 'pokeapi-types';
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
+    Dimensions,
     FlatList,
     Pressable,
     SafeAreaView,
@@ -17,11 +18,15 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 
+import { MyNameList } from '../components/MyNameList';
 import MyText from '../components/MyText';
 import PokemonCard from '../components/PokemonCard';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
+import { pokemons } from '../constants/pokemons';
 import { NativeStackParamList } from '../types';
+
+const { height } = Dimensions.get('window');
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'PokeDex'>;
 
@@ -31,15 +36,14 @@ export default function PokeDex({ navigation }: Props) {
     const [next, setNext] = useState<string | null>(
         'https://pokeapi.co/api/v2/pokemon?offset=0&limit=27',
     );
-    const [page, setPage] = useState(1); // leave this here
+    const [page, setPage] = useState(1);
     const [fetching, setFetching] = useState(false);
     const [data, setData] = useState<PokeAPI.NamedAPIResource[]>([]);
     const [error, setError] = useState('');
+    const [allPokemonNameList, setAllPokemonNameList] = useState(pokemons);
 
     const ref = useRef(null);
     useScrollToTop(ref);
-
-    const [searchValue, onChangeSearchValue] = useState('');
 
     const top = useSharedValue(initialTop);
     const animatedStyles = useAnimatedStyle(() => {
@@ -48,14 +52,28 @@ export default function PokeDex({ navigation }: Props) {
         };
     });
 
+    const filterTheSuggestionList = (query: string) => {
+        if (!query.trim()) {
+            setAllPokemonNameList(pokemons);
+        } else {
+            setAllPokemonNameList(
+                pokemons.filter(pokemon =>
+                    pokemon.includes(query.toLowerCase().replace(' ', '-')),
+                ),
+            );
+        }
+    };
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <Pressable
                     onPress={() => {
                         if (top.value === initialTop) {
-                            top.value = withTiming(0);
+                            // show
+                            top.value = withTiming(10);
                         } else {
+                            // hide
                             top.value = withTiming(initialTop);
                         }
                     }}>
@@ -110,12 +128,25 @@ export default function PokeDex({ navigation }: Props) {
                 <View style={styles.searchInputWrap}>
                     <TextInput
                         style={styles.searchInput}
-                        onChangeText={onChangeSearchValue}
+                        onChangeText={(value: string) =>
+                            filterTheSuggestionList(value)
+                        }
                         placeholder="Search..."
                     />
                 </View>
             </Animated.View>
-            <View style={styles.flatListContainer}>
+
+            <View
+                style={[StyleSheet.absoluteFill, styles.overlaySuggestionList]}>
+                <MyNameList
+                    goTo="PokemonDetail"
+                    size="small"
+                    data={allPokemonNameList}
+                    keyExtractor={item => item}
+                />
+            </View>
+
+            <View>
                 <FlatList
                     ref={ref}
                     data={data}
@@ -149,28 +180,40 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         marginBottom: 5,
     },
+    overlaySearchInput: {
+        zIndex: 1,
+        height: 40,
+        top: 0,
+        left: 20,
+        right: 20,
+        elevation: 10,
+    },
     searchInputWrap: {
         backgroundColor: appColor.headerBg,
         borderWidth: 1,
+        elevation: 10,
+        borderRadius: 10,
     },
     searchInput: {
         height: 40,
-        padding: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         fontFamily: fonts.fontDotGothic,
     },
     searchBtn: {
         paddingLeft: 20,
         paddingVertical: 10,
     },
-    flatListContainer: {
-        flex: 1,
-    },
-    overlaySearchInput: {
+    overlaySuggestionList: {
         zIndex: 1,
-        height: 40,
-        top: 0,
-        left: 0,
-        right: 0,
+        top: 60,
+        left: 20,
+        right: 20,
+        borderWidth: 1,
+        borderRadius: 10,
+        padding: 10,
+        height: height / 3,
+        backgroundColor: appColor.headerBg,
         elevation: 10,
     },
 });

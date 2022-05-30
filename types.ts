@@ -11,9 +11,33 @@ export type PokemonType = Omit<PokeAPI.Pokemon, 'sprites'> & {
     };
 };
 
-type PokemonDetailScreenParams = {
-    data: PokemonType;
-} & PokeAPI.NamedAPIResource;
+export type PickedPokemonType = Pick<
+    PokemonType,
+    | 'name'
+    | 'sprites'
+    | 'types'
+    | 'abilities'
+    | 'height'
+    | 'weight'
+    | 'base_experience'
+    | 'stats'
+>;
+
+export type ScreenType =
+    | 'PokeDex'
+    | 'AbilityList'
+    | 'ItemList'
+    | 'PokemonDetail'
+    | 'TypeDetail'
+    | 'AbilityDetail';
+
+type Name = {
+    name: string;
+};
+
+type PokemonDetailScreenParams = Name & {
+    data?: PickedPokemonType;
+};
 
 export type NativeStackParamList = {
     PokeDex: undefined;
@@ -21,6 +45,6 @@ export type NativeStackParamList = {
     ItemList: undefined;
 
     PokemonDetail: PokemonDetailScreenParams;
-    TypeDetail: PokeAPI.NamedAPIResource;
-    AbilityDetail: PokeAPI.NamedAPIResource;
+    TypeDetail: Name;
+    AbilityDetail: Name;
 };

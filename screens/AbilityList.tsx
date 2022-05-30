@@ -1,63 +1,29 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { PokeAPI } from 'pokeapi-types';
 import { useState } from 'react';
-import { FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 
-import MyText from '../components/MyText';
+import { MyNameList } from '../components/MyNameList';
 import abilities from '../constants/abilities';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
-import { NativeStackParamList } from '../types';
 
-type Props = NativeStackScreenProps<NativeStackParamList, 'AbilityList'>;
-
-export default function AbilityList({ navigation }: Props) {
-    const [data, setData] = useState<PokeAPI.NamedAPIResource[]>(abilities);
+export default function AbilityList() {
+    const [data, setData] = useState<string[]>(abilities);
 
     const onChangeText = (value: string) => filterTheData(value);
 
     const filterTheData = (query: string) => {
-        if (!query) {
+        if (!query.trim()) {
             setData(abilities);
         } else {
             setData(
                 abilities.filter(ability =>
-                    ability.name.toLowerCase().includes(query.toLowerCase()),
+                    ability
+                        .toLowerCase()
+                        .includes(query.toLowerCase().replace(' ', '-')),
                 ),
             );
         }
     };
-
-    const renderItem = ({
-        item,
-        index,
-    }: {
-        item: PokeAPI.NamedAPIResource;
-        index: number;
-    }) => (
-        <Pressable
-            onPress={() =>
-                navigation.navigate('AbilityDetail', {
-                    name: item.name,
-                    url: item.url,
-                })
-            }>
-            {({ pressed }) => (
-                <View
-                    style={{
-                        ...styles.ability,
-                        borderBottomWidth: index === data.length - 1 ? 0 : 1,
-                    }}>
-                    <MyText style={{ color: pressed ? 'tomato' : 'black' }}>
-                        {item.name}
-                    </MyText>
-                    <MyText style={{ color: pressed ? 'tomato' : 'black' }}>
-                        {'>'}
-                    </MyText>
-                </View>
-            )}
-        </Pressable>
-    );
 
     return (
         <View style={styles.container}>
@@ -69,10 +35,11 @@ export default function AbilityList({ navigation }: Props) {
                 />
             </View>
             <View style={styles.abilitiesContainer}>
-                <FlatList
+                <MyNameList
+                    goTo="AbilityDetail"
+                    size="big"
                     data={data}
-                    renderItem={renderItem}
-                    keyExtractor={item => item.name}
+                    keyExtractor={item => item}
                 />
             </View>
         </View>
@@ -90,14 +57,7 @@ const styles = StyleSheet.create({
         backgroundColor: appColor.headerBg,
         borderRadius: 10,
         borderWidth: 0.5,
-    },
-    ability: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderColor: 'tomato',
-        paddingVertical: 20,
-        marginHorizontal: 10,
+        paddingHorizontal: 10,
     },
     searchInputWrap: {
         backgroundColor: appColor.headerBg,
@@ -107,7 +67,8 @@ const styles = StyleSheet.create({
     },
     searchInput: {
         height: 40,
-        padding: 10,
+        paddingVertical: 10,
+        paddingHorizontal: 20,
         fontFamily: fonts.fontDotGothic,
     },
 });

@@ -15,8 +15,8 @@ export default function PokemonAbilities({ abilities }: Props) {
     const navigation =
         useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
-    const goToAbilityDetailScreen = (name: string, url: string) => {
-        navigation.push('AbilityDetail', { name, url });
+    const goToAbilityDetailScreen = (name: string) => {
+        navigation.push('AbilityDetail', { name });
     };
 
     return (
@@ -26,10 +26,7 @@ export default function PokemonAbilities({ abilities }: Props) {
                     key={ability.ability.name}
                     style={styles.ability}
                     onPress={() =>
-                        goToAbilityDetailScreen(
-                            ability.ability.name,
-                            ability.ability.url,
-                        )
+                        goToAbilityDetailScreen(ability.ability.name)
                     }>
                     {({ pressed }) => (
                         <>

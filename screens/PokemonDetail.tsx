@@ -14,7 +14,7 @@ import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
 import { appColor, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, PokemonType } from '../types';
+import { NativeStackParamList, PickedPokemonType, PokemonType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import getHeightInFeetAndInches from '../utils/getHeightInFeetAndInches';
 import getWeightInLbs from '../utils/getWeightInLbs';
@@ -22,7 +22,7 @@ import getWeightInLbs from '../utils/getWeightInLbs';
 type Props = NativeStackScreenProps<NativeStackParamList, 'PokemonDetail'>;
 
 export default function PokemonDetail({ route }: Props) {
-    const { data, name, url } = route.params;
+    const { data, name } = route.params;
     const navigation =
         useNavigation<
             NativeStackNavigationProp<NativeStackParamList, 'PokemonDetail'>
@@ -36,9 +36,13 @@ export default function PokemonDetail({ route }: Props) {
 
     if (data) {
         return <PokemonDetails data={data} />;
-    } else {
-        return <PokemonWithFetching url={url} />;
     }
+
+    return (
+        <PokemonWithFetching
+            url={`https://pokeapi.co/api/v2/pokemon/${name}`}
+        />
+    );
 }
 
 function PokemonWithFetching({ url }: { url: string }) {
@@ -54,7 +58,11 @@ function PokemonWithFetching({ url }: { url: string }) {
     return <PokemonDetails data={data} />;
 }
 
-function PokemonDetails({ data }: { data: PokemonType | null }) {
+type PokemonDetailsProps = {
+    data: PokemonType | PickedPokemonType | null;
+};
+
+function PokemonDetails({ data }: PokemonDetailsProps) {
     if (!data) {
         return null;
     }

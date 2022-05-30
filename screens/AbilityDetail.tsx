@@ -15,11 +15,14 @@ import { Pokemon } from './TypeDetail';
 type Props = NativeStackScreenProps<NativeStackParamList, 'AbilityDetail'>;
 
 export default function AbilityDetail({ navigation, route }: Props) {
+    const { name } = route.params;
+
     const [flavorText, setFlavorText] = useState('');
     const [effectEntry, setEffectEntry] = useState('');
-    const { name, url } = route.params;
 
-    const { isLoading, error, data } = useFetchData<PokeAPI.Ability>(url);
+    const { isLoading, error, data } = useFetchData<PokeAPI.Ability>(
+        `https://pokeapi.co/api/v2/ability/${name}`,
+    );
 
     useEffect(() => {
         if (data) {
@@ -42,8 +45,8 @@ export default function AbilityDetail({ navigation, route }: Props) {
         navigation.setOptions({ title: getFormattedName(name) });
     }, []);
 
-    const goToPokemon = (name: string, url: string) => () => {
-        navigation.push('PokemonDetail', { name, url });
+    const goToPokemon = (name: string) => () => {
+        navigation.push('PokemonDetail', { name });
     };
 
     if (isLoading) {
@@ -80,6 +83,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
                 <MyText style={styles.cardTitle}>
                     Pokémon with this ability
                 </MyText>
+                {/* TODO: use flatlist */}
                 {data!.pokemon.map(({ pokemon, is_hidden }, index) => (
                     <Pokemon
                         key={pokemon.name}

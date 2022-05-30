@@ -25,7 +25,6 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
                         onPress={() => {
                             navigation.push('TypeDetail', {
                                 name: type.name,
-                                url: type.url,
                             });
                         }}>
                         {({ pressed }) => (

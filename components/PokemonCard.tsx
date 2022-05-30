@@ -10,7 +10,7 @@ import {
 
 import { appColor, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, PokemonType } from '../types';
+import { NativeStackParamList, PickedPokemonType, PokemonType } from '../types';
 import ErrorDisplay from './ErrorDisplay';
 import MyText from './MyText';
 import PokemonTypes from './PokemonTypes';
@@ -24,7 +24,7 @@ export default function PokemonCard({ url }: { url: string }) {
     const goToPokemonDetail = () => {
         if (!data) return;
 
-        const payload: Partial<PokemonType> = {
+        const payload: PickedPokemonType = {
             name: data.name,
             sprites: {
                 other: {
@@ -44,7 +44,10 @@ export default function PokemonCard({ url }: { url: string }) {
             stats: data.stats,
         };
 
-        navigation.navigate('PokemonDetail', { data: payload });
+        navigation.navigate('PokemonDetail', {
+            data: payload,
+            name: 'polyfill',
+        });
     };
 
     if (isLoading) {

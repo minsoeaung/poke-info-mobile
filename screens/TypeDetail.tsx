@@ -21,15 +21,17 @@ import getFormattedName from '../utils/getFormattedName';
 type Props = NativeStackScreenProps<NativeStackParamList, 'TypeDetail'>;
 
 export default function TypeDetail({ route, navigation }: Props) {
-    const { name, url } = route.params;
-    const { isLoading, error, data } = useFetchData<PokeAPI.Type>(url);
+    const { name } = route.params;
+    const { isLoading, error, data } = useFetchData<PokeAPI.Type>(
+        `https://pokeapi.co/api/v2/type/${name}`,
+    );
 
     useEffect(() => {
         navigation.setOptions({ title: getFormattedName(name) });
     }, []);
 
-    const goToPokemon = (name: string, url: string) => () => {
-        navigation.push('PokemonDetail', { name, url });
+    const goToPokemon = (name: string) => () => {
+        navigation.push('PokemonDetail', { name });
     };
 
     if (isLoading) {
@@ -193,7 +195,6 @@ function Types({ types }: TypesProps) {
                     onPress={() => {
                         navigation.push('TypeDetail', {
                             name: type.name,
-                            url: type.url,
                         });
                     }}>
                     {({ pressed }) => (
