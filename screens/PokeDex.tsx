@@ -1,7 +1,7 @@
 import { useScrollToTop } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Dimensions,
@@ -24,28 +24,30 @@ import PokemonCard from '../components/PokemonCard';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import { pokemons } from '../constants/pokemons';
+import usePagination from '../hooks/usePagination';
 import { NativeStackParamList } from '../types';
 
 const { height } = Dimensions.get('window');
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'PokeDex'>;
 
-const initialTop = -65;
+const SEARCH_BOX_TOP_POSITION = -65;
 
 export default function PokeDex({ navigation }: Props) {
-    const [next, setNext] = useState<string | null>(
+    const [page, setPage] = useState(1);
+    const [suggestionList, setSuggestionList] = useState(pokemons);
+    const [searchVisible, setSearchVisible] = useState(false);
+    const [searchValue, setSearchValue] = useState('');
+
+    const listRef = useRef(null);
+    useScrollToTop(listRef);
+
+    const { data, error, isLoading } = usePagination(
+        page,
         'https://pokeapi.co/api/v2/pokemon?offset=0&limit=27',
     );
-    const [page, setPage] = useState(1);
-    const [fetching, setFetching] = useState(false);
-    const [data, setData] = useState<PokeAPI.NamedAPIResource[]>([]);
-    const [error, setError] = useState('');
-    const [allPokemonNameList, setAllPokemonNameList] = useState(pokemons);
 
-    const ref = useRef(null);
-    useScrollToTop(ref);
-
-    const top = useSharedValue(initialTop);
+    const top = useSharedValue(SEARCH_BOX_TOP_POSITION);
     const animatedStyles = useAnimatedStyle(() => {
         return {
             transform: [{ translateY: top.value }],
@@ -54,13 +56,12 @@ export default function PokeDex({ navigation }: Props) {
 
     const filterTheSuggestionList = (query: string) => {
         if (!query.trim()) {
-            setAllPokemonNameList(pokemons);
+            setSuggestionList(pokemons);
         } else {
-            setAllPokemonNameList(
-                pokemons.filter(pokemon =>
-                    pokemon.includes(query.toLowerCase().replace(' ', '-')),
-                ),
+            const filteredPokemons = pokemons.filter(pokemon =>
+                pokemon.includes(query.trim().toLowerCase().replace(' ', '-')),
             );
+            setSuggestionList(filteredPokemons);
         }
     };
 
@@ -69,12 +70,14 @@ export default function PokeDex({ navigation }: Props) {
             headerRight: () => (
                 <Pressable
                     onPress={() => {
-                        if (top.value === initialTop) {
+                        if (top.value === SEARCH_BOX_TOP_POSITION) {
                             // show
+                            setSearchVisible(true);
                             top.value = withTiming(10);
                         } else {
                             // hide
-                            top.value = withTiming(initialTop);
+                            setSearchVisible(false);
+                            top.value = withTiming(SEARCH_BOX_TOP_POSITION);
                         }
                     }}>
                     {({ pressed }) => (
@@ -93,26 +96,6 @@ export default function PokeDex({ navigation }: Props) {
         });
     }, [navigation]);
 
-    useEffect(() => {
-        (async () => {
-            setFetching(true);
-            try {
-                if (next) {
-                    const res = await fetch(next);
-                    const data = await res.json();
-                    if (data) {
-                        setNext(data.next);
-                        setData(prevState => [...prevState, ...data.results]);
-                    }
-                }
-            } catch {
-                setError('No internet connection.');
-            } finally {
-                setFetching(false);
-            }
-        })();
-    }, [page]);
-
     const renderItem = ({ item }: { item: PokeAPI.NamedAPIResource }) => {
         return <PokemonCard url={item.url} />;
     };
@@ -128,27 +111,34 @@ export default function PokeDex({ navigation }: Props) {
                 <View style={styles.searchInputWrap}>
                     <TextInput
                         style={styles.searchInput}
-                        onChangeText={(value: string) =>
-                            filterTheSuggestionList(value)
-                        }
+                        value={searchValue}
+                        onChangeText={(value: string) => {
+                            filterTheSuggestionList(value);
+                            setSearchValue(value);
+                        }}
                         placeholder="Search..."
                     />
                 </View>
             </Animated.View>
 
-            <View
-                style={[StyleSheet.absoluteFill, styles.overlaySuggestionList]}>
-                <MyNameList
-                    goTo="PokemonDetail"
-                    size="small"
-                    data={allPokemonNameList}
-                    keyExtractor={item => item}
-                />
-            </View>
+            {searchVisible && !!searchValue.trim() && (
+                <View
+                    style={[
+                        StyleSheet.absoluteFill,
+                        styles.overlaySuggestionList,
+                    ]}>
+                    <MyNameList
+                        goTo="PokemonDetail"
+                        size="small"
+                        data={suggestionList}
+                        keyExtractor={item => item}
+                    />
+                </View>
+            )}
 
             <View>
                 <FlatList
-                    ref={ref}
+                    ref={listRef}
                     data={data}
                     renderItem={renderItem}
                     keyExtractor={(item, index) => item.name + index}
@@ -157,7 +147,7 @@ export default function PokeDex({ navigation }: Props) {
                     ListFooterComponent={
                         error ? (
                             <MyText>{error}</MyText>
-                        ) : fetching ? (
+                        ) : isLoading ? (
                             <ActivityIndicator color={appColor.border} />
                         ) : null
                     }
@@ -193,6 +183,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         elevation: 10,
         borderRadius: 10,
+        position: 'relative',
     },
     searchInput: {
         height: 40,
