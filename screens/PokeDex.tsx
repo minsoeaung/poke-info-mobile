@@ -32,13 +32,14 @@ const { height } = Dimensions.get('window');
 type Props = NativeStackScreenProps<NativeStackParamList, 'PokeDex'>;
 
 const SEARCH_BOX_TOP_POSITION = -65;
+const DEBOUNCE_TIME = 300;
 
 export default function PokeDex({ navigation }: Props) {
     const [page, setPage] = useState(1);
     const [suggestionList, setSuggestionList] = useState(pokemons);
     const [searchVisible, setSearchVisible] = useState(false);
     const [searchValue, setSearchValue] = useState('');
-
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const listRef = useRef(null);
     useScrollToTop(listRef);
 
@@ -113,7 +114,12 @@ export default function PokeDex({ navigation }: Props) {
                         style={styles.searchInput}
                         value={searchValue}
                         onChangeText={(value: string) => {
-                            filterTheSuggestionList(value);
+                            if (timerRef.current) {
+                                clearTimeout(timerRef.current);
+                            }
+                            timerRef.current = setTimeout(() => {
+                                filterTheSuggestionList(value);
+                            }, DEBOUNCE_TIME);
                             setSearchValue(value);
                         }}
                         placeholder="Search..."
