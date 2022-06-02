@@ -12,7 +12,6 @@ const BottomTabs = createBottomTabNavigator();
 
 export const BottomTabsNavigator: React.FC = () => {
     return (
-        // @ts-ignore
         <BottomTabs.Navigator
             screenOptions={({ route }) => ({
                 headerShown: false,

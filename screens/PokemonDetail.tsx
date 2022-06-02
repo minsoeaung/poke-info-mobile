@@ -154,5 +154,6 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         backgroundColor: appColor.headerBg,
         marginBottom: 10,
+        paddingHorizontal: 10,
     },
 });

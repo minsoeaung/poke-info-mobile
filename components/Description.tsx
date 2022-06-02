@@ -23,7 +23,7 @@ export default function Description({
             style={[
                 styles.types,
                 {
-                    borderBottomWidth: noBorder ? 0 : 1,
+                    borderBottomWidth: noBorder ? 0 : 0.5,
                     borderColor: 'tomato',
                 },
             ]}>
@@ -39,8 +39,7 @@ const styles = StyleSheet.create({
     types: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingVertical: 10,
-        marginHorizontal: 10,
+        padding: 10,
     },
     secondary: {
         color: 'grey',

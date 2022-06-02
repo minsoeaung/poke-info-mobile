@@ -43,6 +43,7 @@ export default function PokeDex({ navigation }: Props) {
 
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const listRef = useRef(null);
+
     useScrollToTop(listRef);
 
     const { data, error, isLoading } = usePagination(
@@ -51,6 +52,7 @@ export default function PokeDex({ navigation }: Props) {
     );
 
     const top = useSharedValue(SEARCH_BOX_TOP_POSITION);
+
     const animatedStyles = useAnimatedStyle(() => {
         return {
             transform: [{ translateY: top.value }],
@@ -133,7 +135,7 @@ export default function PokeDex({ navigation }: Props) {
                         }}
                         placeholder="Search..."
                     />
-                    <ClearInputButton setValue={setSearchValue} />
+                    <ClearInputButton func={() => setSearchValue('')} />
                 </View>
             </Animated.View>
 
@@ -147,7 +149,6 @@ export default function PokeDex({ navigation }: Props) {
                         goTo="PokemonDetail"
                         size="small"
                         data={suggestionList}
-                        keyExtractor={item => item.name}
                     />
                 </View>
             )}
@@ -214,16 +215,6 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         fontFamily: fonts.fontDotGothic,
         width: '90%',
-    },
-    xParent: {
-        justifyContent: 'center',
-        alignItems: 'center',
-        paddingLeft: 10,
-        paddingRight: 5,
-    },
-    x: {
-        width: 16,
-        height: 16,
     },
     searchBtn: {
         paddingLeft: 20,

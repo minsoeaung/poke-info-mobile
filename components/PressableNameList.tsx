@@ -11,29 +11,23 @@ import TypeSlot from './TypeSlot';
 
 type Props = {
     goTo: ScreenType;
-    size: 'small' | 'big';
+    size?: 'small' | 'big';
     data: ThreeInfo[];
-    keyExtractor: (key: ThreeInfo) => string;
 };
 
-export const PressableNameList = ({
-    data,
-    size,
-    keyExtractor,
-    goTo,
-}: Props) => {
+export const PressableNameList = ({ data, size = 'big', goTo }: Props) => {
     const route = useRoute();
     const navigation =
         useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
     const goToScreen = (name: string) => {
-        navigation.navigate(goTo, { name });
+        navigation.push(goTo, { name });
     };
 
     return (
         <FlatList
             data={data}
-            keyExtractor={keyExtractor}
+            keyExtractor={key => key.name}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             ListEmptyComponent={() => (
                 <MyText style={styles.emptyText}>NOT FOUND</MyText>

@@ -1,22 +1,25 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import { useEffect, useState } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
+import { PressableNameList } from '../components/PressableNameList';
 import { appColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList } from '../types';
+import { NativeStackParamList, ThreeInfo } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import { Pokemon } from './TypeDetail';
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'AbilityDetail'>;
 
 export default function AbilityDetail({ navigation, route }: Props) {
     const { name } = route.params;
 
+    const [pokemonsWithThisAbility, setPokemonsWithThisAbility] = useState<
+        ThreeInfo[]
+    >([]);
     const [flavorText, setFlavorText] = useState('');
     const [effectEntry, setEffectEntry] = useState('');
 
@@ -38,16 +41,18 @@ export default function AbilityDetail({ navigation, route }: Props) {
             if (enEffect) {
                 setEffectEntry(enEffect.effect);
             }
+            const list: ThreeInfo[] = data.pokemon.map(d => ({
+                name: d.pokemon.name,
+                isHidden: d.is_hidden,
+                typeSlot: d.slot,
+            }));
+            setPokemonsWithThisAbility(list);
         }
     }, [data]);
 
     useEffect(() => {
         navigation.setOptions({ title: getFormattedName(name) });
     }, []);
-
-    const goToPokemon = (name: string) => () => {
-        navigation.push('PokemonDetail', { name });
-    };
 
     if (isLoading) {
         return <LoadingText />;
@@ -58,44 +63,38 @@ export default function AbilityDetail({ navigation, route }: Props) {
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.card}>
-                {flavorText.length > 0 && (
-                    <MyText style={styles.description}>{flavorText}</MyText>
-                )}
-                {effectEntry.length > 0 && (
-                    <MyText style={styles.description}>{effectEntry}</MyText>
-                )}
-                <View
-                    style={[
-                        styles.description,
-                        {
-                            flexDirection: 'row',
-                            justifyContent: 'space-between',
-                        },
-                    ]}>
-                    <MyText>
+        <FlatList
+            data={[]}
+            renderItem={null}
+            style={styles.container}
+            ListHeaderComponent={
+                <View style={styles.boxWrap}>
+                    {flavorText.length > 0 && (
+                        <MyText style={styles.description}>{flavorText}</MyText>
+                    )}
+                    {effectEntry.length > 0 && (
+                        <MyText style={styles.description}>
+                            {effectEntry}
+                        </MyText>
+                    )}
+                    <MyText style={styles.description}>
                         {'Originated generation: ' + data!.generation.name}
                     </MyText>
                 </View>
-            </View>
-            <View style={styles.card}>
-                <MyText style={styles.cardTitle}>
-                    Pokémon with this ability
-                </MyText>
-                {/* TODO: use flatlist */}
-                {data!.pokemon.map(({ pokemon, is_hidden }, index) => (
-                    <Pokemon
-                        key={pokemon.name}
-                        name={pokemon.name}
-                        url={pokemon.url}
-                        isHidden={is_hidden}
-                        noBorder={index === data!.pokemon.length - 1}
-                        goToPokemon={goToPokemon}
+            }
+            ListEmptyComponent={
+                <View style={styles.boxWrap}>
+                    <MyText style={styles.boxTitle}>
+                        Pokémon with this ability
+                    </MyText>
+                    <PressableNameList
+                        goTo="PokemonDetail"
+                        data={pokemonsWithThisAbility}
                     />
-                ))}
-            </View>
-        </ScrollView>
+                </View>
+            }
+            ListFooterComponent={<View style={styles.footer} />}
+        />
     );
 }
 
@@ -105,18 +104,22 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: appColor.appBg,
     },
-    card: {
-        marginBottom: 20,
+    boxWrap: {
+        marginBottom: 10,
         backgroundColor: appColor.headerBg,
         borderRadius: 10,
         borderWidth: 0.5,
+        paddingHorizontal: 10,
     },
-    cardTitle: {
+    boxTitle: {
         fontSize: 20,
-        margin: 10,
+        padding: 10,
         color: '#000',
     },
     description: {
-        margin: 10,
+        padding: 10,
+    },
+    footer: {
+        marginBottom: 10,
     },
 });

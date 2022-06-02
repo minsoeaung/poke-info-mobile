@@ -4,24 +4,28 @@ import {
     NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useEffect } from 'react';
-import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
+import { useEffect, useState } from 'react';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
-import SmallGreyText from '../components/SmallGreyText';
-import TypeSlot from '../components/TypeSlot';
+import { PressableNameList } from '../components/PressableNameList';
 import { appColor, typeColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList } from '../types';
+import { NativeStackParamList, ThreeInfo } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'TypeDetail'>;
 
 export default function TypeDetail({ route, navigation }: Props) {
     const { name } = route.params;
+
+    const [pokemonsWithThisType, setPokemonsWithThisType] = useState<
+        ThreeInfo[]
+    >([]);
+
     const { isLoading, error, data } = useFetchData<PokeAPI.Type>(
         `https://pokeapi.co/api/v2/type/${name}`,
     );
@@ -30,9 +34,15 @@ export default function TypeDetail({ route, navigation }: Props) {
         navigation.setOptions({ title: getFormattedName(name) });
     }, []);
 
-    const goToPokemon = (name: string) => () => {
-        navigation.push('PokemonDetail', { name });
-    };
+    useEffect(() => {
+        if (data) {
+            const list: ThreeInfo[] = data.pokemon.map(d => ({
+                name: d.pokemon.name,
+                typeSlot: d.slot,
+            }));
+            setPokemonsWithThisType(list);
+        }
+    }, [data]);
 
     if (isLoading) {
         return <LoadingText />;
@@ -43,134 +53,107 @@ export default function TypeDetail({ route, navigation }: Props) {
     }
 
     return (
-        <ScrollView style={styles.container}>
-            <View style={styles.dmgRelationContainer}>
-                <MyText style={styles.cardTitle}>Attack</MyText>
-                <Description
-                    label="2x damage"
-                    value={
-                        <Types
-                            types={data!.damage_relations.double_damage_to}
+        <FlatList
+            data={[]}
+            renderItem={null}
+            style={styles.container}
+            ListHeaderComponent={
+                <>
+                    <View style={styles.boxWrap}>
+                        <MyText style={styles.boxTitle}>Attack</MyText>
+                        <Description
+                            label="2x damage"
+                            value={
+                                <Types
+                                    types={
+                                        data!.damage_relations.double_damage_to
+                                    }
+                                />
+                            }
                         />
-                    }
-                />
-                <Description
-                    label="0.5x damage"
-                    value={
-                        <Types types={data!.damage_relations.half_damage_to} />
-                    }
-                    noBorder={!data!.damage_relations.no_damage_to.length}
-                />
-                {!!data!.damage_relations.no_damage_to.length && (
-                    <Description
-                        label="no damage"
-                        value={
-                            <Types
-                                types={data!.damage_relations.no_damage_to}
+                        <Description
+                            label="0.5x damage"
+                            value={
+                                <Types
+                                    types={
+                                        data!.damage_relations.half_damage_to
+                                    }
+                                />
+                            }
+                            noBorder={
+                                !data!.damage_relations.no_damage_to.length
+                            }
+                        />
+                        {!!data!.damage_relations.no_damage_to.length && (
+                            <Description
+                                label="no damage"
+                                value={
+                                    <Types
+                                        types={
+                                            data!.damage_relations.no_damage_to
+                                        }
+                                    />
+                                }
+                                noBorder
                             />
-                        }
-                        noBorder
-                    />
-                )}
-            </View>
-
-            <View style={styles.dmgRelationContainer}>
-                <MyText style={styles.cardTitle}>Defense</MyText>
-                <Description
-                    label="2x damage"
-                    value={
-                        <Types
-                            types={data!.damage_relations.double_damage_from}
-                        />
-                    }
-                />
-                <Description
-                    label="0.5x damage"
-                    value={
-                        <Types
-                            types={data!.damage_relations.half_damage_from}
-                        />
-                    }
-                    noBorder={!data!.damage_relations.no_damage_from.length}
-                />
-                {!!data!.damage_relations.no_damage_from.length && (
-                    <Description
-                        label="no damage"
-                        value={
-                            <Types
-                                types={data!.damage_relations.no_damage_from}
-                            />
-                        }
-                        noBorder
-                    />
-                )}
-            </View>
-
-            <View style={styles.dmgRelationContainer}>
-                <MyText style={styles.cardTitle}>
-                    {getFormattedName(name) + ' Pokémon'}
-                </MyText>
-                {data!.pokemon.map(({ pokemon, slot }, index) => (
-                    <Pokemon
-                        key={pokemon.name}
-                        name={pokemon.name}
-                        url={pokemon.url}
-                        typeSlot={slot}
-                        noBorder={index === data!.pokemon.length - 1}
-                        goToPokemon={goToPokemon}
-                    />
-                ))}
-            </View>
-        </ScrollView>
-    );
-}
-
-type PokemonProps = {
-    name: string;
-    url: string;
-    goToPokemon: (name: string, url: string) => () => void;
-    noBorder?: boolean;
-    isHidden?: boolean;
-    typeSlot?: number;
-};
-
-export function Pokemon({
-    name,
-    url,
-    noBorder = false,
-    goToPokemon,
-    isHidden,
-    typeSlot,
-}: PokemonProps) {
-    return (
-        <Pressable onPress={goToPokemon(name, url)}>
-            {({ pressed }) => (
-                <View
-                    style={{
-                        flexDirection: 'row',
-                        alignItems: 'center',
-                        justifyContent: 'space-between',
-                        borderBottomWidth: noBorder ? 0 : 1,
-                        borderColor: 'tomato',
-                        paddingVertical: 20,
-                        marginHorizontal: 10,
-                    }}>
-                    <View
-                        style={{ flexDirection: 'row', alignItems: 'center' }}>
-                        <MyText style={{ color: pressed ? 'tomato' : 'black' }}>
-                            {getFormattedName(name)}
-                        </MyText>
-                        {isHidden && (
-                            <SmallGreyText text="   (Hidden ability)" />
                         )}
-                        {typeSlot && <TypeSlot slot={typeSlot} />}
                     </View>
-                    <MyText style={{ color: pressed ? 'tomato' : 'black' }}>
-                        {'     >'}
+                    <View style={styles.boxWrap}>
+                        <MyText style={styles.boxTitle}>Defense</MyText>
+                        <Description
+                            label="2x damage"
+                            value={
+                                <Types
+                                    types={
+                                        data!.damage_relations
+                                            .double_damage_from
+                                    }
+                                />
+                            }
+                        />
+                        <Description
+                            label="0.5x damage"
+                            value={
+                                <Types
+                                    types={
+                                        data!.damage_relations.half_damage_from
+                                    }
+                                />
+                            }
+                            noBorder={
+                                !data!.damage_relations.no_damage_from.length
+                            }
+                        />
+                        {!!data!.damage_relations.no_damage_from.length && (
+                            <Description
+                                label="no damage"
+                                value={
+                                    <Types
+                                        types={
+                                            data!.damage_relations
+                                                .no_damage_from
+                                        }
+                                    />
+                                }
+                                noBorder
+                            />
+                        )}
+                    </View>
+                </>
+            }
+            ListEmptyComponent={
+                <View style={styles.boxWrap}>
+                    <MyText style={styles.boxTitle}>
+                        {getFormattedName(name) + ' Pokémon'}
                     </MyText>
+                    <PressableNameList
+                        goTo="PokemonDetail"
+                        data={pokemonsWithThisType}
+                    />
                 </View>
-            )}
-        </Pressable>
+            }
+            ListFooterComponent={<View style={styles.footer} />}
+        />
     );
 }
 
@@ -235,15 +218,19 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
     },
-    dmgRelationContainer: {
-        marginBottom: 20,
+    boxWrap: {
+        marginBottom: 10,
         backgroundColor: appColor.headerBg,
         borderRadius: 10,
         borderWidth: 0.5,
+        padding: 10,
     },
-    cardTitle: {
+    boxTitle: {
         fontSize: 20,
         margin: 10,
         color: '#000',
+    },
+    footer: {
+        marginBottom: 10,
     },
 });
