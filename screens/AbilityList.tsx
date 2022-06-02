@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
-import { MyNameList } from '../components/MyNameList';
+import { PressableNameList } from '../components/PressableNameList';
 import abilities from '../constants/abilities';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
+import { ThreeInfo } from '../types';
 
 export default function AbilityList() {
-    const [data, setData] = useState<string[]>(abilities);
+    const [data, setData] = useState<ThreeInfo[]>(abilities);
 
     const onChangeText = (value: string) => filterTheData(value);
 
@@ -17,7 +18,7 @@ export default function AbilityList() {
         } else {
             setData(
                 abilities.filter(ability =>
-                    ability
+                    ability.name
                         .toLowerCase()
                         .includes(query.toLowerCase().replace(' ', '-')),
                 ),
@@ -34,12 +35,12 @@ export default function AbilityList() {
                     placeholder="Search..."
                 />
             </View>
-            <View style={styles.abilitiesContainer}>
-                <MyNameList
+            <View style={styles.abilityListWrap}>
+                <PressableNameList
                     goTo="AbilityDetail"
                     size="big"
                     data={data}
-                    keyExtractor={item => item}
+                    keyExtractor={item => item.name}
                 />
             </View>
         </View>
@@ -53,7 +54,7 @@ const styles = StyleSheet.create({
         backgroundColor: appColor.appBg,
         paddingBottom: 60,
     },
-    abilitiesContainer: {
+    abilityListWrap: {
         backgroundColor: appColor.headerBg,
         borderRadius: 10,
         borderWidth: 0.5,

@@ -11,6 +11,12 @@ export type PokemonType = Omit<PokeAPI.Pokemon, 'sprites'> & {
     };
 };
 
+export type ThreeInfo = {
+    name: string;
+    isHidden?: boolean;
+    typeSlot?: number;
+};
+
 export type PickedPokemonType = Pick<
     PokemonType,
     | 'name'

@@ -1,23 +1,34 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
-import { NativeStackParamList, ScreenType } from '../types';
+import { NativeStackParamList, ScreenType, ThreeInfo } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
+import SmallGreyText from './SmallGreyText';
+import TypeSlot from './TypeSlot';
 
 type Props = {
     goTo: ScreenType;
     size: 'small' | 'big';
-    data: string[];
-    keyExtractor: (key: string) => string;
+    data: ThreeInfo[];
+    keyExtractor: (key: ThreeInfo) => string;
 };
 
-export const MyNameList = ({ data, size, keyExtractor, goTo }: Props) => {
-    // TODO: which NativeStackParamList ???
+export const PressableNameList = ({
+    data,
+    size,
+    keyExtractor,
+    goTo,
+}: Props) => {
+    const route = useRoute();
     const navigation =
         useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+
+    const goToScreen = (name: string) => {
+        navigation.navigate(goTo, { name });
+    };
 
     return (
         <FlatList
@@ -30,7 +41,7 @@ export const MyNameList = ({ data, size, keyExtractor, goTo }: Props) => {
             renderItem={({ item }) => (
                 <Pressable
                     onPress={() => {
-                        navigation.navigate(goTo, { name: item });
+                        goToScreen(item.name);
                     }}>
                     {({ pressed }) => (
                         <View
@@ -40,12 +51,22 @@ export const MyNameList = ({ data, size, keyExtractor, goTo }: Props) => {
                                     paddingVertical: size === 'small' ? 15 : 20,
                                 },
                             ]}>
-                            <MyText
-                                style={{
-                                    color: pressed ? 'tomato' : 'black',
-                                }}>
-                                {getFormattedName(item)}
-                            </MyText>
+                            <View style={styles.name}>
+                                <MyText
+                                    style={{
+                                        color: pressed ? 'tomato' : 'black',
+                                    }}>
+                                    {getFormattedName(item.name)}
+                                </MyText>
+                                {route.name === 'AbilityDetail' &&
+                                    item.isHidden && (
+                                        <SmallGreyText text="   (Hidden ability)" />
+                                    )}
+                                {route.name === 'TypeDetail' &&
+                                    item.typeSlot && (
+                                        <TypeSlot slot={item.typeSlot} />
+                                    )}
+                            </View>
                             <MyText
                                 style={{
                                     color: pressed ? 'tomato' : 'black',
@@ -75,5 +96,9 @@ const styles = StyleSheet.create({
     emptyText: {
         paddingVertical: 50,
         textAlign: 'center',
+    },
+    name: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
 });

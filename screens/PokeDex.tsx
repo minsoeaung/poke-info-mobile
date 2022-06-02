@@ -18,14 +18,15 @@ import Animated, {
     withTiming,
 } from 'react-native-reanimated';
 
-import { MyNameList } from '../components/MyNameList';
+import ClearInputButton from '../components/ClearInputButton';
 import MyText from '../components/MyText';
 import PokemonCard from '../components/PokemonCard';
+import { PressableNameList } from '../components/PressableNameList';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import { pokemons } from '../constants/pokemons';
 import usePagination from '../hooks/usePagination';
-import { NativeStackParamList } from '../types';
+import { NativeStackParamList, ThreeInfo } from '../types';
 
 const { height } = Dimensions.get('window');
 
@@ -36,9 +37,10 @@ const DEBOUNCE_TIME = 300;
 
 export default function PokeDex({ navigation }: Props) {
     const [page, setPage] = useState(1);
-    const [suggestionList, setSuggestionList] = useState(pokemons);
+    const [suggestionList, setSuggestionList] = useState<ThreeInfo[]>(pokemons);
     const [searchVisible, setSearchVisible] = useState(false);
     const [searchValue, setSearchValue] = useState('');
+
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
     const listRef = useRef(null);
     useScrollToTop(listRef);
@@ -59,8 +61,9 @@ export default function PokeDex({ navigation }: Props) {
         if (!query.trim()) {
             setSuggestionList(pokemons);
         } else {
+            const q = query.trim().toLowerCase().replace(' ', '-');
             const filteredPokemons = pokemons.filter(pokemon =>
-                pokemon.includes(query.trim().toLowerCase().replace(' ', '-')),
+                pokemon.name.includes(q),
             );
             setSuggestionList(filteredPokemons);
         }
@@ -130,19 +133,7 @@ export default function PokeDex({ navigation }: Props) {
                         }}
                         placeholder="Search..."
                     />
-                    <Pressable
-                        style={styles.xParent}
-                        onPress={() => setSearchValue('')}>
-                        {({ pressed }) => (
-                            <MyText
-                                style={StyleSheet.flatten([
-                                    styles.x,
-                                    { color: pressed ? 'tomato' : 'black' },
-                                ])}>
-                                X
-                            </MyText>
-                        )}
-                    </Pressable>
+                    <ClearInputButton setValue={setSearchValue} />
                 </View>
             </Animated.View>
 
@@ -152,11 +143,11 @@ export default function PokeDex({ navigation }: Props) {
                         StyleSheet.absoluteFill,
                         styles.overlaySuggestionList,
                     ]}>
-                    <MyNameList
+                    <PressableNameList
                         goTo="PokemonDetail"
                         size="small"
                         data={suggestionList}
-                        keyExtractor={item => item}
+                        keyExtractor={item => item.name}
                     />
                 </View>
             )}
@@ -178,6 +169,11 @@ export default function PokeDex({ navigation }: Props) {
                     }
                     ListFooterComponentStyle={styles.listFooter}
                     contentInsetAdjustmentBehavior="automatic"
+                    onScrollBeginDrag={() => {
+                        if (top.value !== SEARCH_BOX_TOP_POSITION) {
+                            hideSearchBox();
+                        }
+                    }}
                 />
             </View>
         </SafeAreaView>
