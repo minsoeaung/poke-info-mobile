@@ -1,7 +1,7 @@
 import { useScrollToTop } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
 import {
     ActivityIndicator,
     Dimensions,
@@ -66,19 +66,25 @@ export default function PokeDex({ navigation }: Props) {
         }
     };
 
+    const showSearchBox = useCallback(() => {
+        setSearchVisible(true);
+        top.value = withTiming(10);
+    }, []);
+
+    const hideSearchBox = useCallback(() => {
+        setSearchVisible(false);
+        top.value = withTiming(SEARCH_BOX_TOP_POSITION);
+    }, []);
+
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
                 <Pressable
                     onPress={() => {
                         if (top.value === SEARCH_BOX_TOP_POSITION) {
-                            // show
-                            setSearchVisible(true);
-                            top.value = withTiming(10);
+                            showSearchBox();
                         } else {
-                            // hide
-                            setSearchVisible(false);
-                            top.value = withTiming(SEARCH_BOX_TOP_POSITION);
+                            hideSearchBox();
                         }
                     }}>
                     {({ pressed }) => (
@@ -124,6 +130,19 @@ export default function PokeDex({ navigation }: Props) {
                         }}
                         placeholder="Search..."
                     />
+                    <Pressable
+                        style={styles.xParent}
+                        onPress={() => setSearchValue('')}>
+                        {({ pressed }) => (
+                            <MyText
+                                style={StyleSheet.flatten([
+                                    styles.x,
+                                    { color: pressed ? 'tomato' : 'black' },
+                                ])}>
+                                X
+                            </MyText>
+                        )}
+                    </Pressable>
                 </View>
             </Animated.View>
 
@@ -190,12 +209,25 @@ const styles = StyleSheet.create({
         elevation: 10,
         borderRadius: 10,
         position: 'relative',
+        flexDirection: 'row',
+        justifyContent: 'space-between',
     },
     searchInput: {
         height: 40,
         paddingVertical: 10,
-        paddingHorizontal: 20,
+        paddingLeft: 20,
         fontFamily: fonts.fontDotGothic,
+        width: '90%',
+    },
+    xParent: {
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 5,
+    },
+    x: {
+        width: 16,
+        height: 16,
     },
     searchBtn: {
         paddingLeft: 20,

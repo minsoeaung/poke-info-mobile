@@ -23,7 +23,11 @@ export const MyNameList = ({ data, size, keyExtractor, goTo }: Props) => {
         <FlatList
             data={data}
             keyExtractor={keyExtractor}
-            renderItem={({ item, index }) => (
+            ItemSeparatorComponent={() => <View style={styles.separator} />}
+            ListEmptyComponent={() => (
+                <MyText style={styles.emptyText}>NOT FOUND</MyText>
+            )}
+            renderItem={({ item }) => (
                 <Pressable
                     onPress={() => {
                         navigation.navigate(goTo, { name: item });
@@ -34,8 +38,6 @@ export const MyNameList = ({ data, size, keyExtractor, goTo }: Props) => {
                                 styles.listItem,
                                 {
                                     paddingVertical: size === 'small' ? 15 : 20,
-                                    borderBottomWidth:
-                                        index === data.length - 1 ? 0 : 0.5,
                                 },
                             ]}>
                             <MyText
@@ -65,5 +67,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'space-between',
         borderColor: 'tomato',
+    },
+    separator: {
+        borderBottomColor: 'tomato',
+        borderBottomWidth: 0.5,
+    },
+    emptyText: {
+        paddingVertical: 50,
+        textAlign: 'center',
     },
 });
