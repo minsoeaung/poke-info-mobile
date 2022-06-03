@@ -17,9 +17,15 @@ type Props = {
     goTo: ScreenType;
     size?: 'small' | 'big';
     data: PressableListItemType[];
+    listRef?: React.RefObject<FlatList> | null;
 };
 
-export const PressableNameList = ({ data, size = 'big', goTo }: Props) => {
+export const PressableNameList = ({
+    data,
+    size = 'big',
+    goTo,
+    listRef = null,
+}: Props) => {
     const route = useRoute();
     const navigation =
         useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
@@ -30,6 +36,7 @@ export const PressableNameList = ({ data, size = 'big', goTo }: Props) => {
 
     return (
         <FlatList
+            ref={listRef}
             data={data}
             keyExtractor={key => key.name}
             ItemSeparatorComponent={() => <View style={styles.separator} />}

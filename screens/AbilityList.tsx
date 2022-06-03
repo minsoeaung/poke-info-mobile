@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { useScrollToTop } from '@react-navigation/native';
+import React, { useRef, useState } from 'react';
+import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 
 import ClearInputButton from '../components/ClearInputButton';
 import { PressableNameList } from '../components/PressableNameList';
@@ -11,6 +12,9 @@ import { PressableListItemType } from '../types';
 export default function AbilityList() {
     const [data, setData] = useState<PressableListItemType[]>(abilities);
     const [searchValue, setSearchValue] = useState('');
+
+    const listRef = useRef<FlatList>(null);
+    useScrollToTop(listRef);
 
     const filterTheData = (query: string) => {
         if (!query.trim()) {
@@ -44,7 +48,11 @@ export default function AbilityList() {
                 />
             </View>
             <View style={styles.abilityListWrap}>
-                <PressableNameList goTo="AbilityDetail" data={data} />
+                <PressableNameList
+                    goTo="AbilityDetail"
+                    data={data}
+                    listRef={listRef}
+                />
             </View>
         </View>
     );

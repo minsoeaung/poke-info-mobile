@@ -42,8 +42,8 @@ export default function PokeDex({ navigation }: Props) {
     const [searchValue, setSearchValue] = useState('');
 
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-    const listRef = useRef(null);
 
+    const listRef = useRef<FlatList>(null);
     useScrollToTop(listRef);
 
     const { data, error, isLoading } = usePagination(
