@@ -39,7 +39,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
                 e => e.language.name === 'en',
             );
             if (enEffect) {
-                setEffectEntry(enEffect.effect);
+                setEffectEntry(enEffect.effect.replace('\n', ' '));
             }
             const list: PressableListItemType[] = data.pokemon.map(d => ({
                 name: d.pokemon.name,

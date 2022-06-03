@@ -34,7 +34,7 @@ export const PressableNameList = ({ data, size = 'big', goTo }: Props) => {
             keyExtractor={key => key.name}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
             ListEmptyComponent={() => (
-                <MyText style={styles.emptyText}>NOT FOUND</MyText>
+                <MyText style={styles.emptyText}>EMPTY!</MyText>
             )}
             renderItem={({ item }) => (
                 <Pressable
@@ -49,7 +49,7 @@ export const PressableNameList = ({ data, size = 'big', goTo }: Props) => {
                                     paddingVertical: size === 'small' ? 15 : 20,
                                 },
                             ]}>
-                            <View>
+                            <View style={styles.nameWrap}>
                                 {route.name === 'ItemList' && item.sprites && (
                                     <Image
                                         style={[
@@ -109,6 +109,10 @@ const styles = StyleSheet.create({
     emptyText: {
         paddingVertical: 50,
         textAlign: 'center',
+    },
+    nameWrap: {
+        flexDirection: 'row',
+        alignItems: 'center',
     },
     nameText: {
         letterSpacing: 1,
