@@ -11,10 +11,11 @@ export type PokemonType = Omit<PokeAPI.Pokemon, 'sprites'> & {
     };
 };
 
-export type ThreeInfo = {
+export type PressableListItemType = {
     name: string;
     isHidden?: boolean;
     typeSlot?: number;
+    sprites?: string | null;
 };
 
 export type PickedPokemonType = Pick<
@@ -33,6 +34,7 @@ export type ScreenType =
     | 'PokeDex'
     | 'AbilityList'
     | 'ItemList'
+    | 'ItemDetail'
     | 'PokemonDetail'
     | 'TypeDetail'
     | 'AbilityDetail';
@@ -53,4 +55,5 @@ export type NativeStackParamList = {
     PokemonDetail: PokemonDetailScreenParams;
     TypeDetail: Name;
     AbilityDetail: Name;
+    ItemDetail: Name;
 };

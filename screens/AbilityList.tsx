@@ -6,10 +6,10 @@ import { PressableNameList } from '../components/PressableNameList';
 import abilities from '../constants/abilities';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
-import { ThreeInfo } from '../types';
+import { PressableListItemType } from '../types';
 
 export default function AbilityList() {
-    const [data, setData] = useState<ThreeInfo[]>(abilities);
+    const [data, setData] = useState<PressableListItemType[]>(abilities);
     const [searchValue, setSearchValue] = useState('');
 
     const filterTheData = (query: string) => {

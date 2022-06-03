@@ -1,9 +1,13 @@
 import { useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
-import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 
-import { NativeStackParamList, ScreenType, ThreeInfo } from '../types';
+import {
+    NativeStackParamList,
+    ScreenType,
+    PressableListItemType,
+} from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
@@ -12,7 +16,7 @@ import TypeSlot from './TypeSlot';
 type Props = {
     goTo: ScreenType;
     size?: 'small' | 'big';
-    data: ThreeInfo[];
+    data: PressableListItemType[];
 };
 
 export const PressableNameList = ({ data, size = 'big', goTo }: Props) => {
@@ -45,11 +49,26 @@ export const PressableNameList = ({ data, size = 'big', goTo }: Props) => {
                                     paddingVertical: size === 'small' ? 15 : 20,
                                 },
                             ]}>
-                            <View style={styles.name}>
+                            <View>
+                                {route.name === 'ItemList' && item.sprites && (
+                                    <Image
+                                        style={[
+                                            StyleSheet.absoluteFill,
+                                            styles.itemImage,
+                                        ]}
+                                        source={{
+                                            uri: item.sprites,
+                                        }}
+                                    />
+                                )}
                                 <MyText
-                                    style={{
-                                        color: pressed ? 'tomato' : 'black',
-                                    }}>
+                                    style={StyleSheet.flatten([
+                                        styles.nameText,
+                                        {
+                                            color: pressed ? 'tomato' : 'black',
+                                            marginLeft: item.sprites ? 40 : 0,
+                                        },
+                                    ])}>
                                     {getFormattedName(item.name)}
                                 </MyText>
                                 {route.name === 'AbilityDetail' &&
@@ -71,6 +90,7 @@ export const PressableNameList = ({ data, size = 'big', goTo }: Props) => {
                     )}
                 </Pressable>
             )}
+            keyboardShouldPersistTaps="handled"
         />
     );
 };
@@ -79,7 +99,6 @@ const styles = StyleSheet.create({
     listItem: {
         paddingHorizontal: 10,
         flexDirection: 'row',
-        alignItems: 'center',
         justifyContent: 'space-between',
         borderColor: 'tomato',
     },
@@ -91,8 +110,13 @@ const styles = StyleSheet.create({
         paddingVertical: 50,
         textAlign: 'center',
     },
-    name: {
-        flexDirection: 'row',
-        alignItems: 'center',
+    nameText: {
+        letterSpacing: 1,
+    },
+    itemImage: {
+        resizeMode: 'cover',
+        top: -8,
+        width: 30,
+        height: 30,
     },
 });

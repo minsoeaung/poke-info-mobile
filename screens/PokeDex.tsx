@@ -7,7 +7,6 @@ import {
     Dimensions,
     FlatList,
     Pressable,
-    SafeAreaView,
     StyleSheet,
     TextInput,
     View,
@@ -26,7 +25,7 @@ import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import { pokemons } from '../constants/pokemons';
 import usePagination from '../hooks/usePagination';
-import { NativeStackParamList, ThreeInfo } from '../types';
+import { NativeStackParamList, PressableListItemType } from '../types';
 
 const { height } = Dimensions.get('window');
 
@@ -37,7 +36,8 @@ const DEBOUNCE_TIME = 300;
 
 export default function PokeDex({ navigation }: Props) {
     const [page, setPage] = useState(1);
-    const [suggestionList, setSuggestionList] = useState<ThreeInfo[]>(pokemons);
+    const [suggestionList, setSuggestionList] =
+        useState<PressableListItemType[]>(pokemons);
     const [searchVisible, setSearchVisible] = useState(false);
     const [searchValue, setSearchValue] = useState('');
 
@@ -113,7 +113,7 @@ export default function PokeDex({ navigation }: Props) {
     };
 
     return (
-        <SafeAreaView style={styles.container}>
+        <View style={styles.container}>
             <Animated.View
                 style={[
                     StyleSheet.absoluteFill,
@@ -177,7 +177,7 @@ export default function PokeDex({ navigation }: Props) {
                     }}
                 />
             </View>
-        </SafeAreaView>
+        </View>
     );
 }
 

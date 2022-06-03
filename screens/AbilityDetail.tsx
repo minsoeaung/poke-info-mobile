@@ -9,7 +9,7 @@ import MyText from '../components/MyText';
 import { PressableNameList } from '../components/PressableNameList';
 import { appColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, ThreeInfo } from '../types';
+import { NativeStackParamList, PressableListItemType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'AbilityDetail'>;
@@ -18,7 +18,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
     const { name } = route.params;
 
     const [pokemonsWithThisAbility, setPokemonsWithThisAbility] = useState<
-        ThreeInfo[]
+        PressableListItemType[]
     >([]);
     const [flavorText, setFlavorText] = useState('');
     const [effectEntry, setEffectEntry] = useState('');
@@ -41,7 +41,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
             if (enEffect) {
                 setEffectEntry(enEffect.effect);
             }
-            const list: ThreeInfo[] = data.pokemon.map(d => ({
+            const list: PressableListItemType[] = data.pokemon.map(d => ({
                 name: d.pokemon.name,
                 isHidden: d.is_hidden,
                 typeSlot: d.slot,

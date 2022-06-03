@@ -14,7 +14,7 @@ import MyText from '../components/MyText';
 import { PressableNameList } from '../components/PressableNameList';
 import { appColor, typeColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, ThreeInfo } from '../types';
+import { NativeStackParamList, PressableListItemType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'TypeDetail'>;
@@ -23,7 +23,7 @@ export default function TypeDetail({ route, navigation }: Props) {
     const { name } = route.params;
 
     const [pokemonsWithThisType, setPokemonsWithThisType] = useState<
-        ThreeInfo[]
+        PressableListItemType[]
     >([]);
 
     const { isLoading, error, data } = useFetchData<PokeAPI.Type>(
@@ -36,7 +36,7 @@ export default function TypeDetail({ route, navigation }: Props) {
 
     useEffect(() => {
         if (data) {
-            const list: ThreeInfo[] = data.pokemon.map(d => ({
+            const list: PressableListItemType[] = data.pokemon.map(d => ({
                 name: d.pokemon.name,
                 typeSlot: d.slot,
             }));
