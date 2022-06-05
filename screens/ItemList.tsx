@@ -9,9 +9,13 @@ import { fonts } from '../constants/fonts';
 import { items } from '../constants/items';
 import { PressableListItemType } from '../types';
 
+const DEBOUNCE_TIME = 300;
+
 export default function ItemList() {
     const [data, setData] = useState<PressableListItemType[]>(items);
     const [searchValue, setSearchValue] = useState('');
+
+    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
     const listRef = useRef<FlatList>(null);
     useScrollToTop(listRef);
@@ -33,7 +37,12 @@ export default function ItemList() {
                     style={styles.searchInput}
                     value={searchValue}
                     onChangeText={(value: string) => {
-                        filterTheData(value);
+                        if (timerRef.current) {
+                            clearTimeout(timerRef.current);
+                        }
+                        timerRef.current = setTimeout(() => {
+                            filterTheData(value);
+                        }, DEBOUNCE_TIME);
                         setSearchValue(value);
                     }}
                     placeholder="Search..."
