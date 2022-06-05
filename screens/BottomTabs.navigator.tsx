@@ -7,6 +7,7 @@ import { fonts } from '../constants/fonts';
 import { AbilitiesStack } from './Abilities.stack';
 import { ItemsStack } from './Items.stack';
 import { PokeDexStack } from './PokeDex.stack';
+import AboutStack from './About.stack';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -33,6 +34,8 @@ export const BottomTabsNavigator: React.FC = () => {
                         iconName = 'alpha-a-box-outline';
                     } else if (route.name === 'ItemsTab') {
                         iconName = 'toolbox-outline';
+                    } else if (route.name === 'AboutTab') {
+                        iconName = 'alert-octagon-outline';
                     }
 
                     return (
@@ -60,6 +63,11 @@ export const BottomTabsNavigator: React.FC = () => {
                 name="ItemsTab"
                 component={ItemsStack}
                 options={{ title: 'Items' }}
+            />
+            <BottomTabs.Screen
+                name="AboutTab"
+                component={AboutStack}
+                options={{ title: 'About' }}
             />
         </BottomTabs.Navigator>
     );

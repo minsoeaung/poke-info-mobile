@@ -37,7 +37,8 @@ export type ScreenType =
     | 'ItemDetail'
     | 'PokemonDetail'
     | 'TypeDetail'
-    | 'AbilityDetail';
+    | 'AbilityDetail'
+    | 'About';
 
 type Name = {
     name: string;
@@ -51,6 +52,7 @@ export type NativeStackParamList = {
     PokeDex: undefined;
     AbilityList: undefined;
     ItemList: undefined;
+    About: undefined;
 
     PokemonDetail: PokemonDetailScreenParams;
     TypeDetail: Name;

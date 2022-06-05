@@ -1,14 +1,14 @@
 {
   "expo": {
-    "name": "pokemon-info-mobile",
-    "slug": "pokemon-info-mobile",
+    "name": "Pokémon Info",
+    "slug": "pokemon_info",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#FFF0E5"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -22,7 +22,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
+        "backgroundColor": "#FFF0E5"
       }
     },
     "web": {
