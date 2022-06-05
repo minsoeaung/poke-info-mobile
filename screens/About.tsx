@@ -35,11 +35,10 @@ const About = () => {
                 </MyText>
             </View>
             <View style={styles.boxWrap}>
-                <Description label="Version" value={<MyText>1.0.0</MyText>} />
                 <Description
+                    label="Version"
+                    value={<MyText>1.0.0</MyText>}
                     noBorder
-                    label="Developed by"
-                    value={<MyText>Min Soe Aung</MyText>}
                 />
             </View>
         </View>
