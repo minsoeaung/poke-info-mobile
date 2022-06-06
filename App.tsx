@@ -4,8 +4,10 @@ import {
 } from '@expo-google-fonts/dotgothic16';
 import { NavigationContainer } from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
+import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 
+import { appColor } from './constants/colors';
 import { BottomTabsNavigator } from './screens/BottomTabs.navigator';
 
 export default function App() {
@@ -18,6 +20,7 @@ export default function App() {
     return (
         <NavigationContainer>
             <BottomTabsNavigator />
+            <StatusBar style="dark" backgroundColor={appColor.appBg} />
         </NavigationContainer>
     );
 }
