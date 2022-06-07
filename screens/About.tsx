@@ -9,13 +9,15 @@ const About = () => {
         <View style={styles.container}>
             <View style={styles.boxWrap}>
                 <MyText style={styles.description}>
-                    Pokémon Info is a simple basic app that consumes REST API
-                    from "https://pokeapi.co/".
+                    Pokémon Info is a free, simple, and unofficial app that
+                    consumes REST API from "https://pokeapi.co/". The app
+                    provides some useful information for all pokemon, abilities
+                    , and items.
                 </MyText>
                 <MyText style={styles.description}>
-                    © 2022 Pokémon. © 1995–2022 Nintendo/Creatures Inc./GAME
-                    FREAK inc. Pokémon and Pokémon character names are
-                    trademarks of Nintendo.
+                    Pokémon and Pokémon character names are trademarks of
+                    Nintendo. All image contents within are Copyright The
+                    Pokémon Company.
                 </MyText>
             </View>
             <View style={styles.boxWrap}>

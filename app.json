@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "Pokémon Info",
+    "name": "Pokemon Info",
     "slug": "pokemon_info",
     "version": "1.0.0",
     "orientation": "portrait",
@@ -27,7 +27,8 @@
         "backgroundColor": "#FFF0E5"
       },
       "package": "com.minsoeaung.pokemoninfo",
-      "versionCode": 1
+      "versionCode": 1,
+      "permissions": []
     },
     "web": {
       "favicon": "./assets/favicon.png"
