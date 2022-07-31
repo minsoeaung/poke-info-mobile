@@ -25,26 +25,10 @@ export const AbilitiesStack: React.FC = () => {
                     fontSize: 22,
                 },
             }}>
-            <Stack.Screen
-                name="AbilityList"
-                component={AbilityList}
-                options={{ title: 'Abilities' }}
-            />
-            <Stack.Screen
-                name="AbilityDetail"
-                component={AbilityDetail}
-                options={ScreenBackButton}
-            />
-            <Stack.Screen
-                name="PokemonDetail"
-                component={PokemonDetail}
-                options={ScreenBackButton}
-            />
-            <Stack.Screen
-                name="TypeDetail"
-                component={TypeDetail}
-                options={ScreenBackButton}
-            />
+            <Stack.Screen name="AbilityList" component={AbilityList} options={{ title: 'Abilities' }} />
+            <Stack.Screen name="AbilityDetail" component={AbilityDetail} options={ScreenBackButton} />
+            <Stack.Screen name="PokemonDetail" component={PokemonDetail} options={ScreenBackButton} />
+            <Stack.Screen name="TypeDetail" component={TypeDetail} options={ScreenBackButton} />
         </Stack.Navigator>
     );
 };

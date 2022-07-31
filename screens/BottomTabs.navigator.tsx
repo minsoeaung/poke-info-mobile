@@ -5,9 +5,9 @@ import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import { AbilitiesStack } from './Abilities.stack';
+import AboutStack from './About.stack';
 import { ItemsStack } from './Items.stack';
 import { PokeDexStack } from './PokeDex.stack';
-import AboutStack from './About.stack';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -38,37 +38,15 @@ export const BottomTabsNavigator: React.FC = () => {
                         iconName = 'alert-octagon-outline';
                     }
 
-                    return (
-                        <Ionicons
-                            name={iconName || ''}
-                            size={size}
-                            color={color}
-                        />
-                    );
+                    return <Ionicons name={iconName || ''} size={size} color={color} />;
                 },
                 tabBarActiveTintColor: appColor.tabBarActive,
                 tabBarInactiveTintColor: 'gray',
             })}>
-            <BottomTabs.Screen
-                name="PokeDexTab"
-                component={PokeDexStack}
-                options={{ title: 'PokeDex' }}
-            />
-            <BottomTabs.Screen
-                name="AbilitiesTab"
-                component={AbilitiesStack}
-                options={{ title: 'Abilities' }}
-            />
-            <BottomTabs.Screen
-                name="ItemsTab"
-                component={ItemsStack}
-                options={{ title: 'Items' }}
-            />
-            <BottomTabs.Screen
-                name="AboutTab"
-                component={AboutStack}
-                options={{ title: 'About' }}
-            />
+            <BottomTabs.Screen name="PokeDexTab" component={PokeDexStack} options={{ title: 'PokeDex' }} />
+            <BottomTabs.Screen name="AbilitiesTab" component={AbilitiesStack} options={{ title: 'Abilities' }} />
+            <BottomTabs.Screen name="ItemsTab" component={ItemsStack} options={{ title: 'Items' }} />
+            <BottomTabs.Screen name="AboutTab" component={AboutStack} options={{ title: 'About' }} />
         </BottomTabs.Navigator>
     );
 };

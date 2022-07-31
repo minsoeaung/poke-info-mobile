@@ -2,20 +2,8 @@ import { useScrollToTop } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import {
-    ActivityIndicator,
-    Dimensions,
-    FlatList,
-    Pressable,
-    StyleSheet,
-    TextInput,
-    View,
-} from 'react-native';
-import Animated, {
-    useAnimatedStyle,
-    useSharedValue,
-    withTiming,
-} from 'react-native-reanimated';
+import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
 
 import ClearInputButton from '../components/ClearInputButton';
 import MyText from '../components/MyText';
@@ -25,31 +13,23 @@ import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import { pokemons } from '../constants/pokemons';
 import usePagination from '../hooks/usePagination';
-import { NativeStackParamList, PressableListItemType } from '../types';
+import useSearchableList from '../hooks/useSearchableList';
+import { NativeStackParamList } from '../types';
 
 const { height } = Dimensions.get('window');
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'PokeDex'>;
 
 const SEARCH_BOX_TOP_POSITION = -65;
-const DEBOUNCE_TIME = 300;
 
 export default function PokeDex({ navigation }: Props) {
     const [page, setPage] = useState(1);
-    const [suggestionList, setSuggestionList] =
-        useState<PressableListItemType[]>(pokemons);
+    const { list, value, handleChangeText, clearInput } = useSearchableList(pokemons);
     const [searchVisible, setSearchVisible] = useState(false);
-    const [searchValue, setSearchValue] = useState('');
-
-    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-
     const listRef = useRef<FlatList>(null);
     useScrollToTop(listRef);
 
-    const { data, error, isLoading } = usePagination(
-        page,
-        'https://pokeapi.co/api/v2/pokemon?offset=0&limit=27',
-    );
+    const { data, error, isLoading } = usePagination(page, 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=27');
 
     const top = useSharedValue(SEARCH_BOX_TOP_POSITION);
 
@@ -58,18 +38,6 @@ export default function PokeDex({ navigation }: Props) {
             transform: [{ translateY: top.value }],
         };
     });
-
-    const filterTheSuggestionList = (query: string) => {
-        if (!query.trim()) {
-            setSuggestionList(pokemons);
-        } else {
-            const q = query.trim().toLowerCase().replace(' ', '-');
-            const filteredPokemons = pokemons.filter(pokemon =>
-                pokemon.name.includes(q),
-            );
-            setSuggestionList(filteredPokemons);
-        }
-    };
 
     const showSearchBox = useCallback(() => {
         setSearchVisible(true);
@@ -114,42 +82,21 @@ export default function PokeDex({ navigation }: Props) {
 
     return (
         <View style={styles.container}>
-            <Animated.View
-                style={[
-                    StyleSheet.absoluteFill,
-                    styles.overlaySearchInput,
-                    animatedStyles,
-                ]}>
+            <Animated.View style={[StyleSheet.absoluteFill, styles.overlaySearchInput, animatedStyles]}>
                 <View style={styles.searchInputWrap}>
                     <TextInput
                         style={styles.searchInput}
-                        value={searchValue}
-                        onChangeText={(value: string) => {
-                            if (timerRef.current) {
-                                clearTimeout(timerRef.current);
-                            }
-                            timerRef.current = setTimeout(() => {
-                                filterTheSuggestionList(value);
-                            }, DEBOUNCE_TIME);
-                            setSearchValue(value);
-                        }}
+                        value={value}
+                        onChangeText={handleChangeText}
                         placeholder="Search..."
                     />
-                    <ClearInputButton func={() => setSearchValue('')} />
+                    <ClearInputButton onPress={clearInput} />
                 </View>
             </Animated.View>
 
-            {searchVisible && !!searchValue.trim() && (
-                <View
-                    style={[
-                        StyleSheet.absoluteFill,
-                        styles.overlaySuggestionList,
-                    ]}>
-                    <PressableNameList
-                        goTo="PokemonDetail"
-                        size="small"
-                        data={suggestionList}
-                    />
+            {searchVisible && !!value.trim() && (
+                <View style={[StyleSheet.absoluteFill, styles.overlaySuggestionList]}>
+                    <PressableNameList goTo="PokemonDetail" size="small" data={list} />
                 </View>
             )}
 

@@ -1,7 +1,4 @@
-import {
-    DotGothic16_400Regular,
-    useFonts,
-} from '@expo-google-fonts/dotgothic16';
+import { DotGothic16_400Regular, useFonts } from '@expo-google-fonts/dotgothic16';
 import { NavigationContainer } from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
 import { StatusBar } from 'expo-status-bar';

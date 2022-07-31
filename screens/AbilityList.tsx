@@ -1,5 +1,5 @@
 import { useScrollToTop } from '@react-navigation/native';
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 
 import ClearInputButton from '../components/ClearInputButton';
@@ -7,61 +7,27 @@ import { PressableNameList } from '../components/PressableNameList';
 import abilities from '../constants/abilities';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
-import { PressableListItemType } from '../types';
-
-const DEBOUNCE_TIME = 300;
+import useSearchableList from '../hooks/useSearchableList';
 
 export default function AbilityList() {
-    const [data, setData] = useState<PressableListItemType[]>(abilities);
-    const [searchValue, setSearchValue] = useState('');
-
-    const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+    const { list, value, handleChangeText, clearInput } = useSearchableList(abilities);
 
     const listRef = useRef<FlatList>(null);
     useScrollToTop(listRef);
-
-    const filterTheData = (query: string) => {
-        if (!query.trim()) {
-            setData(abilities);
-        } else {
-            const q = query.trim().toLowerCase().replace(' ', '-');
-            const filteredAbilities = abilities.filter(ability =>
-                ability.name.includes(q),
-            );
-            setData(filteredAbilities);
-        }
-    };
 
     return (
         <View style={styles.container}>
             <View style={styles.searchInputWrap}>
                 <TextInput
                     style={styles.searchInput}
-                    value={searchValue}
-                    onChangeText={(value: string) => {
-                        if (timerRef.current) {
-                            clearTimeout(timerRef.current);
-                        }
-                        timerRef.current = setTimeout(() => {
-                            filterTheData(value);
-                        }, DEBOUNCE_TIME);
-                        setSearchValue(value);
-                    }}
+                    value={value}
+                    onChangeText={handleChangeText}
                     placeholder="Search..."
                 />
-                <ClearInputButton
-                    func={() => {
-                        filterTheData('');
-                        setSearchValue('');
-                    }}
-                />
+                <ClearInputButton onPress={clearInput} />
             </View>
             <View style={styles.abilityListWrap}>
-                <PressableNameList
-                    goTo="AbilityDetail"
-                    data={data}
-                    listRef={listRef}
-                />
+                <PressableNameList goTo="AbilityDetail" data={list} listRef={listRef} />
             </View>
         </View>
     );

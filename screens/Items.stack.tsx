@@ -26,31 +26,11 @@ export const ItemsStack: React.FC = () => {
                     fontSize: 22,
                 },
             }}>
-            <Stack.Screen
-                name="ItemList"
-                component={ItemList}
-                options={{ title: 'Items' }}
-            />
-            <Stack.Screen
-                name="ItemDetail"
-                component={ItemDetail}
-                options={ScreenBackButton}
-            />
-            <Stack.Screen
-                name="AbilityDetail"
-                component={AbilityDetail}
-                options={ScreenBackButton}
-            />
-            <Stack.Screen
-                name="PokemonDetail"
-                component={PokemonDetail}
-                options={ScreenBackButton}
-            />
-            <Stack.Screen
-                name="TypeDetail"
-                component={TypeDetail}
-                options={ScreenBackButton}
-            />
+            <Stack.Screen name="ItemList" component={ItemList} options={{ title: 'Items' }} />
+            <Stack.Screen name="ItemDetail" component={ItemDetail} options={ScreenBackButton} />
+            <Stack.Screen name="AbilityDetail" component={AbilityDetail} options={ScreenBackButton} />
+            <Stack.Screen name="PokemonDetail" component={PokemonDetail} options={ScreenBackButton} />
+            <Stack.Screen name="TypeDetail" component={TypeDetail} options={ScreenBackButton} />
         </Stack.Navigator>
     );
 };

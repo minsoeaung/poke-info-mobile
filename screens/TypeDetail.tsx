@@ -1,8 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import {
-    NativeStackNavigationProp,
-    NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import { useEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
@@ -22,13 +19,9 @@ type Props = NativeStackScreenProps<NativeStackParamList, 'TypeDetail'>;
 export default function TypeDetail({ route, navigation }: Props) {
     const { name } = route.params;
 
-    const [pokemonsWithThisType, setPokemonsWithThisType] = useState<
-        PressableListItemType[]
-    >([]);
+    const [pokemonsWithThisType, setPokemonsWithThisType] = useState<PressableListItemType[]>([]);
 
-    const { isLoading, error, data } = useFetchData<PokeAPI.Type>(
-        `https://pokeapi.co/api/v2/type/${name}`,
-    );
+    const { isLoading, error, data } = useFetchData<PokeAPI.Type>(`https://pokeapi.co/api/v2/type/${name}`);
 
     useEffect(() => {
         navigation.setOptions({ title: getFormattedName(name) });
@@ -63,37 +56,17 @@ export default function TypeDetail({ route, navigation }: Props) {
                         <MyText style={styles.boxTitle}>Attack</MyText>
                         <Description
                             label="2x damage"
-                            value={
-                                <Types
-                                    types={
-                                        data!.damage_relations.double_damage_to
-                                    }
-                                />
-                            }
+                            value={<Types types={data!.damage_relations.double_damage_to} />}
                         />
                         <Description
                             label="0.5x damage"
-                            value={
-                                <Types
-                                    types={
-                                        data!.damage_relations.half_damage_to
-                                    }
-                                />
-                            }
-                            noBorder={
-                                !data!.damage_relations.no_damage_to.length
-                            }
+                            value={<Types types={data!.damage_relations.half_damage_to} />}
+                            noBorder={!data!.damage_relations.no_damage_to.length}
                         />
                         {!!data!.damage_relations.no_damage_to.length && (
                             <Description
                                 label="no damage"
-                                value={
-                                    <Types
-                                        types={
-                                            data!.damage_relations.no_damage_to
-                                        }
-                                    />
-                                }
+                                value={<Types types={data!.damage_relations.no_damage_to} />}
                                 noBorder
                             />
                         )}
@@ -102,39 +75,17 @@ export default function TypeDetail({ route, navigation }: Props) {
                         <MyText style={styles.boxTitle}>Defense</MyText>
                         <Description
                             label="2x damage"
-                            value={
-                                <Types
-                                    types={
-                                        data!.damage_relations
-                                            .double_damage_from
-                                    }
-                                />
-                            }
+                            value={<Types types={data!.damage_relations.double_damage_from} />}
                         />
                         <Description
                             label="0.5x damage"
-                            value={
-                                <Types
-                                    types={
-                                        data!.damage_relations.half_damage_from
-                                    }
-                                />
-                            }
-                            noBorder={
-                                !data!.damage_relations.no_damage_from.length
-                            }
+                            value={<Types types={data!.damage_relations.half_damage_from} />}
+                            noBorder={!data!.damage_relations.no_damage_from.length}
                         />
                         {!!data!.damage_relations.no_damage_from.length && (
                             <Description
                                 label="no damage"
-                                value={
-                                    <Types
-                                        types={
-                                            data!.damage_relations
-                                                .no_damage_from
-                                        }
-                                    />
-                                }
+                                value={<Types types={data!.damage_relations.no_damage_from} />}
                                 noBorder
                             />
                         )}
@@ -143,13 +94,8 @@ export default function TypeDetail({ route, navigation }: Props) {
             }
             ListEmptyComponent={
                 <View style={styles.boxWrap}>
-                    <MyText style={styles.boxTitle}>
-                        {getFormattedName(name) + ' Pokémon'}
-                    </MyText>
-                    <PressableNameList
-                        goTo="PokemonDetail"
-                        data={pokemonsWithThisType}
-                    />
+                    <MyText style={styles.boxTitle}>{getFormattedName(name) + ' Pokémon'}</MyText>
+                    <PressableNameList goTo="PokemonDetail" data={pokemonsWithThisType} />
                 </View>
             }
             ListFooterComponent={<View style={styles.footer} />}
@@ -165,10 +111,7 @@ type TypesProps = {
 };
 
 function Types({ types }: TypesProps) {
-    const navigation =
-        useNavigation<
-            NativeStackNavigationProp<NativeStackParamList, 'TypeDetail'>
-        >();
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'TypeDetail'>>();
 
     return (
         <View style={styles.typeContainer}>
@@ -183,9 +126,7 @@ function Types({ types }: TypesProps) {
                     {({ pressed }) => (
                         <MyText
                             style={{
-                                backgroundColor: pressed
-                                    ? 'rgb(130,183,255)'
-                                    : typeColor[type.name],
+                                backgroundColor: pressed ? 'rgb(130,183,255)' : typeColor[type.name],
                                 paddingHorizontal: 10,
                                 paddingVertical: 7,
                                 borderRadius: 5,

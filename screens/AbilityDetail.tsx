@@ -17,27 +17,19 @@ type Props = NativeStackScreenProps<NativeStackParamList, 'AbilityDetail'>;
 export default function AbilityDetail({ navigation, route }: Props) {
     const { name } = route.params;
 
-    const [pokemonsWithThisAbility, setPokemonsWithThisAbility] = useState<
-        PressableListItemType[]
-    >([]);
+    const [pokemonsWithThisAbility, setPokemonsWithThisAbility] = useState<PressableListItemType[]>([]);
     const [flavorText, setFlavorText] = useState('');
     const [effectEntry, setEffectEntry] = useState('');
 
-    const { isLoading, error, data } = useFetchData<PokeAPI.Ability>(
-        `https://pokeapi.co/api/v2/ability/${name}`,
-    );
+    const { isLoading, error, data } = useFetchData<PokeAPI.Ability>(`https://pokeapi.co/api/v2/ability/${name}`);
 
     useEffect(() => {
         if (data) {
-            const enFlavorText = data.flavor_text_entries.find(
-                e => e.language.name === 'en',
-            );
+            const enFlavorText = data.flavor_text_entries.find(e => e.language.name === 'en');
             if (enFlavorText) {
                 setFlavorText(enFlavorText.flavor_text.replace('\n', ' '));
             }
-            const enEffect = data.effect_entries.find(
-                e => e.language.name === 'en',
-            );
+            const enEffect = data.effect_entries.find(e => e.language.name === 'en');
             if (enEffect) {
                 setEffectEntry(enEffect.effect.replace('\n', ' '));
             }
@@ -69,28 +61,15 @@ export default function AbilityDetail({ navigation, route }: Props) {
             style={styles.container}
             ListHeaderComponent={
                 <View style={styles.boxWrap}>
-                    {flavorText.length > 0 && (
-                        <MyText style={styles.description}>{flavorText}</MyText>
-                    )}
-                    {effectEntry.length > 0 && (
-                        <MyText style={styles.description}>
-                            {effectEntry}
-                        </MyText>
-                    )}
-                    <MyText style={styles.description}>
-                        {'Originated generation: ' + data!.generation.name}
-                    </MyText>
+                    {flavorText.length > 0 && <MyText style={styles.description}>{flavorText}</MyText>}
+                    {effectEntry.length > 0 && <MyText style={styles.description}>{effectEntry}</MyText>}
+                    <MyText style={styles.description}>{'Originated generation: ' + data!.generation.name}</MyText>
                 </View>
             }
             ListEmptyComponent={
                 <View style={styles.boxWrap}>
-                    <MyText style={styles.boxTitle}>
-                        Pokémon with this ability
-                    </MyText>
-                    <PressableNameList
-                        goTo="PokemonDetail"
-                        data={pokemonsWithThisAbility}
-                    />
+                    <MyText style={styles.boxTitle}>Pokémon with this ability</MyText>
+                    <PressableNameList goTo="PokemonDetail" data={pokemonsWithThisAbility} />
                 </View>
             }
             ListFooterComponent={<View style={styles.footer} />}

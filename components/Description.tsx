@@ -11,13 +11,7 @@ type DescriptionProps = {
     valueFlex?: number;
 };
 
-export default function Description({
-    label,
-    value,
-    noBorder,
-    labelFlex = 2,
-    valueFlex = 3,
-}: DescriptionProps) {
+export default function Description({ label, value, noBorder, labelFlex = 2, valueFlex = 3 }: DescriptionProps) {
     return (
         <View
             style={[

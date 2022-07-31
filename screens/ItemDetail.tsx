@@ -18,27 +18,19 @@ type Props = NativeStackScreenProps<NativeStackParamList, 'ItemDetail'>;
 export default function ItemDetail({ navigation, route }: Props) {
     const { name } = route.params;
 
-    const [heldByPokemons, setHeldByPokemons] = useState<
-        PressableListItemType[]
-    >([]);
+    const [heldByPokemons, setHeldByPokemons] = useState<PressableListItemType[]>([]);
     const [flavorText, setFlavorText] = useState('');
     const [effectEntry, setEffectEntry] = useState('');
 
-    const { isLoading, error, data } = useFetchData<PokeAPI.Item>(
-        `https://pokeapi.co/api/v2/item/${name}`,
-    );
+    const { isLoading, error, data } = useFetchData<PokeAPI.Item>(`https://pokeapi.co/api/v2/item/${name}`);
 
     useEffect(() => {
         if (data) {
-            const enFlavorText = data.flavor_text_entries.find(
-                e => e.language.name === 'en',
-            );
+            const enFlavorText = data.flavor_text_entries.find(e => e.language.name === 'en');
             if (enFlavorText) {
                 setFlavorText(enFlavorText.text.replace('\n', ' '));
             }
-            const enEffect = data.effect_entries.find(
-                e => e.language.name === 'en',
-            );
+            const enEffect = data.effect_entries.find(e => e.language.name === 'en');
             if (enEffect) {
                 setEffectEntry(enEffect.effect.replace('\n', ' '));
             }
@@ -54,11 +46,9 @@ export default function ItemDetail({ navigation, route }: Props) {
                     ),
                 });
             }
-            const list: PressableListItemType[] = data.held_by_pokemon.map(
-                d => ({
-                    name: d.pokemon.name,
-                }),
-            );
+            const list: PressableListItemType[] = data.held_by_pokemon.map(d => ({
+                name: d.pokemon.name,
+            }));
             setHeldByPokemons(list);
         }
     }, [data]);
@@ -83,40 +73,19 @@ export default function ItemDetail({ navigation, route }: Props) {
             ListHeaderComponent={
                 <>
                     <View style={styles.boxWrap}>
-                        {flavorText.length > 0 && (
-                            <MyText style={styles.description}>
-                                {flavorText}
-                            </MyText>
-                        )}
-                        {effectEntry.length > 0 && (
-                            <MyText style={styles.description}>
-                                {effectEntry}
-                            </MyText>
-                        )}
+                        {flavorText.length > 0 && <MyText style={styles.description}>{flavorText}</MyText>}
+                        {effectEntry.length > 0 && <MyText style={styles.description}>{effectEntry}</MyText>}
                     </View>
                     <View style={styles.boxWrap}>
-                        <Description
-                            label="Cost"
-                            value={<MyText>{data!.cost}</MyText>}
-                            noBorder
-                        />
-                        <Description
-                            label="Fling Power"
-                            value={<MyText>{data!.fling_power}</MyText>}
-                            noBorder
-                        />
+                        <Description label="Cost" value={<MyText>{data!.cost}</MyText>} noBorder />
+                        <Description label="Fling Power" value={<MyText>{data!.fling_power}</MyText>} noBorder />
                     </View>
                 </>
             }
             ListEmptyComponent={
                 <View style={styles.boxWrap}>
-                    <MyText style={styles.boxTitle}>
-                        Pokémon that might be found holding this item
-                    </MyText>
-                    <PressableNameList
-                        goTo="PokemonDetail"
-                        data={heldByPokemons}
-                    />
+                    <MyText style={styles.boxTitle}>Pokémon that might be found holding this item</MyText>
+                    <PressableNameList goTo="PokemonDetail" data={heldByPokemons} />
                 </View>
             }
             ListFooterComponent={<View style={styles.footer} />}

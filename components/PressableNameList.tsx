@@ -3,11 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 
-import {
-    NativeStackParamList,
-    ScreenType,
-    PressableListItemType,
-} from '../types';
+import { NativeStackParamList, PressableListItemType, ScreenType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
@@ -20,15 +16,9 @@ type Props = {
     listRef?: React.RefObject<FlatList> | null;
 };
 
-export const PressableNameList = ({
-    data,
-    size = 'big',
-    goTo,
-    listRef = null,
-}: Props) => {
+export const PressableNameList = ({ data, size = 'big', goTo, listRef = null }: Props) => {
     const route = useRoute();
-    const navigation =
-        useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
     const goToScreen = (name: string) => {
         navigation.push(goTo, { name });
@@ -40,9 +30,7 @@ export const PressableNameList = ({
             data={data}
             keyExtractor={key => key.name}
             ItemSeparatorComponent={() => <View style={styles.separator} />}
-            ListEmptyComponent={() => (
-                <MyText style={styles.emptyText}>EMPTY!</MyText>
-            )}
+            ListEmptyComponent={() => <MyText style={styles.emptyText}>EMPTY!</MyText>}
             renderItem={({ item }) => (
                 <Pressable
                     onPress={() => {
@@ -59,10 +47,7 @@ export const PressableNameList = ({
                             <View style={styles.nameWrap}>
                                 {route.name === 'ItemList' && item.sprites && (
                                     <Image
-                                        style={[
-                                            StyleSheet.absoluteFill,
-                                            styles.itemImage,
-                                        ]}
+                                        style={[StyleSheet.absoluteFill, styles.itemImage]}
                                         source={{
                                             uri: item.sprites,
                                         }}
@@ -78,14 +63,10 @@ export const PressableNameList = ({
                                     ])}>
                                     {getFormattedName(item.name)}
                                 </MyText>
-                                {route.name === 'AbilityDetail' &&
-                                    item.isHidden && (
-                                        <SmallGreyText text="   (Hidden ability)" />
-                                    )}
-                                {route.name === 'TypeDetail' &&
-                                    item.typeSlot && (
-                                        <TypeSlot slot={item.typeSlot} />
-                                    )}
+                                {route.name === 'AbilityDetail' && item.isHidden && (
+                                    <SmallGreyText text="   (Hidden ability)" />
+                                )}
+                                {route.name === 'TypeDetail' && item.typeSlot && <TypeSlot slot={item.typeSlot} />}
                             </View>
                             <MyText
                                 style={{

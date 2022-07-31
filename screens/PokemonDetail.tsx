@@ -1,8 +1,5 @@
 import { useNavigation } from '@react-navigation/native';
-import {
-    NativeStackNavigationProp,
-    NativeStackScreenProps,
-} from '@react-navigation/native-stack';
+import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { useEffect } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
 
@@ -23,10 +20,7 @@ type Props = NativeStackScreenProps<NativeStackParamList, 'PokemonDetail'>;
 
 export default function PokemonDetail({ route }: Props) {
     const { data, name } = route.params;
-    const navigation =
-        useNavigation<
-            NativeStackNavigationProp<NativeStackParamList, 'PokemonDetail'>
-        >();
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'PokemonDetail'>>();
 
     useEffect(() => {
         navigation.setOptions({
@@ -38,11 +32,7 @@ export default function PokemonDetail({ route }: Props) {
         return <PokemonDetails data={data} />;
     }
 
-    return (
-        <PokemonWithFetching
-            url={`https://pokeapi.co/api/v2/pokemon/${name}`}
-        />
-    );
+    return <PokemonWithFetching url={`https://pokeapi.co/api/v2/pokemon/${name}`} />;
 }
 
 function PokemonWithFetching({ url }: { url: string }) {
@@ -68,54 +58,24 @@ function PokemonDetails({ data }: PokemonDetailsProps) {
     }
 
     return (
-        <View
-            style={[
-                styles.container,
-                { backgroundColor: cardColor[data.types[0].type.name] },
-            ]}>
+        <View style={[styles.container, { backgroundColor: cardColor[data.types[0].type.name] }]}>
             <ScrollView>
                 <View style={styles.imageContainer}>
                     <Image
                         style={styles.image}
                         source={{
-                            uri: data.sprites.other['official-artwork'][
-                                'front_default'
-                            ],
+                            uri: data.sprites.other['official-artwork']['front_default'],
                         }}
                     />
                 </View>
                 <View style={styles.descriptionContainer}>
-                    <Description
-                        label="type"
-                        value={<PokemonTypes types={data.types} isInScreen />}
-                    />
-                    <Description
-                        label="abilities"
-                        value={<PokemonAbilities abilities={data.abilities} />}
-                    />
-                    <Description
-                        label="height"
-                        value={
-                            <MyText>
-                                {getHeightInFeetAndInches(data.height)}
-                            </MyText>
-                        }
-                    />
-                    <Description
-                        label="weight"
-                        value={<MyText>{getWeightInLbs(data.weight)}</MyText>}
-                    />
-                    <Description
-                        label="base-experience"
-                        value={<MyText>{data.base_experience}</MyText>}
-                    />
+                    <Description label="type" value={<PokemonTypes types={data.types} isInScreen />} />
+                    <Description label="abilities" value={<PokemonAbilities abilities={data.abilities} />} />
+                    <Description label="height" value={<MyText>{getHeightInFeetAndInches(data.height)}</MyText>} />
+                    <Description label="weight" value={<MyText>{getWeightInLbs(data.weight)}</MyText>} />
+                    <Description label="base-experience" value={<MyText>{data.base_experience}</MyText>} />
                     {data.stats.map(({ base_stat, stat }) => (
-                        <Description
-                            key={stat.name}
-                            label={stat.name}
-                            value={<MyText>{base_stat}</MyText>}
-                            noBorder
-                        />
+                        <Description key={stat.name} label={stat.name} value={<MyText>{base_stat}</MyText>} noBorder />
                     ))}
                 </View>
             </ScrollView>
@@ -132,10 +92,7 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width - 70,
         height: Dimensions.get('window').width - 70,
         backgroundColor: appColor.headerBg,
-        borderRadius:
-            Math.round(
-                Dimensions.get('window').width + Dimensions.get('window').width,
-            ) / 2,
+        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').width) / 2,
         elevation: 5,
         flex: 1,
         alignSelf: 'center',

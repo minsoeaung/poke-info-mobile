@@ -4,20 +4,14 @@ import { Pressable, StyleSheet } from 'react-native';
 import MyText from './MyText';
 
 type Props = {
-    func: () => void;
+    onPress: () => void;
 };
 
-const ClearInputButton = ({ func }: Props) => {
+const ClearInputButton = ({ onPress }: Props) => {
     return (
-        <Pressable style={styles.xParent} onPress={() => func()}>
+        <Pressable style={styles.xParent} onPress={onPress}>
             {({ pressed }) => (
-                <MyText
-                    style={StyleSheet.flatten([
-                        styles.x,
-                        { color: pressed ? 'tomato' : 'grey' },
-                    ])}>
-                    X
-                </MyText>
+                <MyText style={StyleSheet.flatten([styles.x, { color: pressed ? 'tomato' : 'grey' }])}>X</MyText>
             )}
         </Pressable>
     );

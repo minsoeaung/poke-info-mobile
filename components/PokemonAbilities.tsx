@@ -12,8 +12,7 @@ type Props = {
 };
 
 export default function PokemonAbilities({ abilities }: Props) {
-    const navigation =
-        useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
     const goToAbilityDetailScreen = (name: string) => {
         navigation.push('AbilityDetail', { name });
@@ -25,16 +24,12 @@ export default function PokemonAbilities({ abilities }: Props) {
                 <Pressable
                     key={ability.ability.name}
                     style={styles.ability}
-                    onPress={() =>
-                        goToAbilityDetailScreen(ability.ability.name)
-                    }>
+                    onPress={() => goToAbilityDetailScreen(ability.ability.name)}>
                     {({ pressed }) => (
                         <>
                             <MyText
                                 style={{
-                                    backgroundColor: pressed
-                                        ? 'rgb(130,183,255)'
-                                        : '#2f4f4f',
+                                    backgroundColor: pressed ? 'rgb(130,183,255)' : '#2f4f4f',
                                     marginTop: index === 0 ? 0 : 5,
                                     paddingHorizontal: 10,
                                     paddingVertical: 7,
@@ -45,12 +40,8 @@ export default function PokemonAbilities({ abilities }: Props) {
                                 {ability.ability.name}
                             </MyText>
                             <View>
-                                <SmallGreyText
-                                    text={`  Slot: ${ability.slot}`}
-                                />
-                                {ability.is_hidden && (
-                                    <SmallGreyText text=" (Hidden)" />
-                                )}
+                                <SmallGreyText text={`  Slot: ${ability.slot}`} />
+                                {ability.is_hidden && <SmallGreyText text=" (Hidden)" />}
                             </View>
                         </>
                     )}

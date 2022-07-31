@@ -27,21 +27,9 @@ export const PokeDexStack: React.FC = () => {
                 },
             }}>
             <Stack.Screen name="PokeDex" component={PokeDex} />
-            <Stack.Screen
-                name="PokemonDetail"
-                component={PokemonDetail}
-                options={ScreenBackButton}
-            />
-            <Stack.Screen
-                name="TypeDetail"
-                component={TypeDetail}
-                options={ScreenBackButton}
-            />
-            <Stack.Screen
-                name="AbilityDetail"
-                component={AbilityDetail}
-                options={ScreenBackButton}
-            />
+            <Stack.Screen name="PokemonDetail" component={PokemonDetail} options={ScreenBackButton} />
+            <Stack.Screen name="TypeDetail" component={TypeDetail} options={ScreenBackButton} />
+            <Stack.Screen name="AbilityDetail" component={AbilityDetail} options={ScreenBackButton} />
         </Stack.Navigator>
     );
 };
