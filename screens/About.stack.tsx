@@ -21,11 +21,7 @@ const AboutStack: React.FC = () => {
                     fontSize: 22,
                 },
             }}>
-            <Stack.Screen
-                name="About"
-                component={About}
-                options={{ title: 'About' }}
-            />
+            <Stack.Screen name="About" component={About} options={{ title: 'About' }} />
         </Stack.Navigator>
     );
 };

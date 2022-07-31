@@ -1,8 +1,11 @@
 {
   "expo": {
-    "name": "Pokemon Info",
-    "slug": "pokemon_info",
+    "name": "Poke Info",
+    "slug": "poke_info",
     "version": "1.0.0",
+    "platforms": [
+      "android"
+    ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -18,7 +21,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.minsoeaung.pokemoninfo",
+      "bundleIdentifier": "com.minsoeaung.pokeinfo",
       "buildNumber": "1.0.0"
     },
     "android": {
@@ -26,7 +29,7 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFF0E5"
       },
-      "package": "com.minsoeaung.pokemoninfo",
+      "package": "com.minsoeaung.pokeinfo",
       "versionCode": 1,
       "permissions": []
     },

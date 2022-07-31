@@ -4,13 +4,13 @@ import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 
 import ClearInputButton from '../components/ClearInputButton';
 import { PressableNameList } from '../components/PressableNameList';
+import { ITEMS } from '../constants/ITEMS';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
-import { items } from '../constants/items';
 import useSearchableList from '../hooks/useSearchableList';
 
 export default function ItemList() {
-    const { list, value, handleChangeText, clearInput } = useSearchableList(items);
+    const { list, value, handleChangeText, clearInput } = useSearchableList(ITEMS);
     const listRef = useRef<FlatList>(null);
     useScrollToTop(listRef);
 

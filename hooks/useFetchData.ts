@@ -6,10 +6,7 @@ interface ResData<T> {
     data: T | null;
 }
 
-const useFetchData = <T,>(
-    url: string | null,
-    refresh?: boolean,
-): ResData<T> => {
+const useFetchData = <T>(url: string | null, refresh?: boolean): ResData<T> => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
     const [data, setData] = useState(null);

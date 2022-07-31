@@ -1,17 +1,18 @@
 import { useScrollToTop } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import React, { useCallback, useLayoutEffect, useRef, useState } from 'react';
-import { ActivityIndicator, Dimensions, FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
-import Animated, { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reanimated';
+import React, { useLayoutEffect, useRef, useState } from 'react';
+import { Dimensions, FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
+import Animated from 'react-native-reanimated';
 
 import ClearInputButton from '../components/ClearInputButton';
 import MyText from '../components/MyText';
 import PokemonCard from '../components/PokemonCard';
 import { PressableNameList } from '../components/PressableNameList';
+import { POKEMONS } from '../constants/POKEMONS';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
-import { pokemons } from '../constants/pokemons';
+import useIsVisible from '../hooks/useIsVisible';
 import usePagination from '../hooks/usePagination';
 import useSearchableList from '../hooks/useSearchableList';
 import { NativeStackParamList } from '../types';
@@ -20,46 +21,18 @@ const { height } = Dimensions.get('window');
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'PokeDex'>;
 
-const SEARCH_BOX_TOP_POSITION = -65;
-
 export default function PokeDex({ navigation }: Props) {
     const [page, setPage] = useState(1);
-    const { list, value, handleChangeText, clearInput } = useSearchableList(pokemons);
-    const [searchVisible, setSearchVisible] = useState(false);
+    const { list, value, handleChangeText, clearInput } = useSearchableList(POKEMONS);
+    const { animatedStyles, isVisible, toggle } = useIsVisible();
+    const { data, error, isLoading } = usePagination(page, 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=27');
     const listRef = useRef<FlatList>(null);
     useScrollToTop(listRef);
-
-    const { data, error, isLoading } = usePagination(page, 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=27');
-
-    const top = useSharedValue(SEARCH_BOX_TOP_POSITION);
-
-    const animatedStyles = useAnimatedStyle(() => {
-        return {
-            transform: [{ translateY: top.value }],
-        };
-    });
-
-    const showSearchBox = useCallback(() => {
-        setSearchVisible(true);
-        top.value = withTiming(10);
-    }, []);
-
-    const hideSearchBox = useCallback(() => {
-        setSearchVisible(false);
-        top.value = withTiming(SEARCH_BOX_TOP_POSITION);
-    }, []);
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <Pressable
-                    onPress={() => {
-                        if (top.value === SEARCH_BOX_TOP_POSITION) {
-                            showSearchBox();
-                        } else {
-                            hideSearchBox();
-                        }
-                    }}>
+                <Pressable onPress={toggle}>
                     {({ pressed }) => (
                         <MyText
                             style={StyleSheet.flatten([
@@ -93,13 +66,11 @@ export default function PokeDex({ navigation }: Props) {
                     <ClearInputButton onPress={clearInput} />
                 </View>
             </Animated.View>
-
-            {searchVisible && !!value.trim() && (
+            {!!value.trim() && isVisible && (
                 <View style={[StyleSheet.absoluteFill, styles.overlaySuggestionList]}>
                     <PressableNameList goTo="PokemonDetail" size="small" data={list} />
                 </View>
             )}
-
             <View>
                 <FlatList
                     ref={listRef}
@@ -109,17 +80,13 @@ export default function PokeDex({ navigation }: Props) {
                     numColumns={3}
                     onEndReached={() => !error && setPage(page + 1)}
                     ListFooterComponent={
-                        error ? (
-                            <MyText>{error}</MyText>
-                        ) : isLoading ? (
-                            <ActivityIndicator color={appColor.border} />
-                        ) : null
+                        error ? <MyText>{error}</MyText> : isLoading ? <MyText>loading...</MyText> : null
                     }
                     ListFooterComponentStyle={styles.listFooter}
                     contentInsetAdjustmentBehavior="automatic"
                     onScrollBeginDrag={() => {
-                        if (top.value !== SEARCH_BOX_TOP_POSITION) {
-                            hideSearchBox();
+                        if (isVisible) {
+                            toggle();
                         }
                     }}
                 />

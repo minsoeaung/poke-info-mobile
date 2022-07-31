@@ -1,6 +1,6 @@
 import { PressableListItemType } from '../types';
 
-export const pokemons: PressableListItemType[] = [
+export const POKEMONS: PressableListItemType[] = [
     { name: 'bulbasaur' },
     { name: 'ivysaur' },
     { name: 'venusaur' },

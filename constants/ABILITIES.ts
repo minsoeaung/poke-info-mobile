@@ -1,6 +1,6 @@
 import { PressableListItemType } from '../types';
 
-const abilities: PressableListItemType[] = [
+const ABILITIES: PressableListItemType[] = [
     { name: 'stench' },
     { name: 'drizzle' },
     { name: 'speed-boost' },
@@ -330,4 +330,4 @@ const abilities: PressableListItemType[] = [
     { name: 'shield' },
 ];
 
-export default abilities;
+export default ABILITIES;

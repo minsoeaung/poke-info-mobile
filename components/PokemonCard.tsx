@@ -1,6 +1,6 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { ActivityIndicator, Image, Pressable, StyleSheet, View } from 'react-native';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { appColor, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
@@ -43,7 +43,7 @@ export default function PokemonCard({ url }: { url: string }) {
     if (isLoading) {
         return (
             <View style={[styles.container, { elevation: 0 }]}>
-                <ActivityIndicator color={appColor.border} />
+                <MyText>...</MyText>
             </View>
         );
     }

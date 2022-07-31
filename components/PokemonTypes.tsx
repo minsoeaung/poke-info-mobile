@@ -13,8 +13,7 @@ type Props = {
 };
 
 export default function PokemonTypes({ types, isInScreen = false }: Props) {
-    const navigation =
-        useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
     if (isInScreen) {
         return (
@@ -30,9 +29,7 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
                         {({ pressed }) => (
                             <MyText
                                 style={{
-                                    backgroundColor: pressed
-                                        ? 'rgb(130,183,255)'
-                                        : typeColor[type.name],
+                                    backgroundColor: pressed ? 'rgb(130,183,255)' : typeColor[type.name],
                                     paddingHorizontal: 10,
                                     paddingVertical: 7,
                                     borderRadius: 5,
@@ -60,10 +57,8 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
                         paddingVertical: 2,
                         borderBottomLeftRadius: index === 0 ? 5 : 0,
                         borderTopLeftRadius: index === 0 ? 5 : 0,
-                        borderTopRightRadius:
-                            index === types.length - 1 ? 5 : 0,
-                        borderBottomRightRadius:
-                            index === types.length - 1 ? 5 : 0,
+                        borderTopRightRadius: index === types.length - 1 ? 5 : 0,
+                        borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
                         color: 'white',
                         fontSize: 10,
                     }}>
