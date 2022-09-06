@@ -1,6 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
+import MyHeader from '../components/MyHeader';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import About from './About';
@@ -12,8 +13,9 @@ const AboutStack: React.FC = () => {
         <Stack.Navigator
             initialRouteName="About"
             screenOptions={{
+                header: props => <MyHeader headerProps={props} />,
                 headerStyle: {
-                    backgroundColor: appColor.headerBg,
+                    backgroundColor: appColor.secondary,
                 },
                 headerTintColor: appColor.headerFont,
                 headerTitleStyle: {

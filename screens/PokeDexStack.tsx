@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import ScreenBackButton from '../components/ScreenBackButton';
+import MyHeader from '../components/MyHeader';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import { NativeStackParamList } from '../types';
@@ -12,24 +12,27 @@ import TypeDetail from './TypeDetail';
 
 const Stack = createNativeStackNavigator<NativeStackParamList>();
 
-export const PokeDexStack: React.FC = () => {
+const PokeDexStack: React.FC = () => {
     return (
         <Stack.Navigator
             initialRouteName="PokeDex"
             screenOptions={{
+                header: props => <MyHeader headerProps={props} />,
                 headerStyle: {
-                    backgroundColor: appColor.headerBg,
+                    backgroundColor: appColor.primary,
                 },
-                headerTintColor: appColor.headerFont,
+                headerTintColor: appColor.secondary,
                 headerTitleStyle: {
                     fontFamily: fonts.fontDotGothic,
                     fontSize: 22,
                 },
             }}>
             <Stack.Screen name="PokeDex" component={PokeDex} />
-            <Stack.Screen name="PokemonDetail" component={PokemonDetail} options={ScreenBackButton} />
-            <Stack.Screen name="TypeDetail" component={TypeDetail} options={ScreenBackButton} />
-            <Stack.Screen name="AbilityDetail" component={AbilityDetail} options={ScreenBackButton} />
+            <Stack.Screen name="PokemonDetail" component={PokemonDetail} />
+            <Stack.Screen name="TypeDetail" component={TypeDetail} />
+            <Stack.Screen name="AbilityDetail" component={AbilityDetail} />
         </Stack.Navigator>
     );
 };
+
+export default PokeDexStack;

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 import Description from '../components/Description';
@@ -23,7 +23,7 @@ export default function TypeDetail({ route, navigation }: Props) {
 
     const { isLoading, error, data } = useFetchData<PokeAPI.Type>(`https://pokeapi.co/api/v2/type/${name}`);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         navigation.setOptions({ title: getFormattedName(name) });
     }, []);
 
@@ -49,7 +49,7 @@ export default function TypeDetail({ route, navigation }: Props) {
         <FlatList
             data={[]}
             renderItem={null}
-            style={styles.container}
+            style={styles.headerContainer}
             ListHeaderComponent={
                 <>
                     <View style={styles.boxWrap}>
@@ -150,10 +150,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    container: {
+    headerContainer: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.appBg,
+        backgroundColor: appColor.primary,
     },
     typeContainer: {
         flexDirection: 'row',
@@ -161,7 +161,7 @@ const styles = StyleSheet.create({
     },
     boxWrap: {
         marginBottom: 10,
-        backgroundColor: appColor.headerBg,
+        backgroundColor: appColor.secondary,
         borderRadius: 10,
         borderWidth: 0.5,
         padding: 10,

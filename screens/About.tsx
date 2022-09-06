@@ -6,7 +6,7 @@ import { appColor } from '../constants/colors';
 
 const About = () => {
     return (
-        <View style={styles.container}>
+        <View style={styles.headerContainer}>
             <View style={styles.boxWrap}>
                 <MyText style={styles.description}>
                     PokeInfo is a free, simple, and unofficial app that consumes REST API from "https://pokeapi.co/".
@@ -34,14 +34,14 @@ const About = () => {
 };
 
 const styles = StyleSheet.create({
-    container: {
+    headerContainer: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.appBg,
+        backgroundColor: appColor.primary,
     },
     boxWrap: {
         marginBottom: 10,
-        backgroundColor: appColor.headerBg,
+        backgroundColor: appColor.secondary,
         borderRadius: 10,
         borderWidth: 0.5,
         paddingHorizontal: 10,

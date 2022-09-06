@@ -2,15 +2,11 @@ type Type = {
     [key: string]: string;
 };
 
-export const appColor: Type = {
+export const appColor = {
     border: '#3e3f45', // indigo 9
-    headerBg: '#f8f9ff', // indigo 0
-    tabBarActive: 'tomato',
     headerFont: '#10162f',
-    appBg: '#FFF0E5',
-
-    deepSeaGreen: '#0E534E',
-    moonGlow: '#FFFDDC',
+    primary: '#203961',
+    secondary: '#f8f9ff',
 };
 
 export const cardColor: Type = {

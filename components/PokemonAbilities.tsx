@@ -4,6 +4,7 @@ import { PokeAPI } from 'pokeapi-types';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import { NativeStackParamList } from '../types';
+import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
 
@@ -19,7 +20,7 @@ export default function PokemonAbilities({ abilities }: Props) {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={styles.headerContainer}>
             {abilities.map((ability, index) => (
                 <Pressable
                     key={ability.ability.name}
@@ -37,11 +38,11 @@ export default function PokemonAbilities({ abilities }: Props) {
                                     color: 'white',
                                     elevation: 5,
                                 }}>
-                                {ability.ability.name}
+                                {getFormattedName(ability.ability.name + ' >')}
                             </MyText>
                             <View>
-                                <SmallGreyText text={`  Slot: ${ability.slot}`} />
-                                {ability.is_hidden && <SmallGreyText text=" (Hidden)" />}
+                                <SmallGreyText text={` Slot ${ability.slot}`} />
+                                {ability.is_hidden && <SmallGreyText text=" ( hidden )" />}
                             </View>
                         </>
                     )}
@@ -52,7 +53,7 @@ export default function PokemonAbilities({ abilities }: Props) {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    headerContainer: {
         alignItems: 'flex-start',
     },
     ability: {

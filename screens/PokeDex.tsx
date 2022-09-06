@@ -1,32 +1,32 @@
-import { useScrollToTop } from '@react-navigation/native';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import React, { useLayoutEffect, useRef, useState } from 'react';
+import React, { useLayoutEffect, useRef } from 'react';
 import { Dimensions, FlatList, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated from 'react-native-reanimated';
 
 import ClearInputButton from '../components/ClearInputButton';
+import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
 import PokemonCard from '../components/PokemonCard';
 import { PressableNameList } from '../components/PressableNameList';
 import { POKEMONS } from '../constants/POKEMONS';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
+import useFetchInfiniteData from '../hooks/useFetchInfiniteData';
 import useIsVisible from '../hooks/useIsVisible';
-import usePagination from '../hooks/usePagination';
 import useSearchableList from '../hooks/useSearchableList';
 import { NativeStackParamList } from '../types';
 
 const { height } = Dimensions.get('window');
+const URL = 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=27';
 
-type Props = NativeStackScreenProps<NativeStackParamList, 'PokeDex'>;
-
-export default function PokeDex({ navigation }: Props) {
-    const [page, setPage] = useState(1);
+export default function PokeDex() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(POKEMONS);
     const { animatedStyles, isVisible, toggle } = useIsVisible();
-    const { data, error, isLoading } = usePagination(page, 'https://pokeapi.co/api/v2/pokemon?offset=0&limit=27');
+    const { data, isLoading, isLoadingMore, error, fetchMore } = useFetchInfiniteData(URL);
     const listRef = useRef<FlatList>(null);
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'PokeDex'>>();
     useScrollToTop(listRef);
 
     useLayoutEffect(() => {
@@ -38,7 +38,7 @@ export default function PokeDex({ navigation }: Props) {
                             style={StyleSheet.flatten([
                                 styles.searchBtn,
                                 {
-                                    color: pressed ? 'tomato' : 'black',
+                                    color: pressed ? 'tomato' : appColor.secondary,
                                 },
                             ])}>
                             Search
@@ -49,12 +49,8 @@ export default function PokeDex({ navigation }: Props) {
         });
     }, [navigation]);
 
-    const renderItem = ({ item }: { item: PokeAPI.NamedAPIResource }) => {
-        return <PokemonCard url={item.url} />;
-    };
-
     return (
-        <View style={styles.container}>
+        <View style={styles.headerContainer}>
             <Animated.View style={[StyleSheet.absoluteFill, styles.overlaySearchInput, animatedStyles]}>
                 <View style={styles.searchInputWrap}>
                     <TextInput
@@ -71,34 +67,35 @@ export default function PokeDex({ navigation }: Props) {
                     <PressableNameList goTo="PokemonDetail" size="small" data={list} />
                 </View>
             )}
-            <View>
-                <FlatList
-                    ref={listRef}
-                    data={data}
-                    renderItem={renderItem}
-                    keyExtractor={(item, index) => item.name + index}
-                    numColumns={3}
-                    onEndReached={() => !error && setPage(page + 1)}
-                    ListFooterComponent={
-                        error ? <MyText>{error}</MyText> : isLoading ? <MyText>loading...</MyText> : null
-                    }
-                    ListFooterComponentStyle={styles.listFooter}
-                    contentInsetAdjustmentBehavior="automatic"
-                    onScrollBeginDrag={() => {
-                        if (isVisible) {
-                            toggle();
+            {isLoading ? (
+                <LoadingText />
+            ) : (
+                <View>
+                    <FlatList
+                        ref={listRef}
+                        data={data}
+                        renderItem={({ item }: { item: PokeAPI.NamedAPIResource }) => <PokemonCard name={item.name} />}
+                        keyExtractor={item => item.name}
+                        numColumns={3}
+                        onEndReachedThreshold={10}
+                        onEndReached={() => !error && !isLoading && !isLoadingMore && fetchMore()}
+                        ListFooterComponent={
+                            error ? <MyText>{error}</MyText> : isLoadingMore ? <MyText>loading...</MyText> : null
                         }
-                    }}
-                />
-            </View>
+                        ListFooterComponentStyle={styles.listFooter}
+                        contentInsetAdjustmentBehavior="automatic"
+                        onScrollBeginDrag={() => isVisible && toggle()}
+                    />
+                </View>
+            )}
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    container: {
+    headerContainer: {
         flex: 1,
-        backgroundColor: appColor.appBg,
+        backgroundColor: appColor.primary,
         paddingHorizontal: 5,
     },
     listFooter: {
@@ -115,10 +112,11 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     searchInputWrap: {
-        backgroundColor: appColor.headerBg,
-        borderWidth: 1,
-        elevation: 10,
+        backgroundColor: appColor.secondary,
+        borderWidth: 0.5,
         borderRadius: 10,
+        elevation: 5,
+        borderColor: appColor.primary,
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -129,21 +127,22 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         fontFamily: fonts.fontDotGothic,
         width: '90%',
+        color: appColor.primary,
     },
     searchBtn: {
-        paddingLeft: 20,
         paddingVertical: 10,
+        paddingLeft: 25,
     },
     overlaySuggestionList: {
         zIndex: 1,
         top: 60,
         left: 20,
         right: 20,
-        borderWidth: 1,
+        borderWidth: 0.5,
         borderRadius: 10,
         padding: 10,
         height: height / 3,
-        backgroundColor: appColor.headerBg,
+        backgroundColor: appColor.secondary,
         elevation: 10,
     },
 });

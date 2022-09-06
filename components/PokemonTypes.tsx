@@ -5,6 +5,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import { typeColor } from '../constants/colors';
 import { NativeStackParamList } from '../types';
+import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
 
 type Props = {
@@ -37,7 +38,7 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
                                     marginRight: 15,
                                     elevation: 5,
                                 }}>
-                                {type.name}
+                                {getFormattedName(type.name) + ' >'}
                             </MyText>
                         )}
                     </Pressable>

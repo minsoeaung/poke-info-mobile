@@ -1,4 +1,5 @@
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
@@ -13,10 +14,10 @@ import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PressableListItemType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
-type Props = NativeStackScreenProps<NativeStackParamList, 'ItemDetail'>;
-
-export default function ItemDetail({ navigation, route }: Props) {
+export default function ItemDetail() {
+    const route = useRoute<RouteProp<NativeStackParamList, 'ItemDetail'>>();
     const { name } = route.params;
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'ItemDetail'>>();
 
     const [heldByPokemons, setHeldByPokemons] = useState<PressableListItemType[]>([]);
     const [flavorText, setFlavorText] = useState('');
@@ -69,7 +70,7 @@ export default function ItemDetail({ navigation, route }: Props) {
         <FlatList
             data={[]}
             renderItem={null}
-            style={styles.container}
+            style={styles.headerContainer}
             ListHeaderComponent={
                 <>
                     <View style={styles.boxWrap}>
@@ -77,8 +78,14 @@ export default function ItemDetail({ navigation, route }: Props) {
                         {effectEntry.length > 0 && <MyText style={styles.description}>{effectEntry}</MyText>}
                     </View>
                     <View style={styles.boxWrap}>
-                        <Description label="Cost" value={<MyText>{data!.cost}</MyText>} noBorder />
-                        <Description label="Fling Power" value={<MyText>{data!.fling_power}</MyText>} noBorder />
+                        <Description
+                            label="Cost"
+                            value={<MyText>{data!.cost > 0 ? data!.cost : 'Not for sale'}</MyText>}
+                            noBorder
+                        />
+                        {data!.fling_power > 0 && (
+                            <Description label="Fling Power" value={<MyText>{data!.fling_power}</MyText>} noBorder />
+                        )}
                     </View>
                 </>
             }
@@ -94,14 +101,14 @@ export default function ItemDetail({ navigation, route }: Props) {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    headerContainer: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.appBg,
+        backgroundColor: appColor.primary,
     },
     boxWrap: {
         marginBottom: 10,
-        backgroundColor: appColor.headerBg,
+        backgroundColor: appColor.secondary,
         borderRadius: 10,
         borderWidth: 0.5,
         paddingHorizontal: 10,

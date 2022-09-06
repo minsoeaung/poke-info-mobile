@@ -4,45 +4,20 @@ import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { appColor, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, PickedPokemonType, PokemonType } from '../types';
+import { NativeStackParamList, PokemonForm } from '../types';
+import getFormattedName from '../utils/getFormattedName';
 import ErrorDisplay from './ErrorDisplay';
 import MyText from './MyText';
 import PokemonTypes from './PokemonTypes';
 
-export default function PokemonCard({ url }: { url: string }) {
-    const { isLoading, error, data } = useFetchData<PokemonType>(url);
+export default function PokemonCard({ name }: { name: string }) {
+    const { isLoading, error, data } = useFetchData<PokemonForm>(`https://pokeapi.co/api/v2/pokemon-form/${name}/`);
 
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
-    const goToPokemonDetail = () => {
-        if (!data) return;
-
-        const payload: PickedPokemonType = {
-            name: data.name,
-            sprites: {
-                other: {
-                    'official-artwork': {
-                        front_default: data.sprites.other['official-artwork']['front_default'],
-                    },
-                },
-            },
-            types: data.types,
-            abilities: data.abilities,
-            height: data.height,
-            weight: data.weight,
-            base_experience: data.base_experience,
-            stats: data.stats,
-        };
-
-        navigation.navigate('PokemonDetail', {
-            data: payload,
-            name: 'polyfill',
-        });
-    };
-
     if (isLoading) {
         return (
-            <View style={[styles.container, { elevation: 0 }]}>
+            <View style={[styles.headerContainer, { elevation: 0 }]}>
                 <MyText>...</MyText>
             </View>
         );
@@ -52,38 +27,47 @@ export default function PokemonCard({ url }: { url: string }) {
         return <ErrorDisplay error={error} />;
     }
 
-    return (
-        <Pressable
-            onPress={goToPokemonDetail}
-            style={({ pressed }) => [
-                styles.container,
-                {
-                    backgroundColor: pressed ? 'rgb(210, 230, 255)' : cardColor[data!.types[0].type.name],
-                },
-            ]}>
-            <MyText style={styles.name}>{data!.name}</MyText>
-            <View style={styles.imageContainer}>
-                <Image style={styles.image} source={{ uri: data!.sprites['front_default'] }} />
-            </View>
-            <PokemonTypes types={data!.types} />
-        </Pressable>
-    );
+    if (data) {
+        const bgColor = cardColor[data.types[0].type.name];
+
+        return (
+            <Pressable
+                onPress={() => {
+                    navigation.navigate('PokemonDetail', { name });
+                }}
+                style={({ pressed }) => [
+                    styles.headerContainer,
+                    {
+                        backgroundColor: pressed ? 'rgb(210, 230, 255)' : bgColor,
+                    },
+                ]}>
+                <MyText style={styles.name}>{getFormattedName(data.name)}</MyText>
+                <View style={styles.imageContainer}>
+                    <Image style={styles.image} source={{ uri: data.sprites['front_default'] }} />
+                </View>
+                <PokemonTypes types={data.types} />
+            </Pressable>
+        );
+    } else {
+        return null;
+    }
 }
 
 const styles = StyleSheet.create({
-    container: {
+    headerContainer: {
         height: 160,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-evenly',
         margin: 5,
         borderWidth: 0.5,
-        borderColor: appColor.border,
+        borderColor: appColor.primary,
         elevation: 5,
+        borderRadius: 10,
     },
     imageContainer: {
-        borderRadius: 20,
-        backgroundColor: '#fff',
+        borderRadius: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.5)',
         width: '80%',
         height: '60%',
     },

@@ -3,9 +3,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import AppLoading from 'expo-app-loading';
 import { StatusBar } from 'expo-status-bar';
 import React from 'react';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
 import { appColor } from './constants/colors';
-import { BottomTabsNavigator } from './screens/BottomTabs.navigator';
+import { BottomTabsNavigator } from './screens/BottomTabsNavigator';
 
 export default function App() {
     const [fontsLoaded] = useFonts({ DotGothic16_400Regular });
@@ -15,9 +16,11 @@ export default function App() {
     }
 
     return (
-        <NavigationContainer>
-            <BottomTabsNavigator />
-            <StatusBar style="dark" backgroundColor={appColor.appBg} />
-        </NavigationContainer>
+        <SafeAreaProvider>
+            <NavigationContainer>
+                <BottomTabsNavigator />
+                <StatusBar style="light" backgroundColor={appColor.primary} />
+            </NavigationContainer>
+        </SafeAreaProvider>
     );
 }

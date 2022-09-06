@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { appColor } from '../constants/colors';
 import MyText from './MyText';
 
 type DescriptionProps = {
@@ -18,7 +19,7 @@ export default function Description({ label, value, noBorder, labelFlex = 2, val
                 styles.types,
                 {
                     borderBottomWidth: noBorder ? 0 : 0.5,
-                    borderColor: 'tomato',
+                    borderColor: appColor.primary,
                 },
             ]}>
             <View style={{ flex: labelFlex }}>

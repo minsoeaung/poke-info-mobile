@@ -15,7 +15,7 @@ export default function ItemList() {
     useScrollToTop(listRef);
 
     return (
-        <View style={styles.container}>
+        <View style={styles.headerContainer}>
             <View style={styles.searchInputWrap}>
                 <TextInput
                     style={styles.searchInput}
@@ -33,14 +33,14 @@ export default function ItemList() {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    headerContainer: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.appBg,
+        backgroundColor: appColor.primary,
         paddingBottom: 60,
     },
     searchInputWrap: {
-        backgroundColor: appColor.headerBg,
+        backgroundColor: appColor.secondary,
         borderRadius: 10,
         borderWidth: 0.5,
         marginBottom: 10,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         width: '90%',
     },
     abilityListWrap: {
-        backgroundColor: appColor.headerBg,
+        backgroundColor: appColor.secondary,
         borderRadius: 10,
         borderWidth: 0.5,
         paddingHorizontal: 10,

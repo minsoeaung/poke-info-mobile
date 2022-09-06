@@ -58,7 +58,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
         <FlatList
             data={[]}
             renderItem={null}
-            style={styles.container}
+            style={styles.headerContainer}
             ListHeaderComponent={
                 <View style={styles.boxWrap}>
                     {flavorText.length > 0 && <MyText style={styles.description}>{flavorText}</MyText>}
@@ -78,14 +78,14 @@ export default function AbilityDetail({ navigation, route }: Props) {
 }
 
 const styles = StyleSheet.create({
-    container: {
+    headerContainer: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.appBg,
+        backgroundColor: appColor.primary,
     },
     boxWrap: {
         marginBottom: 10,
-        backgroundColor: appColor.headerBg,
+        backgroundColor: appColor.secondary,
         borderRadius: 10,
         borderWidth: 0.5,
         paddingHorizontal: 10,

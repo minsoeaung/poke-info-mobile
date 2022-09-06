@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
-import ScreenBackButton from '../components/ScreenBackButton';
+import MyHeader from '../components/MyHeader';
 import { appColor } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import AbilityDetail from './AbilityDetail';
@@ -17,8 +17,9 @@ export const ItemsStack: React.FC = () => {
         <Stack.Navigator
             initialRouteName="ItemList"
             screenOptions={{
+                header: props => <MyHeader headerProps={props} />,
                 headerStyle: {
-                    backgroundColor: appColor.headerBg,
+                    backgroundColor: appColor.secondary,
                 },
                 headerTintColor: appColor.headerFont,
                 headerTitleStyle: {
@@ -27,10 +28,10 @@ export const ItemsStack: React.FC = () => {
                 },
             }}>
             <Stack.Screen name="ItemList" component={ItemList} options={{ title: 'Items' }} />
-            <Stack.Screen name="ItemDetail" component={ItemDetail} options={ScreenBackButton} />
-            <Stack.Screen name="AbilityDetail" component={AbilityDetail} options={ScreenBackButton} />
-            <Stack.Screen name="PokemonDetail" component={PokemonDetail} options={ScreenBackButton} />
-            <Stack.Screen name="TypeDetail" component={TypeDetail} options={ScreenBackButton} />
+            <Stack.Screen name="ItemDetail" component={ItemDetail} />
+            <Stack.Screen name="AbilityDetail" component={AbilityDetail} />
+            <Stack.Screen name="PokemonDetail" component={PokemonDetail} />
+            <Stack.Screen name="TypeDetail" component={TypeDetail} />
         </Stack.Navigator>
     );
 };
