@@ -12,7 +12,7 @@ type DescriptionProps = {
     valueFlex?: number;
 };
 
-export default function Description({ label, value, noBorder, labelFlex = 2, valueFlex = 3 }: DescriptionProps) {
+export default function Description({ label, value, noBorder, labelFlex = 4, valueFlex = 5 }: DescriptionProps) {
     return (
         <View
             style={[
@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     types: {
         flexDirection: 'row',
         alignItems: 'center',
-        padding: 10,
+        paddingVertical: 12,
     },
     secondary: {
         color: 'grey',

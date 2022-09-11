@@ -16,27 +16,25 @@ const MyHeader = ({ headerProps }: Props) => {
     const goBack = () => !!back && navigation.goBack();
 
     return (
-        <View style={styles.headerContainer}>
-            <View style={styles.titleContainer}>
-                {back && (
-                    <Pressable onPress={goBack}>
-                        {({ pressed }) => (
-                            <View style={styles.backBox}>
-                                <MyText
-                                    style={StyleSheet.flatten([
-                                        styles.back,
-                                        { color: pressed ? 'tomato' : appColor.primary },
-                                    ])}>
-                                    {'<'}
-                                </MyText>
-                            </View>
+        <View style={styles.container}>
+            <Pressable onPress={goBack}>
+                {({ pressed }) => (
+                    <View style={styles.headerLeft}>
+                        {back && (
+                            <MyText
+                                style={StyleSheet.flatten([
+                                    styles.backText,
+                                    { color: pressed ? 'tomato' : appColor.primary },
+                                ])}>
+                                {'<'}
+                            </MyText>
                         )}
-                    </Pressable>
+                        <MyText style={styles.titleText} numberOfLines={1}>
+                            {title}
+                        </MyText>
+                    </View>
                 )}
-                <View style={styles.box}>
-                    <MyText style={styles.title}>{title}</MyText>
-                </View>
-            </View>
+            </Pressable>
             {typeof options.headerRight === 'function' && (
                 // @ts-ignore
                 <View style={styles.headerRight}>{options.headerRight()}</View>
@@ -46,33 +44,28 @@ const MyHeader = ({ headerProps }: Props) => {
 };
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         height: 56,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
         backgroundColor: appColor.primary,
     },
-    titleContainer: {
-        display: 'flex',
-        flexDirection: 'row',
-    },
-    backBox: {
-        backgroundColor: appColor.secondary,
-    },
-    box: {
+    headerLeft: {
         backgroundColor: appColor.secondary,
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
+        paddingHorizontal: 20,
+        flexDirection: 'row',
     },
-    title: {
+    titleText: {
         fontSize: 25,
-        paddingHorizontal: 30,
+        paddingHorizontal: 10,
         paddingVertical: 5,
     },
-    back: {
+    backText: {
         fontSize: 25,
-        paddingHorizontal: 20,
+        paddingRight: 20,
         paddingVertical: 5,
     },
     headerRight: {

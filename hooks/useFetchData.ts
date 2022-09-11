@@ -23,8 +23,8 @@ const useFetchData = <T>(url: string | null, refresh?: boolean): ResData<T> => {
                         setData(data);
                     }
                 }
-            } catch {
-                setError('No internet connection.');
+            } catch (e) {
+                setError(e?.message || 'Unknown error');
             } finally {
                 setIsLoading(false);
             }

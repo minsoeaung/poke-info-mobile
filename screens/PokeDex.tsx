@@ -50,7 +50,7 @@ export default function PokeDex() {
     }, [navigation]);
 
     return (
-        <View style={styles.headerContainer}>
+        <View style={styles.container}>
             <Animated.View style={[StyleSheet.absoluteFill, styles.overlaySearchInput, animatedStyles]}>
                 <View style={styles.searchInputWrap}>
                     <TextInput
@@ -93,7 +93,7 @@ export default function PokeDex() {
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         flex: 1,
         backgroundColor: appColor.primary,
         paddingHorizontal: 5,

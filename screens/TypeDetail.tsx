@@ -49,7 +49,7 @@ export default function TypeDetail({ route, navigation }: Props) {
         <FlatList
             data={[]}
             renderItem={null}
-            style={styles.headerContainer}
+            style={styles.container}
             ListHeaderComponent={
                 <>
                     <View style={styles.boxWrap}>
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
     },
-    headerContainer: {
+    container: {
         flex: 1,
         padding: 10,
         backgroundColor: appColor.primary,

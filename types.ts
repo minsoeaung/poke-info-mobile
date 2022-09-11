@@ -49,8 +49,29 @@ export type NativeStackParamList = {
 
     PokemonDetail: {
         name: string;
+        color?: string;
     };
     TypeDetail: Name;
     AbilityDetail: Name;
     ItemDetail: Name;
 };
+
+export type Chain = {
+    species_name: string;
+    min_level: number;
+    trigger_name: EvolutionTriggerName | null;
+    item: PokeAPI.NamedAPIResource | null;
+};
+
+type EvolutionTriggerName =
+    | 'level-up'
+    | 'trade'
+    | 'use-item'
+    | 'shed'
+    | 'spin'
+    | 'tower-of-darkness'
+    | 'tower-of-waters'
+    | 'three-critical-hits'
+    | 'take-damage'
+    | string
+    | 'other';

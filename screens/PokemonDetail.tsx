@@ -1,10 +1,13 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { useLayoutEffect } from 'react';
+import { PokeAPI } from 'pokeapi-types';
+import { useLayoutEffect, useMemo } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
 
+import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
+import Evolutions from '../components/Evolutions';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
 import PokemonAbilities from '../components/PokemonAbilities';
@@ -13,14 +16,38 @@ import { appColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PokemonType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import getHeightInFeetAndInches from '../utils/getHeightInFeetAndInches';
-import getWeightInLbs from '../utils/getWeightInLbs';
+import getHeightString from '../utils/getHeightString';
+import getWeightString from '../utils/getWeightString';
 
 export default function PokemonDetail() {
     const route = useRoute<RouteProp<NativeStackParamList, 'PokemonDetail'>>();
-    const { name } = route.params;
+    const { name, color } = route.params;
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'PokemonDetail'>>();
+
     const { isLoading, error, data } = useFetchData<PokemonType>(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    const { isLoading: speciesLoading, data: species } = useFetchData<PokeAPI.PokemonSpecies>(
+        data ? data.species.url : null,
+    );
+
+    const flavorTextEntry = useMemo(() => {
+        if (species) {
+            return (
+                species.flavor_text_entries
+                    .find(entry => entry.version.name === 'diamond' && entry.language.name === 'en')
+                    ?.flavor_text.replace('\n', '') || ''
+            );
+        } else {
+            return '';
+        }
+    }, [species]);
+
+    const eggGroups = useMemo(() => {
+        if (species) {
+            return species.egg_groups.map(gp => gp.name);
+        } else {
+            return [];
+        }
+    }, [species]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -29,7 +56,7 @@ export default function PokemonDetail() {
     }, []);
 
     return (
-        <View style={styles.headerContainer}>
+        <View style={styles.container}>
             {isLoading ? (
                 <LoadingText />
             ) : error ? (
@@ -45,24 +72,49 @@ export default function PokemonDetail() {
                                 }}
                             />
                         </View>
-                        <View style={styles.descriptionContainer}>
-                            <Description label="type" value={<PokemonTypes types={data.types} isInScreen />} />
-                            <Description label="abilities" value={<PokemonAbilities abilities={data.abilities} />} />
+                        <Card>
+                            {speciesLoading ? (
+                                <MyText>...</MyText>
+                            ) : (
+                                flavorTextEntry && <MyText>{flavorTextEntry}</MyText>
+                            )}
+                        </Card>
+                        <Card title="Profile" titleBgColor={color}>
+                            <Description label="Type" value={<PokemonTypes types={data.types} isInScreen />} />
+                            <Description label="Abilities" value={<PokemonAbilities abilities={data.abilities} />} />
                             <Description
-                                label="height"
-                                value={<MyText>{getHeightInFeetAndInches(data.height)}</MyText>}
+                                label="Egg groups"
+                                value={
+                                    <View style={styles.eggGroups}>
+                                        {eggGroups.map(name => (
+                                            <MyText key={name} style={styles.eggGroup}>
+                                                {getFormattedName(name)}
+                                            </MyText>
+                                        ))}
+                                    </View>
+                                }
                             />
-                            <Description label="weight" value={<MyText>{getWeightInLbs(data.weight)}</MyText>} />
-                            <Description label="base-experience" value={<MyText>{data.base_experience}</MyText>} />
-                            {data.stats.map(({ base_stat, stat }) => (
+                            <Description label="Height" value={<MyText>{getHeightString(data.height)}</MyText>} />
+                            <Description
+                                label="Weight"
+                                value={<MyText>{getWeightString(data.weight)}</MyText>}
+                                noBorder
+                            />
+                        </Card>
+                        <Card title="Stats" titleBgColor={color}>
+                            <Description label="Base experience" value={<MyText>{data.base_experience}</MyText>} />
+                            {data.stats.map(({ base_stat, stat }, index) => (
                                 <Description
                                     key={stat.name}
-                                    label={stat.name}
+                                    label={getFormattedName(stat.name)}
                                     value={<MyText>{base_stat}</MyText>}
-                                    noBorder
+                                    noBorder={index === data?.stats.length - 1}
                                 />
                             ))}
-                        </View>
+                        </Card>
+                        <Card title="Evolutions" titleBgColor={color}>
+                            {species && <Evolutions url={species.evolution_chain.url} />}
+                        </Card>
                     </ScrollView>
                 )
             )}
@@ -71,7 +123,7 @@ export default function PokemonDetail() {
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         flex: 1,
         paddingHorizontal: 10,
         backgroundColor: appColor.primary,
@@ -98,7 +150,13 @@ const styles = StyleSheet.create({
         borderWidth: 0.5,
         borderRadius: 10,
         backgroundColor: appColor.secondary,
-        marginBottom: 10,
+        marginBottom: 15,
         paddingHorizontal: 10,
+    },
+    eggGroups: {
+        flexDirection: 'row',
+    },
+    eggGroup: {
+        marginRight: 10,
     },
 });

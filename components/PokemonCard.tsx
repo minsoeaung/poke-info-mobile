@@ -10,14 +10,14 @@ import ErrorDisplay from './ErrorDisplay';
 import MyText from './MyText';
 import PokemonTypes from './PokemonTypes';
 
-export default function PokemonCard({ name }: { name: string }) {
+export default function PokemonCard({ name, inEvolution }: { name: string; inEvolution?: undefined | true }) {
     const { isLoading, error, data } = useFetchData<PokemonForm>(`https://pokeapi.co/api/v2/pokemon-form/${name}/`);
 
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
     if (isLoading) {
         return (
-            <View style={[styles.headerContainer, { elevation: 0 }]}>
+            <View style={[styles.container, { elevation: 0 }]}>
                 <MyText>...</MyText>
             </View>
         );
@@ -30,13 +30,25 @@ export default function PokemonCard({ name }: { name: string }) {
     if (data) {
         const bgColor = cardColor[data.types[0].type.name];
 
+        const goToPokemonDetail = () => {
+            navigation.push('PokemonDetail', { name, color: bgColor });
+        };
+
+        if (inEvolution) {
+            return (
+                <Pressable onPress={goToPokemonDetail} style={[styles.container, styles.containerInEvolution]}>
+                    <View style={styles.imageContainerInEvolution}>
+                        <Image style={styles.image} source={{ uri: data.sprites['front_default'] }} />
+                    </View>
+                </Pressable>
+            );
+        }
+
         return (
             <Pressable
-                onPress={() => {
-                    navigation.navigate('PokemonDetail', { name });
-                }}
+                onPress={goToPokemonDetail}
                 style={({ pressed }) => [
-                    styles.headerContainer,
+                    styles.container,
                     {
                         backgroundColor: pressed ? 'rgb(210, 230, 255)' : bgColor,
                     },
@@ -54,16 +66,22 @@ export default function PokemonCard({ name }: { name: string }) {
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         height: 160,
         flex: 1,
         alignItems: 'center',
         justifyContent: 'space-evenly',
         margin: 5,
-        borderWidth: 0.5,
-        borderColor: appColor.primary,
-        elevation: 5,
         borderRadius: 10,
+        elevation: 5,
+        borderColor: appColor.primary,
+        borderWidth: 0.5,
+    },
+    containerInEvolution: {
+        height: 100,
+        elevation: 0,
+        borderWidth: 0,
+        margin: 0,
     },
     imageContainer: {
         borderRadius: 10,
@@ -71,9 +89,14 @@ const styles = StyleSheet.create({
         width: '80%',
         height: '60%',
     },
+    imageContainerInEvolution: {
+        width: '100%',
+        height: '100%',
+    },
     image: {
         width: '100%',
         height: '100%',
+        resizeMode: 'contain',
     },
     name: {
         letterSpacing: 1,

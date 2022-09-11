@@ -3,10 +3,10 @@ type Type = {
 };
 
 export const appColor = {
-    border: '#3e3f45', // indigo 9
+    border: '#3e3f45',
     headerFont: '#10162f',
     primary: '#203961',
-    secondary: '#f8f9ff',
+    secondary: '#fff',
 };
 
 export const cardColor: Type = {

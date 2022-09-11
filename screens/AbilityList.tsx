@@ -16,7 +16,7 @@ export default function AbilityList() {
     useScrollToTop(listRef);
 
     return (
-        <View style={styles.headerContainer}>
+        <View style={styles.container}>
             <View style={styles.searchInputWrap}>
                 <TextInput
                     style={styles.searchInput}
@@ -34,7 +34,7 @@ export default function AbilityList() {
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         flex: 1,
         padding: 10,
         backgroundColor: appColor.primary,

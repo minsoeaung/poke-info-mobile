@@ -5,14 +5,14 @@ import MyText from './MyText';
 
 export default function LoadingText() {
     return (
-        <View style={styles.headerContainer}>
+        <View style={styles.container}>
             <MyText style={styles.text}>loading...</MyText>
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

@@ -38,7 +38,7 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
                                     marginRight: 15,
                                     elevation: 5,
                                 }}>
-                                {getFormattedName(type.name) + ' >'}
+                                {getFormattedName(type.name)}
                             </MyText>
                         )}
                     </Pressable>

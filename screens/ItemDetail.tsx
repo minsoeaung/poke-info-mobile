@@ -70,7 +70,7 @@ export default function ItemDetail() {
         <FlatList
             data={[]}
             renderItem={null}
-            style={styles.headerContainer}
+            style={styles.container}
             ListHeaderComponent={
                 <>
                     <View style={styles.boxWrap}>
@@ -101,7 +101,7 @@ export default function ItemDetail() {
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         flex: 1,
         padding: 10,
         backgroundColor: appColor.primary,

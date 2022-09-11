@@ -20,7 +20,7 @@ export default function PokemonAbilities({ abilities }: Props) {
     };
 
     return (
-        <View style={styles.headerContainer}>
+        <View style={styles.container}>
             {abilities.map((ability, index) => (
                 <Pressable
                     key={ability.ability.name}
@@ -38,7 +38,7 @@ export default function PokemonAbilities({ abilities }: Props) {
                                     color: 'white',
                                     elevation: 5,
                                 }}>
-                                {getFormattedName(ability.ability.name + ' >')}
+                                {getFormattedName(ability.ability.name)}
                             </MyText>
                             <View>
                                 <SmallGreyText text={` Slot ${ability.slot}`} />
@@ -53,7 +53,7 @@ export default function PokemonAbilities({ abilities }: Props) {
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         alignItems: 'flex-start',
     },
     ability: {

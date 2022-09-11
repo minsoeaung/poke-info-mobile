@@ -1,17 +1,17 @@
 import { StyleSheet, View } from 'react-native';
 
-import MyText from './MyText';
+import SmallGreyText from './SmallGreyText';
 
 export default function ErrorDisplay({ error }: { error: string }) {
     return (
-        <View style={styles.headerContainer}>
-            <MyText>{error}</MyText>
+        <View style={styles.container}>
+            <SmallGreyText text={error} />
         </View>
     );
 }
 
 const styles = StyleSheet.create({
-    headerContainer: {
+    container: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',

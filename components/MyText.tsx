@@ -6,13 +6,17 @@ import { fonts } from '../constants/fonts';
 type Props = {
     style?: TextStyle;
     children: string | number;
+    numberOfLines?: number;
 };
 
 export default function MyText(props: Props) {
-    const { style, children } = props;
+    const { style, children, numberOfLines } = props;
 
     return (
-        <Text {...props} style={{ color: appColor.primary, ...style, fontFamily: fonts.fontDotGothic }}>
+        <Text
+            {...props}
+            style={{ color: appColor.primary, ...style, fontFamily: fonts.fontDotGothic }}
+            numberOfLines={numberOfLines ? numberOfLines : 0}>
             {children}
         </Text>
     );
