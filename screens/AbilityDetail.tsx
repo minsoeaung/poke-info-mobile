@@ -3,11 +3,12 @@ import { PokeAPI } from 'pokeapi-types';
 import { useEffect, useState } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
+import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
 import { PressableNameList } from '../components/PressableNameList';
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PressableListItemType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -60,17 +61,18 @@ export default function AbilityDetail({ navigation, route }: Props) {
             renderItem={null}
             style={styles.container}
             ListHeaderComponent={
-                <View style={styles.boxWrap}>
+                <Card>
                     {flavorText.length > 0 && <MyText style={styles.description}>{flavorText}</MyText>}
                     {effectEntry.length > 0 && <MyText style={styles.description}>{effectEntry}</MyText>}
-                    <MyText style={styles.description}>{'Originated generation: ' + data!.generation.name}</MyText>
-                </View>
+                    <MyText style={styles.description}>
+                        {'Originated generation: ' + getFormattedName(data!.generation.name)}
+                    </MyText>
+                </Card>
             }
             ListEmptyComponent={
-                <View style={styles.boxWrap}>
-                    <MyText style={styles.boxTitle}>Pokémon with this ability</MyText>
+                <Card title="Pokémon with this ability">
                     <PressableNameList goTo="PokemonDetail" data={pokemonsWithThisAbility} />
-                </View>
+                </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />
@@ -81,22 +83,10 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.primary,
-    },
-    boxWrap: {
-        marginBottom: 10,
-        backgroundColor: appColor.secondary,
-        borderRadius: 10,
-        borderWidth: 0.5,
-        paddingHorizontal: 10,
-    },
-    boxTitle: {
-        fontSize: 20,
-        padding: 10,
-        color: appColor.primary,
+        backgroundColor: app.darkColor,
     },
     description: {
-        padding: 10,
+        paddingVertical: 10,
     },
     footer: {
         marginBottom: 10,

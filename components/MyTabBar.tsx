@@ -2,7 +2,7 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import MyText from './MyText';
 
 const icons: { [key: string]: string } = {
@@ -55,8 +55,8 @@ const MyTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
                             style={StyleSheet.flatten([
                                 styles.icon,
                                 {
-                                    backgroundColor: isFocused ? appColor.secondary : appColor.primary,
-                                    color: isFocused ? appColor.primary : appColor.secondary,
+                                    backgroundColor: isFocused ? app.lightColor : app.darkColor,
+                                    color: isFocused ? app.darkColor : app.lightColor,
                                     paddingHorizontal: 15,
                                     borderRadius: 10,
                                 },
@@ -74,7 +74,7 @@ const styles = StyleSheet.create({
     tabBarContainer: {
         height: 56,
         flexDirection: 'row',
-        backgroundColor: appColor.primary,
+        backgroundColor: app.darkColor,
     },
     tab: {
         flex: 1,
@@ -83,12 +83,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     icon: {
-        color: appColor.secondary,
+        color: app.lightColor,
         fontSize: 20,
         marginBottom: 5,
     },
     label: {
-        color: appColor.secondary,
+        color: app.lightColor,
         fontSize: 12,
     },
 });

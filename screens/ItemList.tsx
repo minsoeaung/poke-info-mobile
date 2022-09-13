@@ -5,7 +5,7 @@ import { FlatList, StyleSheet, TextInput, View } from 'react-native';
 import ClearInputButton from '../components/ClearInputButton';
 import { PressableNameList } from '../components/PressableNameList';
 import { ITEMS } from '../constants/ITEMS';
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
 
@@ -36,11 +36,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.primary,
-        paddingBottom: 60,
+        backgroundColor: app.darkColor,
+        paddingBottom: 50,
     },
     searchInputWrap: {
-        backgroundColor: appColor.secondary,
+        backgroundColor: app.lightColor,
         borderRadius: 10,
         borderWidth: 0.5,
         marginBottom: 10,
@@ -57,7 +57,7 @@ const styles = StyleSheet.create({
         width: '90%',
     },
     abilityListWrap: {
-        backgroundColor: appColor.secondary,
+        backgroundColor: app.lightColor,
         borderRadius: 10,
         borderWidth: 0.5,
         paddingHorizontal: 10,

@@ -5,7 +5,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-import { appColor } from './constants/colors';
+import { app } from './constants/colors';
 import { BottomTabsNavigator } from './screens/BottomTabsNavigator';
 
 export default function App() {
@@ -19,7 +19,7 @@ export default function App() {
         <SafeAreaProvider>
             <NavigationContainer>
                 <BottomTabsNavigator />
-                <StatusBar style="light" backgroundColor={appColor.primary} />
+                <StatusBar style="light" backgroundColor={app.darkColor} />
             </NavigationContainer>
         </SafeAreaProvider>
     );

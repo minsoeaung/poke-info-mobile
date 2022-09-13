@@ -1,6 +1,6 @@
 import { Text, TextStyle } from 'react-native';
 
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 
 type Props = {
@@ -15,7 +15,7 @@ export default function MyText(props: Props) {
     return (
         <Text
             {...props}
-            style={{ color: appColor.primary, ...style, fontFamily: fonts.fontDotGothic }}
+            style={{ color: app.darkColor, ...style, fontFamily: fonts.fontDotGothic }}
             numberOfLines={numberOfLines ? numberOfLines : 0}>
             {children}
         </Text>

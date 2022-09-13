@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useLayoutEffect, useMemo } from 'react';
+import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
@@ -12,7 +12,7 @@ import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
-import { appColor } from '../constants/colors';
+import { app, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PokemonType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -21,9 +21,10 @@ import getWeightString from '../utils/getWeightString';
 
 export default function PokemonDetail() {
     const route = useRoute<RouteProp<NativeStackParamList, 'PokemonDetail'>>();
-    const { name, color } = route.params;
+    const { name, color: colorFromParams } = route.params;
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'PokemonDetail'>>();
 
+    const [color, setColor] = useState(colorFromParams);
     const { isLoading, error, data } = useFetchData<PokemonType>(`https://pokeapi.co/api/v2/pokemon/${name}`);
     const { isLoading: speciesLoading, data: species } = useFetchData<PokeAPI.PokemonSpecies>(
         data ? data.species.url : null,
@@ -54,6 +55,18 @@ export default function PokemonDetail() {
             title: getFormattedName(name),
         });
     }, []);
+
+    useEffect(() => {
+        if (data) {
+            const color = cardColor[data.types[0].type.name];
+            setColor(color);
+            navigation.setOptions({
+                headerStyle: {
+                    backgroundColor: color,
+                },
+            });
+        }
+    }, [data]);
 
     return (
         <View style={styles.container}>
@@ -112,9 +125,11 @@ export default function PokemonDetail() {
                                 />
                             ))}
                         </Card>
-                        <Card title="Evolutions" titleBgColor={color}>
-                            {species && <Evolutions url={species.evolution_chain.url} />}
-                        </Card>
+                        {species && (
+                            <Card title="Evolutions" titleBgColor={color}>
+                                <Evolutions url={species.evolution_chain.url} />
+                            </Card>
+                        )}
                     </ScrollView>
                 )
             )}
@@ -126,12 +141,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 10,
-        backgroundColor: appColor.primary,
+        backgroundColor: app.darkColor,
     },
     imageContainer: {
         width: Dimensions.get('window').width - 70,
         height: Dimensions.get('window').width - 70,
-        backgroundColor: appColor.secondary,
+        backgroundColor: app.lightColor,
         borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').width) / 2,
         elevation: 5,
         flex: 1,
@@ -149,7 +164,7 @@ const styles = StyleSheet.create({
     descriptionContainer: {
         borderWidth: 0.5,
         borderRadius: 10,
-        backgroundColor: appColor.secondary,
+        backgroundColor: app.lightColor,
         marginBottom: 15,
         paddingHorizontal: 10,
     },

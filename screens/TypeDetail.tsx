@@ -4,12 +4,13 @@ import { PokeAPI } from 'pokeapi-types';
 import { useEffect, useLayoutEffect, useState } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
+import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
 import { PressableNameList } from '../components/PressableNameList';
-import { appColor, typeColor } from '../constants/colors';
+import { app, cardColor, typeColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PressableListItemType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -24,7 +25,12 @@ export default function TypeDetail({ route, navigation }: Props) {
     const { isLoading, error, data } = useFetchData<PokeAPI.Type>(`https://pokeapi.co/api/v2/type/${name}`);
 
     useLayoutEffect(() => {
-        navigation.setOptions({ title: getFormattedName(name) });
+        navigation.setOptions({
+            title: getFormattedName(name),
+            headerStyle: {
+                backgroundColor: cardColor[name],
+            },
+        });
     }, []);
 
     useEffect(() => {
@@ -52,51 +58,56 @@ export default function TypeDetail({ route, navigation }: Props) {
             style={styles.container}
             ListHeaderComponent={
                 <>
-                    <View style={styles.boxWrap}>
-                        <MyText style={styles.boxTitle}>Attack</MyText>
-                        <Description
-                            label="2x damage"
-                            value={<Types types={data!.damage_relations.double_damage_to} />}
-                        />
-                        <Description
-                            label="0.5x damage"
-                            value={<Types types={data!.damage_relations.half_damage_to} />}
-                            noBorder={!data!.damage_relations.no_damage_to.length}
-                        />
-                        {!!data!.damage_relations.no_damage_to.length && (
+                    <Card title="Attack" titleBgColor={cardColor[name]}>
+                        {data!.damage_relations.double_damage_to.length > 0 && (
+                            <Description
+                                label="2x damage"
+                                value={<Types types={data!.damage_relations.double_damage_to} />}
+                            />
+                        )}
+                        {data!.damage_relations.half_damage_to.length > 0 && (
+                            <Description
+                                label="0.5x damage"
+                                value={<Types types={data!.damage_relations.half_damage_to} />}
+                                noBorder={!data!.damage_relations.no_damage_to.length}
+                            />
+                        )}
+                        {data!.damage_relations.no_damage_to.length > 0 && (
                             <Description
                                 label="no damage"
                                 value={<Types types={data!.damage_relations.no_damage_to} />}
                                 noBorder
                             />
                         )}
-                    </View>
-                    <View style={styles.boxWrap}>
-                        <MyText style={styles.boxTitle}>Defense</MyText>
-                        <Description
-                            label="2x damage"
-                            value={<Types types={data!.damage_relations.double_damage_from} />}
-                        />
-                        <Description
-                            label="0.5x damage"
-                            value={<Types types={data!.damage_relations.half_damage_from} />}
-                            noBorder={!data!.damage_relations.no_damage_from.length}
-                        />
-                        {!!data!.damage_relations.no_damage_from.length && (
+                    </Card>
+                    <Card title="Defense" titleBgColor={cardColor[name]}>
+                        {data!.damage_relations.double_damage_from.length > 0 && (
+                            <Description
+                                label="2x damage"
+                                value={<Types types={data!.damage_relations.double_damage_from} />}
+                            />
+                        )}
+                        {data!.damage_relations.half_damage_from.length > 0 && (
+                            <Description
+                                label="0.5x damage"
+                                value={<Types types={data!.damage_relations.half_damage_from} />}
+                                noBorder={!data!.damage_relations.no_damage_from.length}
+                            />
+                        )}
+                        {data!.damage_relations.no_damage_from.length > 0 && (
                             <Description
                                 label="no damage"
                                 value={<Types types={data!.damage_relations.no_damage_from} />}
                                 noBorder
                             />
                         )}
-                    </View>
+                    </Card>
                 </>
             }
             ListEmptyComponent={
-                <View style={styles.boxWrap}>
-                    <MyText style={styles.boxTitle}>{getFormattedName(name) + ' Pokémon'}</MyText>
+                <Card title={getFormattedName(name) + ' Pokémon'} titleBgColor={cardColor[name]}>
                     <PressableNameList goTo="PokemonDetail" data={pokemonsWithThisType} />
-                </View>
+                </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />
@@ -153,23 +164,11 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.primary,
+        backgroundColor: app.darkColor,
     },
     typeContainer: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-    },
-    boxWrap: {
-        marginBottom: 10,
-        backgroundColor: appColor.secondary,
-        borderRadius: 10,
-        borderWidth: 0.5,
-        padding: 10,
-    },
-    boxTitle: {
-        fontSize: 20,
-        margin: 10,
-        color: '#000',
     },
     footer: {
         marginBottom: 10,

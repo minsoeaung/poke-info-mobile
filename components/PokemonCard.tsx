@@ -2,7 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
-import { appColor, cardColor } from '../constants/colors';
+import { app, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PokemonForm } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -10,14 +10,19 @@ import ErrorDisplay from './ErrorDisplay';
 import MyText from './MyText';
 import PokemonTypes from './PokemonTypes';
 
-export default function PokemonCard({ name, inEvolution }: { name: string; inEvolution?: undefined | true }) {
+type Props = {
+    name: string;
+    inEvolution?: boolean;
+};
+
+export default function PokemonCard({ name, inEvolution }: Props) {
     const { isLoading, error, data } = useFetchData<PokemonForm>(`https://pokeapi.co/api/v2/pokemon-form/${name}/`);
 
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
     if (isLoading) {
         return (
-            <View style={[styles.container, { elevation: 0 }]}>
+            <View style={[styles.container, styles.containerInEvolution]}>
                 <MyText>...</MyText>
             </View>
         );
@@ -74,7 +79,7 @@ const styles = StyleSheet.create({
         margin: 5,
         borderRadius: 10,
         elevation: 5,
-        borderColor: appColor.primary,
+        borderColor: app.darkColor,
         borderWidth: 0.5,
     },
     containerInEvolution: {

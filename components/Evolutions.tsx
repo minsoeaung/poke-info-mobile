@@ -2,11 +2,11 @@ import { PokeAPI } from 'pokeapi-types';
 import { useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { Chain } from '../types';
 import getEvolutionDescription from '../utils/getEvolutionDescription';
-import LoadingText from './LoadingText';
+import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
 import PokemonCard from './PokemonCard';
 
@@ -37,25 +37,35 @@ const Evolutions = ({ url }: { url: string }) => {
     return (
         <View style={styles.container}>
             {isLoading ? (
-                <LoadingText />
+                <MyText style={styles.loading}>...</MyText>
             ) : error ? (
                 <MyText>{error}</MyText>
             ) : (
                 <View style={styles.chains}>
                     {evoChain.map((chain, index) => {
-                        if (index === evoChain.length - 1) return null;
-
                         const from = chain;
                         const to = evoChain[index + 1];
 
+                        if (!to && evoChain.length > 1) return null;
+
                         return (
-                            <View style={styles.chain} key={from.species_name}>
+                            <View
+                                style={[styles.chain, { marginBottom: index !== evoChain.length - 1 ? 10 : 0 }]}
+                                key={from.species_name}>
                                 <View style={styles.chainImages}>
                                     <PokemonCard name={from.species_name} inEvolution />
-                                    <MyText style={styles.arrow}>➡</MyText>
-                                    <PokemonCard name={to.species_name} inEvolution />
+                                    {to && (
+                                        <>
+                                            <MyText style={styles.arrow}>➡</MyText>
+                                            <PokemonCard name={to.species_name} inEvolution />
+                                        </>
+                                    )}
                                 </View>
-                                <MyText style={styles.chainDescription}>{getEvolutionDescription(from, to)}</MyText>
+                                <MyText style={styles.chainDescription}>
+                                    {to
+                                        ? getEvolutionDescription(from, to)
+                                        : `${getFormattedName(from.species_name)} does not evolve.`}
+                                </MyText>
                             </View>
                         );
                     })}
@@ -75,15 +85,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         alignItems: 'center',
+        paddingHorizontal: 5,
     },
     chainDescription: {
-        color: appColor.primary,
+        color: app.darkColor,
+        textAlign: 'center',
     },
     arrow: {
-        color: appColor.primary,
+        color: app.darkColor,
         fontSize: 20,
         flex: 1,
         textAlign: 'center',
+    },
+    loading: {
+        textAlign: 'center',
+        paddingVertical: 20,
     },
 });
 

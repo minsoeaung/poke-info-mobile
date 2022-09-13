@@ -11,7 +11,7 @@ import MyText from '../components/MyText';
 import PokemonCard from '../components/PokemonCard';
 import { PressableNameList } from '../components/PressableNameList';
 import { POKEMONS } from '../constants/POKEMONS';
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import useFetchInfiniteData from '../hooks/useFetchInfiniteData';
 import useIsVisible from '../hooks/useIsVisible';
@@ -38,7 +38,7 @@ export default function PokeDex() {
                             style={StyleSheet.flatten([
                                 styles.searchBtn,
                                 {
-                                    color: pressed ? 'tomato' : appColor.secondary,
+                                    color: pressed ? 'tomato' : app.lightColor,
                                 },
                             ])}>
                             Search
@@ -95,7 +95,7 @@ export default function PokeDex() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: appColor.primary,
+        backgroundColor: app.darkColor,
         paddingHorizontal: 5,
     },
     listFooter: {
@@ -112,11 +112,11 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     searchInputWrap: {
-        backgroundColor: appColor.secondary,
+        backgroundColor: app.lightColor,
         borderWidth: 0.5,
         borderRadius: 10,
         elevation: 5,
-        borderColor: appColor.primary,
+        borderColor: app.darkColor,
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         fontFamily: fonts.fontDotGothic,
         width: '90%',
-        color: appColor.primary,
+        color: app.darkColor,
     },
     searchBtn: {
         paddingVertical: 10,
@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         padding: 10,
         height: height / 3,
-        backgroundColor: appColor.secondary,
+        backgroundColor: app.lightColor,
         elevation: 10,
     },
 });

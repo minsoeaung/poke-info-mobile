@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import MyText from './MyText';
 
 type DescriptionProps = {
@@ -19,7 +19,7 @@ export default function Description({ label, value, noBorder, labelFlex = 4, val
                 styles.types,
                 {
                     borderBottomWidth: noBorder ? 0 : 0.5,
-                    borderColor: appColor.primary,
+                    borderColor: app.darkColor,
                 },
             ]}>
             <View style={{ flex: labelFlex }}>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 12,
     },
-    secondary: {
+    lightColor: {
         color: 'grey',
     },
 });

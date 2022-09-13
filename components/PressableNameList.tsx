@@ -3,7 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React from 'react';
 import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
 
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import { NativeStackParamList, PressableListItemType, ScreenType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
         borderColor: 'tomato',
     },
     separator: {
-        borderBottomColor: appColor.primary,
+        borderBottomColor: app.darkColor,
         borderBottomWidth: 0.5,
     },
     emptyText: {

@@ -2,7 +2,8 @@ import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
+import { fonts } from '../constants/fonts';
 import MyText from './MyText';
 
 type Props = {
@@ -19,12 +20,12 @@ const MyHeader = ({ headerProps }: Props) => {
         <View style={styles.container}>
             <Pressable onPress={goBack}>
                 {({ pressed }) => (
-                    <View style={styles.headerLeft}>
+                    <View style={[styles.headerLeft, options.headerStyle]}>
                         {back && (
                             <MyText
                                 style={StyleSheet.flatten([
                                     styles.backText,
-                                    { color: pressed ? 'tomato' : appColor.primary },
+                                    { color: pressed ? 'tomato' : app.darkColor },
                                 ])}>
                                 {'<'}
                             </MyText>
@@ -49,14 +50,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        backgroundColor: appColor.primary,
+        backgroundColor: app.darkColor,
     },
     headerLeft: {
-        backgroundColor: appColor.secondary,
+        backgroundColor: app.lightColor,
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
         paddingHorizontal: 20,
         flexDirection: 'row',
+        fontFamily: fonts.fontDotGothic,
+        fontSize: 22,
     },
     titleText: {
         fontSize: 25,

@@ -2,11 +2,9 @@ type Type = {
     [key: string]: string;
 };
 
-export const appColor = {
-    border: '#3e3f45',
-    headerFont: '#10162f',
-    primary: '#203961',
-    secondary: '#fff',
+export const app = {
+    darkColor: '#203961',
+    lightColor: '#fff',
 };
 
 export const cardColor: Type = {

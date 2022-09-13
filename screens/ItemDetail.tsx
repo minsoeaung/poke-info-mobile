@@ -4,12 +4,13 @@ import { PokeAPI } from 'pokeapi-types';
 import React, { useEffect, useState } from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 
+import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
 import { PressableNameList } from '../components/PressableNameList';
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PressableListItemType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -73,27 +74,26 @@ export default function ItemDetail() {
             style={styles.container}
             ListHeaderComponent={
                 <>
-                    <View style={styles.boxWrap}>
-                        {flavorText.length > 0 && <MyText style={styles.description}>{flavorText}</MyText>}
-                        {effectEntry.length > 0 && <MyText style={styles.description}>{effectEntry}</MyText>}
-                    </View>
-                    <View style={styles.boxWrap}>
+                    <Card>
+                        {flavorText.length > 0 && <MyText>{flavorText}</MyText>}
+                        {effectEntry.length > 0 && <MyText>{effectEntry}</MyText>}
+                    </Card>
+                    <Card>
                         <Description
-                            label="Cost"
+                            label="Cost: "
                             value={<MyText>{data!.cost > 0 ? data!.cost : 'Not for sale'}</MyText>}
                             noBorder
                         />
                         {data!.fling_power > 0 && (
-                            <Description label="Fling Power" value={<MyText>{data!.fling_power}</MyText>} noBorder />
+                            <Description label="Fling Power:" value={<MyText>{data!.fling_power}</MyText>} noBorder />
                         )}
-                    </View>
+                    </Card>
                 </>
             }
             ListEmptyComponent={
-                <View style={styles.boxWrap}>
-                    <MyText style={styles.boxTitle}>Pokémon that might be found holding this item</MyText>
+                <Card title="Pokémon that might be found holding this item">
                     <PressableNameList goTo="PokemonDetail" data={heldByPokemons} />
-                </View>
+                </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />
@@ -104,22 +104,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        backgroundColor: appColor.primary,
-    },
-    boxWrap: {
-        marginBottom: 10,
-        backgroundColor: appColor.secondary,
-        borderRadius: 10,
-        borderWidth: 0.5,
-        paddingHorizontal: 10,
-    },
-    boxTitle: {
-        fontSize: 20,
-        padding: 10,
-        color: '#000',
-    },
-    description: {
-        padding: 10,
+        backgroundColor: app.darkColor,
     },
     footer: {
         marginBottom: 10,

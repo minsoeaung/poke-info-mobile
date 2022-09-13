@@ -1,6 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import MyText from './MyText';
 
 export default function LoadingText() {
@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: appColor.primary,
+        backgroundColor: app.darkColor,
     },
     text: {
-        color: appColor.secondary,
+        color: app.lightColor,
     },
 });

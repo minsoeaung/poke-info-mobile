@@ -1,16 +1,29 @@
 import { ReactNode } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { ColorValue, StyleSheet, View } from 'react-native';
 
-import { appColor } from '../constants/colors';
+import { app } from '../constants/colors';
 import MyText from './MyText';
 
-const Card = ({ children, title, titleBgColor }: { children: ReactNode; title?: string; titleBgColor?: string }) => {
+type Props = {
+    children: ReactNode;
+    title?: string;
+    titleBgColor?: ColorValue;
+    cardBgColor?: ColorValue;
+};
+
+const Card = ({ children, title, titleBgColor, cardBgColor }: Props) => {
     if (!children) return null;
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, { backgroundColor: cardBgColor ? cardBgColor : app.lightColor }]}>
             {!!title && (
-                <MyText style={StyleSheet.flatten([styles.title, { backgroundColor: titleBgColor }])}>{title}</MyText>
+                <MyText
+                    style={StyleSheet.flatten([
+                        styles.title,
+                        { backgroundColor: titleBgColor ? titleBgColor : app.lightColor },
+                    ])}>
+                    {title}
+                </MyText>
             )}
             {children}
         </View>
@@ -19,7 +32,7 @@ const Card = ({ children, title, titleBgColor }: { children: ReactNode; title?: 
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: appColor.secondary,
+        backgroundColor: app.lightColor,
         paddingHorizontal: 15,
         paddingVertical: 15,
         marginBottom: 15,
@@ -29,6 +42,7 @@ const styles = StyleSheet.create({
         fontSize: 18,
         paddingVertical: 5,
         paddingHorizontal: 10,
+        marginBottom: 5,
     },
 });
 
