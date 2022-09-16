@@ -31,23 +31,16 @@ export default function PokemonDetail() {
     );
 
     const flavorTextEntry = useMemo(() => {
-        if (species) {
-            return (
-                species.flavor_text_entries
-                    .find(entry => entry.version.name === 'diamond' && entry.language.name === 'en')
-                    ?.flavor_text.replace('\n', '') || ''
-            );
-        } else {
-            return '';
-        }
+        if (!species) return '';
+        const str = species.flavor_text_entries.find(
+            entry => entry.version.name === 'diamond' && entry.language.name === 'en',
+        )?.flavor_text;
+        return typeof str === 'string' ? str.replace(/(\r\n|\r|\n)/g, ' ') : str || '';
     }, [species]);
 
     const eggGroups = useMemo(() => {
-        if (species) {
-            return species.egg_groups.map(gp => gp.name);
-        } else {
-            return [];
-        }
+        if (!species) return [];
+        return species.egg_groups.map(gp => gp.name);
     }, [species]);
 
     useLayoutEffect(() => {

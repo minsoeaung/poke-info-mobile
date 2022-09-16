@@ -6,12 +6,12 @@
     "isolatedModules": true,
     "jsx": "react-native",
     "lib": [
-      "es2017"
+      "es2021"
     ],
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
-    "target": "esnext"
+    "target": "es2021"
   },
   "exclude": [
     "node_modules",

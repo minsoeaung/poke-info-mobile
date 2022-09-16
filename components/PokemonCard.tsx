@@ -17,13 +17,12 @@ type Props = {
 
 export default function PokemonCard({ name, inEvolution }: Props) {
     const { isLoading, error, data } = useFetchData<PokemonForm>(`https://pokeapi.co/api/v2/pokemon-form/${name}/`);
-
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
 
     if (isLoading) {
         return (
             <View style={[styles.container, styles.containerInEvolution]}>
-                <MyText>...</MyText>
+                <MyText style={{ color: inEvolution ? app.darkColor : app.lightColor }}>...</MyText>
             </View>
         );
     }

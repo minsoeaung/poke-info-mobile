@@ -4,7 +4,6 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 
 import MyTabBar from '../components/MyTabBar';
 import { AbilitiesStack } from './AbilitiesStack';
-import AboutStack from './AboutStack';
 import { ItemsStack } from './ItemsStack';
 import PokeDexStack from './PokeDexStack';
 
@@ -19,7 +18,7 @@ export const BottomTabsNavigator: React.FC = () => {
                 <BottomTabs.Screen name="PokeDexStack" component={PokeDexStack} options={{ title: 'PokeDex' }} />
                 <BottomTabs.Screen name="AbilitiesStack" component={AbilitiesStack} options={{ title: 'Abilities' }} />
                 <BottomTabs.Screen name="ItemsStack" component={ItemsStack} options={{ title: 'Items' }} />
-                <BottomTabs.Screen name="AboutStack" component={AboutStack} options={{ title: 'About' }} />
+                {/*<BottomTabs.Screen name="AboutStack" component={AboutStack} options={{ title: 'About' }} />*/}
             </BottomTabs.Navigator>
         </SafeAreaView>
     );

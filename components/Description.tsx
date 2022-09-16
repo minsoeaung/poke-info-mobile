@@ -23,7 +23,7 @@ export default function Description({ label, value, noBorder, labelFlex = 4, val
                 },
             ]}>
             <View style={{ flex: labelFlex }}>
-                <MyText style={styles.secondary}>{label}</MyText>
+                <MyText style={styles.label}>{label}</MyText>
             </View>
             <View style={{ flex: valueFlex }}>{value}</View>
         </View>
@@ -36,7 +36,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingVertical: 12,
     },
-    lightColor: {
+    label: {
         color: 'grey',
     },
 });

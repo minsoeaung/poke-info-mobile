@@ -38,7 +38,7 @@ export default function PokeDex() {
                             style={StyleSheet.flatten([
                                 styles.searchBtn,
                                 {
-                                    color: pressed ? 'tomato' : app.lightColor,
+                                    color: pressed ? 'rgb(210, 230, 255)' : app.lightColor,
                                 },
                             ])}>
                             Search
