@@ -1,6 +1,6 @@
 import { useScrollToTop } from '@react-navigation/native';
 import React, { useRef } from 'react';
-import { FlatList, StyleSheet, TextInput, View } from 'react-native';
+import { StyleSheet, TextInput, View } from 'react-native';
 
 import ClearInputButton from '../components/ClearInputButton';
 import { PressableNameList } from '../components/PressableNameList';
@@ -11,7 +11,7 @@ import useSearchableList from '../hooks/useSearchableList';
 
 export default function ItemList() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(ITEMS);
-    const listRef = useRef<FlatList>(null);
+    const listRef = useRef(null);
     useScrollToTop(listRef);
 
     return (
@@ -25,7 +25,7 @@ export default function ItemList() {
                 />
                 <ClearInputButton onPress={clearInput} />
             </View>
-            <View style={styles.abilityListWrap}>
+            <View style={styles.itemListWrap}>
                 <PressableNameList goTo="ItemDetail" data={list} listRef={listRef} />
             </View>
         </View>
@@ -36,8 +36,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
+        paddingBottom: 0,
         backgroundColor: app.darkColor,
-        paddingBottom: 50,
     },
     searchInputWrap: {
         backgroundColor: app.lightColor,
@@ -56,7 +56,8 @@ const styles = StyleSheet.create({
         fontFamily: fonts.fontDotGothic,
         width: '90%',
     },
-    abilityListWrap: {
+    itemListWrap: {
+        flex: 1,
         backgroundColor: app.lightColor,
         borderRadius: 10,
         borderWidth: 0.5,

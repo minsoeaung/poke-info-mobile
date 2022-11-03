@@ -2,12 +2,13 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
 
 import MyHeader from '../components/MyHeader';
+import { NativeStackParamList } from '../types';
 import AbilityDetail from './AbilityDetail';
 import AbilityList from './AbilityList';
 import PokemonDetail from './PokemonDetail';
 import TypeDetail from './TypeDetail';
 
-const Stack = createNativeStackNavigator();
+const Stack = createNativeStackNavigator<NativeStackParamList>();
 
 export const AbilitiesStack: React.FC = () => {
     return (
