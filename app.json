@@ -8,10 +8,11 @@
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
+    "backgroundColor": "#203961",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#FFF0E5"
+      "backgroundColor": "#203961"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
