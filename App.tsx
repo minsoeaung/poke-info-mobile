@@ -25,7 +25,7 @@ export default function App() {
     return (
         <NavigationContainer onReady={onLayoutRootView}>
             <BottomTabsNavigator />
-            <StatusBar style="'ight"'backgroundColor={app.darkColor} />
+            <StatusBar style="light" backgroundColor={app.darkColor} />
         </NavigationContainer>
     );
 }
