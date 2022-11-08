@@ -1,3 +1,4 @@
+import { ReactNode } from 'react';
 import { Text, TextStyle } from 'react-native';
 
 import { app } from '../constants/colors';
@@ -5,7 +6,7 @@ import { fonts } from '../constants/fonts';
 
 type Props = {
     style?: TextStyle;
-    children: string | number;
+    children: string | number | ReactNode;
     numberOfLines?: number;
 };
 
