@@ -3,7 +3,7 @@ import { useAnimatedStyle, useSharedValue, withTiming } from 'react-native-reani
 
 const INITIAL_TOP_OFFSET = -65;
 
-const useIsVisible = () => {
+const useIsSearchVisible = () => {
     const [isVisible, setIsVisible] = useState(false);
 
     const top = useSharedValue(INITIAL_TOP_OFFSET);
@@ -39,4 +39,4 @@ const useIsVisible = () => {
     };
 };
 
-export default useIsVisible;
+export default useIsSearchVisible;

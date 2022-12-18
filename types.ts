@@ -25,6 +25,11 @@ export type PressableListItemType = {
     isHidden?: boolean;
     typeSlot?: number;
     sprites?: string | null;
+
+    // temp
+    url?: string;
+    sprite?: string | null;
+    types?: string[];
 };
 
 export type ScreenType =
