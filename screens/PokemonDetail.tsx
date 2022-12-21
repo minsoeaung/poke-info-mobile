@@ -1,8 +1,9 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useEffect, useLayoutEffect, useMemo, useState } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import Card from '../components/Card';
 import Description from '../components/Description';
@@ -12,7 +13,7 @@ import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
-import { app, cardColor } from '../constants/colors';
+import { app, cardColor, typeColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PokemonType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -21,11 +22,10 @@ import getWeightString from '../utils/getWeightString';
 
 export default function PokemonDetail() {
     const route = useRoute<RouteProp<NativeStackParamList, 'PokemonDetail'>>();
-    const { name, color: colorFromParams } = route.params;
+    const { name, url, types } = route.params;
+    const color = cardColor[types[0]];
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'PokemonDetail'>>();
-
-    const [color, setColor] = useState(colorFromParams);
-    const { isLoading, error, data } = useFetchData<PokemonType>(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    const { isLoading, error, data } = useFetchData<PokemonType>(url);
     const { isLoading: speciesLoading, data: species } = useFetchData<PokeAPI.PokemonSpecies>(
         data ? data.species.url : null,
     );
@@ -35,7 +35,7 @@ export default function PokemonDetail() {
         const str = species.flavor_text_entries.find(
             entry => entry.version.name === 'diamond' && entry.language.name === 'en',
         )?.flavor_text;
-        return typeof str === 'string' ? str.replace(/(\r\n|\r|\n)/g, ' ') : str || '';
+        return str?.replace(/(\r\n|\r|\n)/g, ' ') || '';
     }, [species]);
 
     const eggGroups = useMemo(() => {
@@ -46,20 +46,11 @@ export default function PokemonDetail() {
     useLayoutEffect(() => {
         navigation.setOptions({
             title: getFormattedName(name),
+            headerStyle: {
+                backgroundColor: color,
+            },
         });
     }, []);
-
-    useEffect(() => {
-        if (data) {
-            const color = cardColor[data.types[0].type.name];
-            setColor(color);
-            navigation.setOptions({
-                headerStyle: {
-                    backgroundColor: color,
-                },
-            });
-        }
-    }, [data]);
 
     return (
         <View style={styles.container}>
@@ -69,7 +60,7 @@ export default function PokemonDetail() {
                 <ErrorDisplay error={error} />
             ) : (
                 data && (
-                    <ScrollView>
+                    <Animated.ScrollView entering={FadeIn}>
                         <View style={styles.imageContainer}>
                             <Image
                                 style={styles.image}
@@ -123,7 +114,7 @@ export default function PokemonDetail() {
                                 <Evolutions url={species.evolution_chain.url} />
                             </Card>
                         )}
-                    </ScrollView>
+                    </Animated.ScrollView>
                 )
             )}
         </View>

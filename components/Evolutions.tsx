@@ -1,16 +1,21 @@
+import { useNavigation } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { memo, useMemo } from 'react';
+import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { app } from '../constants/colors';
+import { LocalPokemonType } from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
-import { Chain } from '../types';
+import { Chain, NativeStackParamList } from '../types';
 import getEvolutionDescription from '../utils/getEvolutionDescription';
 import getFormattedName from '../utils/getFormattedName';
+import getLocalPokemonByName from '../utils/getLocalPokemonByName';
 import MyText from './MyText';
-import PokemonCard from './PokemonCard';
 
 const Evolutions = ({ url }: { url: string }) => {
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+
     const { isLoading, error, data } = useFetchData<PokeAPI.EvolutionChain>(url);
 
     const evoChain: Chain[] = useMemo(() => {
@@ -34,30 +39,73 @@ const Evolutions = ({ url }: { url: string }) => {
         }
     }, [data]);
 
+    const goToPokemonDetailScreen = (pokemon: LocalPokemonType | null) => {
+        if (pokemon) {
+            navigation.push('PokemonDetail', pokemon);
+        }
+    };
+
     return (
-        <View style={styles.container}>
+        <View style={styles.evolutions}>
             {isLoading ? (
-                <MyText style={styles.loading}>...</MyText>
+                <MyText style={styles.loadingOrError}>...</MyText>
             ) : error ? (
-                <MyText>{error}</MyText>
+                <MyText style={styles.loadingOrError}>{error}</MyText>
             ) : (
                 <View style={styles.chains}>
                     {evoChain.map((chain, index) => {
                         const from = chain;
+                        const fromPokemon = getLocalPokemonByName(from.species_name);
                         const to = evoChain[index + 1];
 
-                        if (!to && evoChain.length > 1) return null;
+                        if (!to && evoChain.length > 1) {
+                            return null;
+                        }
+
+                        const toPokemon = getLocalPokemonByName(to?.species_name || '');
 
                         return (
-                            <View
-                                style={[styles.chain, { marginBottom: index !== evoChain.length - 1 ? 10 : 0 }]}
-                                key={from.species_name}>
+                            <View style={[styles.chain]} key={from.species_name}>
                                 <View style={styles.chainImages}>
-                                    <PokemonCard name={from.species_name} inEvolution />
+                                    {fromPokemon && toPokemon && (
+                                        <Pressable
+                                            style={styles.pressableImage}
+                                            onPress={() => goToPokemonDetailScreen(fromPokemon)}>
+                                            {fromPokemon?.sprite ? (
+                                                <Image
+                                                    style={styles.sprite}
+                                                    source={{
+                                                        uri: fromPokemon?.sprite,
+                                                    }}
+                                                />
+                                            ) : (
+                                                <View style={styles.spriteFallback}>
+                                                    <MyText>N/A</MyText>
+                                                </View>
+                                            )}
+                                        </Pressable>
+                                    )}
                                     {to && (
                                         <>
                                             <MyText style={styles.arrow}>➡</MyText>
-                                            <PokemonCard name={to.species_name} inEvolution />
+                                            {toPokemon?.sprite ? (
+                                                <Pressable
+                                                    style={styles.pressableImage}
+                                                    onPress={() => goToPokemonDetailScreen(toPokemon)}>
+                                                    <Image
+                                                        style={styles.sprite}
+                                                        source={{
+                                                            uri: toPokemon?.sprite,
+                                                        }}
+                                                    />
+                                                </Pressable>
+                                            ) : (
+                                                <Pressable
+                                                    style={styles.spriteFallback}
+                                                    onPress={() => goToPokemonDetailScreen(toPokemon)}>
+                                                    <MyText>N/A</MyText>
+                                                </Pressable>
+                                            )}
                                         </>
                                     )}
                                 </View>
@@ -76,20 +124,23 @@ const Evolutions = ({ url }: { url: string }) => {
 };
 
 const styles = StyleSheet.create({
-    container: {
+    evolutions: {
         flex: 1,
+    },
+    loadingOrError: {
+        textAlign: 'center',
+        paddingVertical: 20,
     },
     chains: {},
     chain: {},
     chainImages: {
         flexDirection: 'row',
-        justifyContent: 'space-around',
         alignItems: 'center',
-        paddingHorizontal: 5,
+        paddingHorizontal: 10,
     },
-    chainDescription: {
-        color: app.darkColor,
-        textAlign: 'center',
+    pressableImage: {
+        flex: 1,
+        aspectRatio: 1,
     },
     arrow: {
         color: app.darkColor,
@@ -97,10 +148,22 @@ const styles = StyleSheet.create({
         flex: 1,
         textAlign: 'center',
     },
-    loading: {
+    sprite: {
+        width: '100%',
+        height: '100%',
+        alignSelf: 'center',
+        resizeMode: 'contain',
+    },
+    chainDescription: {
+        color: app.darkColor,
         textAlign: 'center',
-        paddingVertical: 20,
+    },
+    spriteFallback: {
+        flex: 1,
+        aspectRatio: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });
 
-export default Evolutions;
+export default memo(Evolutions);

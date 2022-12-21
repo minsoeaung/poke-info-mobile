@@ -16,7 +16,7 @@ const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
     const backgroundColor = cardColor[types[0]];
 
     const goToPokemonDetailScreen = () => {
-        navigation.push('PokemonDetail', { name, color: backgroundColor });
+        navigation.push('PokemonDetail', pokemon);
     };
 
     return (

@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useEffect, useLayoutEffect, useState } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
@@ -12,7 +12,7 @@ import MyText from '../components/MyText';
 import { PressableNameList } from '../components/PressableNameList';
 import { app, cardColor, typeColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, PressableListItemType } from '../types';
+import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'TypeDetail'>;
@@ -20,9 +20,18 @@ type Props = NativeStackScreenProps<NativeStackParamList, 'TypeDetail'>;
 export default function TypeDetail({ route, navigation }: Props) {
     const { name } = route.params;
 
-    const [pokemonsWithThisType, setPokemonsWithThisType] = useState<PressableListItemType[]>([]);
-
     const { isLoading, error, data } = useFetchData<PokeAPI.Type>(`https://pokeapi.co/api/v2/type/${name}`);
+
+    const pokemonsWithThisType = useMemo(() => {
+        if (data) {
+            return data.pokemon.map(d => ({
+                name: d.pokemon.name,
+                typeSlot: d.slot,
+            }));
+        } else {
+            return [];
+        }
+    }, [data]);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -32,16 +41,6 @@ export default function TypeDetail({ route, navigation }: Props) {
             },
         });
     }, []);
-
-    useEffect(() => {
-        if (data) {
-            const list: PressableListItemType[] = data.pokemon.map(d => ({
-                name: d.pokemon.name,
-                typeSlot: d.slot,
-            }));
-            setPokemonsWithThisType(list);
-        }
-    }, [data]);
 
     if (isLoading) {
         return <LoadingText />;

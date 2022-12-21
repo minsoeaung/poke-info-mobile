@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useEffect, useState } from 'react';
+import { useLayoutEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
@@ -10,40 +10,51 @@ import MyText from '../components/MyText';
 import { PressableNameList } from '../components/PressableNameList';
 import { app } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, PressableListItemType } from '../types';
+import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'AbilityDetail'>;
 
+type PokemonsWithThisAbilityType = {
+    name: string;
+    isHidden: boolean;
+    typeSlot: number;
+};
+
+type Results = {
+    pokemonsWithThisAbility: PokemonsWithThisAbilityType[];
+    flavorText: string;
+    effectEntry: string;
+};
+
 export default function AbilityDetail({ navigation, route }: Props) {
     const { name } = route.params;
 
-    const [pokemonsWithThisAbility, setPokemonsWithThisAbility] = useState<PressableListItemType[]>([]);
-    const [flavorText, setFlavorText] = useState('');
-    const [effectEntry, setEffectEntry] = useState('');
-
     const { isLoading, error, data } = useFetchData<PokeAPI.Ability>(`https://pokeapi.co/api/v2/ability/${name}`);
 
-    useEffect(() => {
+    const { pokemonsWithThisAbility, flavorText, effectEntry } = useMemo(() => {
+        const results: Results = { pokemonsWithThisAbility: [], flavorText: '', effectEntry: '' };
+
         if (data) {
             const enFlavorText = data.flavor_text_entries.find(e => e.language.name === 'en');
             if (enFlavorText) {
-                setFlavorText(enFlavorText.flavor_text.replace('\n', ' '));
+                results.flavorText = enFlavorText.flavor_text.replace('\n', ' ');
             }
             const enEffect = data.effect_entries.find(e => e.language.name === 'en');
             if (enEffect) {
-                setEffectEntry(enEffect.effect.replace('\n', ' '));
+                results.effectEntry = enEffect.effect.replace('\n', ' ');
             }
-            const list: PressableListItemType[] = data.pokemon.map(d => ({
+            results.pokemonsWithThisAbility = data.pokemon.map(d => ({
                 name: d.pokemon.name,
                 isHidden: d.is_hidden,
                 typeSlot: d.slot,
             }));
-            setPokemonsWithThisAbility(list);
         }
+
+        return results;
     }, [data]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         navigation.setOptions({ title: getFormattedName(name) });
     }, []);
 
@@ -62,8 +73,8 @@ export default function AbilityDetail({ navigation, route }: Props) {
             style={styles.container}
             ListHeaderComponent={
                 <Card>
-                    {flavorText.length > 0 && <MyText style={styles.description}>{flavorText}</MyText>}
-                    {effectEntry.length > 0 && <MyText style={styles.description}>{effectEntry}</MyText>}
+                    {!!flavorText && <MyText style={styles.description}>{flavorText}</MyText>}
+                    {!!effectEntry && <MyText style={styles.description}>{effectEntry}</MyText>}
                     <MyText style={styles.description}>
                         {'Originated generation: ' + getFormattedName(data!.generation.name)}
                     </MyText>

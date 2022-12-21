@@ -1,7 +1,7 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
 import { FlatList, Image, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
@@ -15,49 +15,57 @@ import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PressableListItemType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
+type HeldByPokemonsType = { name: string };
+
+type Results = {
+    heldByPokemons: HeldByPokemonsType[];
+    flavorText: string;
+    effectEntry: string;
+};
+
 export default function ItemDetail() {
     const route = useRoute<RouteProp<NativeStackParamList, 'ItemDetail'>>();
     const { name } = route.params;
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'ItemDetail'>>();
 
-    const [heldByPokemons, setHeldByPokemons] = useState<PressableListItemType[]>([]);
-    const [flavorText, setFlavorText] = useState('');
-    const [effectEntry, setEffectEntry] = useState('');
-
     const { isLoading, error, data } = useFetchData<PokeAPI.Item>(`https://pokeapi.co/api/v2/item/${name}`);
 
-    useEffect(() => {
+    const { heldByPokemons, flavorText, effectEntry } = useMemo(() => {
+        const results: Results = { heldByPokemons: [], flavorText: '', effectEntry: '' };
+
         if (data) {
             const enFlavorText = data.flavor_text_entries.find(e => e.language.name === 'en');
             if (enFlavorText) {
-                setFlavorText(enFlavorText.text.replace('\n', ' '));
+                results.flavorText = enFlavorText.text.replace('\n', ' ');
             }
             const enEffect = data.effect_entries.find(e => e.language.name === 'en');
             if (enEffect) {
-                setEffectEntry(enEffect.effect.replace('\n', ' '));
+                results.effectEntry = enEffect.effect.replace('\n', ' ');
             }
-            if (data.sprites.default) {
-                navigation.setOptions({
-                    headerRight: () => (
-                        <Image
-                            style={styles.itemImage}
-                            source={{
-                                uri: data!.sprites.default,
-                            }}
-                        />
-                    ),
-                });
-            }
-            const list: PressableListItemType[] = data.held_by_pokemon.map(d => ({
+
+            results.heldByPokemons = data.held_by_pokemon.map(d => ({
                 name: d.pokemon.name,
             }));
-            setHeldByPokemons(list);
         }
+
+        return results;
     }, [data]);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         navigation.setOptions({ title: getFormattedName(name) });
-    }, []);
+        if (data && data.sprites.default) {
+            navigation.setOptions({
+                headerRight: () => (
+                    <Image
+                        style={styles.itemImage}
+                        source={{
+                            uri: data!.sprites.default,
+                        }}
+                    />
+                ),
+            });
+        }
+    }, [data]);
 
     if (isLoading) {
         return <LoadingText />;
@@ -75,8 +83,8 @@ export default function ItemDetail() {
             ListHeaderComponent={
                 <>
                     <Card>
-                        {flavorText.length > 0 && <MyText>{flavorText}</MyText>}
-                        {effectEntry.length > 0 && <MyText>{effectEntry}</MyText>}
+                        {!!flavorText && <MyText>{flavorText}</MyText>}
+                        {!!effectEntry && <MyText>{effectEntry}</MyText>}
                     </Card>
                     <Card>
                         <Description

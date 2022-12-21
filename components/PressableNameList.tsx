@@ -5,6 +5,7 @@ import React from 'react';
 import { Image, Pressable, StyleSheet, View } from 'react-native';
 
 import { app } from '../constants/colors';
+import pokemons, { LocalPokemonType } from '../constants/pokemons';
 import { NativeStackParamList, PressableListItemType, ScreenType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
@@ -14,17 +15,13 @@ import TypeSlot from './TypeSlot';
 type Props = {
     goTo: ScreenType;
     size?: 'small' | 'big';
-    data: PressableListItemType[];
+    data: (PressableListItemType | LocalPokemonType)[];
     listRef?: React.LegacyRef<FlashList<PressableListItemType>> | null;
 };
 
 export const PressableNameList = ({ data, size = 'big', goTo, listRef = null }: Props) => {
     const route = useRoute();
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
-
-    const goToScreen = (name: string) => {
-        navigation.push(goTo, { name });
-    };
 
     return (
         <View style={styles.container}>
@@ -34,11 +31,18 @@ export const PressableNameList = ({ data, size = 'big', goTo, listRef = null }: 
                 estimatedItemSize={54}
                 keyExtractor={key => key.name}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
-                ListEmptyComponent={() => <MyText style={styles.emptyText}>EMPTY!</MyText>}
+                ListEmptyComponent={() => <MyText style={styles.emptyText}>Empty!</MyText>}
                 renderItem={({ item }) => (
                     <Pressable
                         onPress={() => {
-                            goToScreen(item.name);
+                            if (goTo === 'PokemonDetail') {
+                                const params = pokemons.find(pokemon => pokemon.name === item.name);
+                                if (params) {
+                                    navigation.push(goTo, params);
+                                }
+                            } else {
+                                navigation.push(goTo, { name: item.name });
+                            }
                         }}>
                         {({ pressed }) => (
                             <View
@@ -49,7 +53,7 @@ export const PressableNameList = ({ data, size = 'big', goTo, listRef = null }: 
                                     },
                                 ]}>
                                 <View style={styles.nameWrap}>
-                                    {route.name === 'ItemList' && item.sprites && (
+                                    {route.name === 'ItemList' && item?.sprites && (
                                         <Image
                                             style={[StyleSheet.absoluteFill, styles.itemImage]}
                                             source={{

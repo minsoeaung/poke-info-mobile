@@ -1,5 +1,7 @@
 import { PokeAPI } from 'pokeapi-types';
 
+import { LocalPokemonType } from './constants/pokemons';
+
 type PokemonFormType = {
     slot: number;
     type: PokeAPI.NamedAPIResource;
@@ -52,10 +54,7 @@ export type NativeStackParamList = {
     ItemList: undefined;
     About: undefined;
 
-    PokemonDetail: {
-        name: string;
-        color?: string;
-    };
+    PokemonDetail: LocalPokemonType;
     TypeDetail: Name;
     AbilityDetail: Name;
     ItemDetail: Name;

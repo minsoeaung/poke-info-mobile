@@ -24,7 +24,11 @@ const useFetchData = <T>(url: string | null, refresh?: boolean): ResData<T> => {
                     }
                 }
             } catch (e) {
-                setError(e?.message || 'Unknown error');
+                if (e instanceof Error) {
+                    setError(e?.message);
+                } else {
+                    setError('Unknown error');
+                }
             } finally {
                 setIsLoading(false);
             }

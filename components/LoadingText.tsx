@@ -6,7 +6,7 @@ import MyText from './MyText';
 export default function LoadingText() {
     return (
         <View style={styles.container}>
-            <MyText style={styles.text}>loading...</MyText>
+            <MyText style={styles.text}>Loading...</MyText>
         </View>
     );
 }
