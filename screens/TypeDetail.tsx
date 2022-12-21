@@ -2,7 +2,8 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import { useLayoutEffect, useMemo } from 'react';
-import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import Card from '../components/Card';
 import Description from '../components/Description';
@@ -51,7 +52,8 @@ export default function TypeDetail({ route, navigation }: Props) {
     }
 
     return (
-        <FlatList
+        <Animated.FlatList
+            entering={FadeIn.duration(100)}
             data={[]}
             renderItem={null}
             style={styles.container}

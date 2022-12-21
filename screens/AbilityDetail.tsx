@@ -1,7 +1,8 @@
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import { useLayoutEffect, useMemo } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
@@ -67,7 +68,8 @@ export default function AbilityDetail({ navigation, route }: Props) {
     }
 
     return (
-        <FlatList
+        <Animated.FlatList
+            entering={FadeIn.duration(100)}
             data={[]}
             renderItem={null}
             style={styles.container}

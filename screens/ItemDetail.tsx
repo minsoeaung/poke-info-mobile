@@ -1,8 +1,9 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import React, { useEffect, useLayoutEffect, useMemo, useState } from 'react';
-import { FlatList, Image, StyleSheet, View } from 'react-native';
+import React, { useLayoutEffect, useMemo } from 'react';
+import { Image, StyleSheet, View } from 'react-native';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 import Card from '../components/Card';
 import Description from '../components/Description';
@@ -12,7 +13,7 @@ import MyText from '../components/MyText';
 import { PressableNameList } from '../components/PressableNameList';
 import { app } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, PressableListItemType } from '../types';
+import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 type HeldByPokemonsType = { name: string };
@@ -76,7 +77,8 @@ export default function ItemDetail() {
     }
 
     return (
-        <FlatList
+        <Animated.FlatList
+            entering={FadeIn.duration(100)}
             data={[]}
             renderItem={null}
             style={styles.container}
