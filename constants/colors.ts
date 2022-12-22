@@ -3,8 +3,14 @@ type Type = {
 };
 
 export const app = {
-    darkColor: '#203961',
-    lightColor: '#fff',
+    // darkColor: '#203961',
+    // lightColor: '#fff',
+
+    // darkColor: '#924642',
+    // lightColor: '#FCEDEA',
+
+    darkColor: '#0D2F41',
+    lightColor: '#F0F1EC',
 };
 
 export const cardColor: Type = {

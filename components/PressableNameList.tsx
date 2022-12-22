@@ -8,6 +8,7 @@ import { app } from '../constants/colors';
 import pokemons, { LocalPokemonType } from '../constants/pokemons';
 import { NativeStackParamList, PressableListItemType, ScreenType } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import getLocalPokemonByName from '../utils/getLocalPokemonByName';
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
 import TypeSlot from './TypeSlot';
@@ -32,60 +33,75 @@ export const PressableNameList = ({ data, size = 'big', goTo, listRef = null }: 
                 keyExtractor={key => key.name}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
                 ListEmptyComponent={() => <MyText style={styles.emptyText}>Empty!</MyText>}
-                renderItem={({ item }) => (
-                    <Pressable
-                        onPress={() => {
-                            if (goTo === 'PokemonDetail') {
-                                const params = pokemons.find(pokemon => pokemon.name === item.name);
-                                if (params) {
-                                    navigation.push(goTo, params);
+                renderItem={({ item }) => {
+                    const pokemon = goTo === 'PokemonDetail' ? getLocalPokemonByName(item.name) : null;
+                    const pokemonSprite = pokemon?.sprite;
+
+                    return (
+                        <Pressable
+                            onPress={() => {
+                                if (goTo === 'PokemonDetail') {
+                                    const params = pokemons.find(pokemon => pokemon.name === item.name);
+                                    if (params) {
+                                        navigation.push(goTo, params);
+                                    }
+                                } else {
+                                    navigation.push(goTo, { name: item.name });
                                 }
-                            } else {
-                                navigation.push(goTo, { name: item.name });
-                            }
-                        }}>
-                        {({ pressed }) => (
-                            <View
-                                style={[
-                                    styles.listItem,
-                                    {
-                                        paddingVertical: size === 'small' ? 15 : 20,
-                                    },
-                                ]}>
-                                <View style={styles.nameWrap}>
-                                    {route.name === 'ItemList' && item?.sprites && (
-                                        <Image
-                                            style={[StyleSheet.absoluteFill, styles.itemImage]}
-                                            source={{
-                                                uri: item.sprites,
-                                            }}
-                                        />
-                                    )}
+                            }}>
+                            {({ pressed }) => (
+                                <View
+                                    style={[
+                                        styles.listItem,
+                                        {
+                                            paddingVertical: size === 'small' ? 15 : 20,
+                                        },
+                                    ]}>
+                                    <View style={styles.nameWrap}>
+                                        {pokemonSprite && (
+                                            <Image
+                                                style={[StyleSheet.absoluteFill, styles.itemImage]}
+                                                source={{
+                                                    uri: pokemonSprite,
+                                                }}
+                                            />
+                                        )}
+                                        {route.name === 'ItemList' && item?.sprites && (
+                                            <Image
+                                                style={[StyleSheet.absoluteFill, styles.itemImage]}
+                                                source={{
+                                                    uri: item.sprites,
+                                                }}
+                                            />
+                                        )}
+                                        <MyText
+                                            style={StyleSheet.flatten([
+                                                styles.nameText,
+                                                {
+                                                    color: pressed ? 'tomato' : 'black',
+                                                    marginLeft: item.sprites || pokemonSprite ? 40 : 0,
+                                                },
+                                            ])}>
+                                            {getFormattedName(item.name)}
+                                        </MyText>
+                                        {route.name === 'AbilityDetail' && item.isHidden && (
+                                            <SmallGreyText text="   (Hidden ability)" />
+                                        )}
+                                        {route.name === 'TypeDetail' && item.typeSlot && (
+                                            <TypeSlot slot={item.typeSlot} />
+                                        )}
+                                    </View>
                                     <MyText
-                                        style={StyleSheet.flatten([
-                                            styles.nameText,
-                                            {
-                                                color: pressed ? 'tomato' : 'black',
-                                                marginLeft: item.sprites ? 40 : 0,
-                                            },
-                                        ])}>
-                                        {getFormattedName(item.name)}
+                                        style={{
+                                            color: pressed ? 'tomato' : 'black',
+                                        }}>
+                                        {'>'}
                                     </MyText>
-                                    {route.name === 'AbilityDetail' && item.isHidden && (
-                                        <SmallGreyText text="   (Hidden ability)" />
-                                    )}
-                                    {route.name === 'TypeDetail' && item.typeSlot && <TypeSlot slot={item.typeSlot} />}
                                 </View>
-                                <MyText
-                                    style={{
-                                        color: pressed ? 'tomato' : 'black',
-                                    }}>
-                                    {'>'}
-                                </MyText>
-                            </View>
-                        )}
-                    </Pressable>
-                )}
+                            )}
+                        </Pressable>
+                    );
+                }}
                 keyboardShouldPersistTaps="handled"
             />
         </View>
