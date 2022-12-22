@@ -34,7 +34,7 @@ const About = () => {
             {/*    <MyText style={styles.description}>* Easily search the Pokémon, Abilities and Items</MyText>*/}
             {/*</Card>*/}
             <Card>
-                <Description label="Version" value={<MyText>1.2.0</MyText>} noBorder />
+                <Description label="Version" value={<MyText>1.3.0</MyText>} noBorder />
                 <Description
                     label="Source Code"
                     value={<OpenURLTextButton url={SourceCodeURL}>GitHub</OpenURLTextButton>}

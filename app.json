@@ -2,17 +2,17 @@
   "expo": {
     "name": "Poke Info",
     "slug": "poke_info",
-    "version": "1.2.0",
+    "version": "1.3.0",
     "platforms": [
       "android"
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "backgroundColor": "#203961",
+    "backgroundColor": "#0D2F41",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#203961"
+      "backgroundColor": "#0D2F41"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -23,7 +23,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.minsoeaung.pokeinfo",
-      "buildNumber": "1.2.0"
+      "buildNumber": "1.3.0"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +31,7 @@
         "backgroundColor": "#FFF0E5"
       },
       "package": "com.minsoeaung.pokeinfo",
-      "versionCode": 3,
+      "versionCode": 4,
       "permissions": []
     },
     "web": {
@@ -46,6 +46,11 @@
           "android.permission.WRITE_EXTERNAL_STORAGE"
         ]
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "5e6e6725-869f-4d3b-bb11-72fd0f8c90bc"
+      }
+    }
   }
 }
