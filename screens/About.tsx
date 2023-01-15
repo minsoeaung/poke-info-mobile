@@ -1,5 +1,4 @@
-import { StyleSheet } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import { StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
 import Description from '../components/Description';
@@ -12,7 +11,7 @@ const SourceCodeURL = 'https://github.com/minsoeaung/poke-info-mobile';
 
 const About = () => {
     return (
-        <Animated.View style={styles.container} entering={FadeIn.duration(100)}>
+        <View style={styles.container}>
             <Card>
                 <MyText style={styles.description}>
                     PokeInfo is a free, simple, and unofficial app that consumes REST API from{' '}
@@ -41,7 +40,7 @@ const About = () => {
                     noBorder
                 />
             </Card>
-        </Animated.View>
+        </View>
     );
 };
 

@@ -1,7 +1,6 @@
 import { useScrollToTop } from '@react-navigation/native';
 import React, { useRef } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
 
 import ClearInputButton from '../components/ClearInputButton';
 import { PressableNameList } from '../components/PressableNameList';
@@ -16,7 +15,7 @@ export default function ItemList() {
     useScrollToTop(listRef);
 
     return (
-        <Animated.View style={styles.container} entering={FadeIn.duration(100)}>
+        <View style={styles.container}>
             <View style={styles.searchInputWrap}>
                 <TextInput
                     style={styles.searchInput}
@@ -29,7 +28,7 @@ export default function ItemList() {
             <View style={styles.itemListWrap}>
                 <PressableNameList goTo="ItemDetail" data={list} listRef={listRef} />
             </View>
-        </Animated.View>
+        </View>
     );
 }
 
