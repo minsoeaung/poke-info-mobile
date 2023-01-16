@@ -1,5 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
+import { app } from '../constants/colors';
 import SmallGreyText from './SmallGreyText';
 
 export default function ErrorDisplay({ error }: { error: string }) {
@@ -15,5 +16,6 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        backgroundColor: app.darkColor,
     },
 });
