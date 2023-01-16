@@ -1,9 +1,7 @@
 import { useRef, useState } from 'react';
 
-import { PressableListItemType } from '../types';
-
-const useSearchableList = (initialList: PressableListItemType[] = []) => {
-    const [list, setList] = useState<PressableListItemType[]>(initialList);
+const useSearchableList = <T extends { name: string }>(initialList: T[] = []) => {
+    const [list, setList] = useState<T[]>(initialList);
     const [value, setValue] = useState<string>('');
     const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
@@ -23,7 +21,7 @@ const useSearchableList = (initialList: PressableListItemType[] = []) => {
         }
         timerRef.current = setTimeout(() => {
             filterTheList(value);
-        }, 250);
+        }, 275);
         setValue(value);
     };
 

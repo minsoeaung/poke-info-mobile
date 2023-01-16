@@ -1,16 +1,19 @@
-import { useScrollToTop } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import React, { useRef } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import ClearInputButton from '../components/ClearInputButton';
-import { PressableNameList } from '../components/PressableNameList';
+import PressableItemList from '../components/PressableItemList';
 import { ITEMS } from '../constants/ITEMS';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
+import { NativeStackParamList } from '../types';
 
 export default function ItemList() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(ITEMS);
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'ItemList'>>();
     const listRef = useRef(null);
     useScrollToTop(listRef);
 
@@ -26,7 +29,14 @@ export default function ItemList() {
                 <ClearInputButton onPress={clearInput} />
             </View>
             <View style={styles.itemListWrap}>
-                <PressableNameList goTo="ItemDetail" data={list} listRef={listRef} />
+                <PressableItemList
+                    listRef={listRef}
+                    data={list}
+                    onPressItem={item => {
+                        navigation.push('ItemDetail', item);
+                    }}
+                    spriteExtractor={item => item.sprites}
+                />
             </View>
         </View>
     );

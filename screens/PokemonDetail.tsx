@@ -2,7 +2,7 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import { useLayoutEffect, useMemo } from 'react';
-import { Dimensions, Image, ScrollView, StyleSheet, View } from 'react-native';
+import { Dimensions, Image, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import Card from '../components/Card';
@@ -13,7 +13,7 @@ import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
-import { app, cardColor, typeColor } from '../constants/colors';
+import { app, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList, PokemonType } from '../types';
 import getFormattedName from '../utils/getFormattedName';

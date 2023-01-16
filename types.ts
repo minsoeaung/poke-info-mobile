@@ -22,18 +22,6 @@ export type PokemonType = Omit<PokeAPI.Pokemon, 'sprites'> & {
     };
 };
 
-export type PressableListItemType = {
-    name: string;
-    isHidden?: boolean;
-    typeSlot?: number;
-    sprites?: string | null;
-
-    // temp
-    url?: string;
-    sprite?: string | null;
-    types?: string[];
-};
-
 export type ScreenType =
     | 'PokeDex'
     | 'AbilityList'

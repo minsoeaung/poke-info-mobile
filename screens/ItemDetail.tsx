@@ -2,16 +2,16 @@ import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo } from 'react';
-import { Image, StyleSheet, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import { FlatList, Image, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
-import { PressableNameList } from '../components/PressableNameList';
+import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
+import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -77,8 +77,7 @@ export default function ItemDetail() {
     }
 
     return (
-        <Animated.FlatList
-            entering={FadeIn.duration(100)}
+        <FlatList
             data={[]}
             renderItem={null}
             style={styles.container}
@@ -102,7 +101,13 @@ export default function ItemDetail() {
             }
             ListEmptyComponent={
                 <Card title="Pokémon that might be found holding this item">
-                    <PressableNameList goTo="PokemonDetail" data={heldByPokemons} />
+                    <PressableItemList
+                        data={heldByPokemons}
+                        onPressItem={item => {
+                            navigation.push('PokemonDetail', pokemons[item.name]);
+                        }}
+                        spriteExtractor={item => pokemons[item.name]?.sprite}
+                    />
                 </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}

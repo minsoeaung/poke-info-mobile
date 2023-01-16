@@ -1,7 +1,10 @@
-import { PressableListItemType } from '../types';
+type ItemType = {
+    name: string;
+    sprites: string;
+};
 
 // @ts-ignore
-export const ITEMS: PressableListItemType[] = [
+export const ITEMS: ItemType[] = [
     {
         name: 'master-ball',
         sprites: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/master-ball.png',

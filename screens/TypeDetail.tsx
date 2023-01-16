@@ -1,20 +1,21 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useLayoutEffect, useMemo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
-import { PressableNameList } from '../components/PressableNameList';
+import PressableItemList from '../components/PressableItemList';
 import { app, cardColor, typeColor } from '../constants/colors';
+import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import getTypeSlotString from '../utils/getTypeSlotString';
 
 type Props = NativeStackScreenProps<NativeStackParamList, 'TypeDetail'>;
 
@@ -43,6 +44,9 @@ export default function TypeDetail({ route, navigation }: Props) {
         });
     }, []);
 
+    const listRef = useRef(null);
+    useScrollToTop(listRef);
+
     if (isLoading) {
         return <LoadingText />;
     }
@@ -52,8 +56,7 @@ export default function TypeDetail({ route, navigation }: Props) {
     }
 
     return (
-        <Animated.FlatList
-            entering={FadeIn.duration(100)}
+        <FlatList
             data={[]}
             renderItem={null}
             style={styles.container}
@@ -107,7 +110,15 @@ export default function TypeDetail({ route, navigation }: Props) {
             }
             ListEmptyComponent={
                 <Card title={getFormattedName(name) + ' Pokémon'} titleBgColor={cardColor[name]}>
-                    <PressableNameList goTo="PokemonDetail" data={pokemonsWithThisType} />
+                    <PressableItemList
+                        data={pokemonsWithThisType}
+                        onPressItem={item => {
+                            navigation.push('PokemonDetail', pokemons[item.name]);
+                        }}
+                        size="large"
+                        spriteExtractor={item => pokemons[item.name]?.sprite}
+                        extraExtractor={item => getTypeSlotString(item.typeSlot)}
+                    />
                 </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}
@@ -134,7 +145,8 @@ function Types({ types }: TypesProps) {
                         navigation.push('TypeDetail', {
                             name: type.name,
                         });
-                    }}>
+                    }}
+                >
                     {({ pressed }) => (
                         <MyText
                             style={{
@@ -146,8 +158,9 @@ function Types({ types }: TypesProps) {
                                 marginRight: 5,
                                 elevation: 5,
                                 marginTop: 5,
-                            }}>
-                            {type.name}
+                            }}
+                        >
+                            {getFormattedName(type.name)}
                         </MyText>
                     )}
                 </Pressable>

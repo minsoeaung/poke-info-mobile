@@ -1,6 +1,4 @@
-import { PressableListItemType } from '../types';
-
-const ABILITIES: PressableListItemType[] = [
+const ABILITIES: { name: string }[] = [
     { name: 'stench' },
     { name: 'drizzle' },
     { name: 'speed-boost' },

@@ -16,7 +16,8 @@ const PokeDexStack: React.FC = () => {
             initialRouteName="PokeDex"
             screenOptions={{
                 header: props => <MyHeader headerProps={props} />,
-            }}>
+            }}
+        >
             <Stack.Screen name="PokeDex" component={PokeDex} />
             <Stack.Screen name="PokemonDetail" component={PokemonDetail} />
             <Stack.Screen name="TypeDetail" component={TypeDetail} />

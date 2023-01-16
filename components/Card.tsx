@@ -21,7 +21,8 @@ const Card = ({ children, title, titleBgColor, cardBgColor }: Props) => {
                     style={StyleSheet.flatten([
                         styles.title,
                         { backgroundColor: titleBgColor ? titleBgColor : app.lightColor },
-                    ])}>
+                    ])}
+                >
                     {title}
                 </MyText>
             )}

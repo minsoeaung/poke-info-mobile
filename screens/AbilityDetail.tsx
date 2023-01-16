@@ -1,15 +1,16 @@
+import { useScrollToTop } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
-import { useLayoutEffect, useMemo } from 'react';
-import { StyleSheet, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
-import { PressableNameList } from '../components/PressableNameList';
+import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
+import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
 import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -59,6 +60,9 @@ export default function AbilityDetail({ navigation, route }: Props) {
         navigation.setOptions({ title: getFormattedName(name) });
     }, []);
 
+    const listRef = useRef(null);
+    useScrollToTop(listRef);
+
     if (isLoading) {
         return <LoadingText />;
     }
@@ -68,8 +72,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
     }
 
     return (
-        <Animated.FlatList
-            entering={FadeIn.duration(100)}
+        <FlatList
             data={[]}
             renderItem={null}
             style={styles.container}
@@ -84,7 +87,18 @@ export default function AbilityDetail({ navigation, route }: Props) {
             }
             ListEmptyComponent={
                 <Card title="Pokémon with this ability">
-                    <PressableNameList goTo="PokemonDetail" data={pokemonsWithThisAbility} />
+                    <PressableItemList
+                        listRef={listRef}
+                        data={pokemonsWithThisAbility}
+                        onPressItem={item => {
+                            const pokemon = pokemons[item.name];
+                            if (pokemon) {
+                                navigation.push('PokemonDetail', pokemon);
+                            }
+                        }}
+                        spriteExtractor={item => pokemons[item.name]?.sprite}
+                        extraExtractor={item => (item.isHidden ? 'hidden' : '')}
+                    />
                 </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}

@@ -1,6 +1,4 @@
-import SmallGreyText from './SmallGreyText';
-
-export default function TypeSlot({ slot }: { slot: number }) {
+const getTypeSlotString = (slot: number): string | null => {
     if (slot === 1) {
         return null;
     }
@@ -13,5 +11,7 @@ export default function TypeSlot({ slot }: { slot: number }) {
         order = slot + (slot === 2 ? 'nd' : 'rd');
     }
 
-    return <SmallGreyText text={'   (' + order + ' slot)'} />;
-}
+    return order + ' slot';
+};
+
+export default getTypeSlotString;
