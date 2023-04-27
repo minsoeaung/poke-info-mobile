@@ -1,9 +1,11 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Image } from 'expo-image';
 import { PokeAPI } from 'pokeapi-types';
 import { memo, useMemo } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
+import MyText from './MyText';
 import { app } from '../constants/colors';
 import { LocalPokemonType } from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
@@ -11,7 +13,6 @@ import { Chain, NativeStackParamList } from '../types';
 import getEvolutionDescription from '../utils/getEvolutionDescription';
 import getFormattedName from '../utils/getFormattedName';
 import getLocalPokemonByName from '../utils/getLocalPokemonByName';
-import MyText from './MyText';
 
 const Evolutions = ({ url }: { url: string }) => {
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
@@ -70,13 +71,17 @@ const Evolutions = ({ url }: { url: string }) => {
                                     {fromPokemon && toPokemon && (
                                         <Pressable
                                             style={styles.pressableImage}
-                                            onPress={() => goToPokemonDetailScreen(fromPokemon)}>
+                                            onPress={() => goToPokemonDetailScreen(fromPokemon)}
+                                        >
                                             {fromPokemon?.sprite ? (
                                                 <Image
                                                     style={styles.sprite}
                                                     source={{
-                                                        uri: fromPokemon?.sprite,
+                                                        uri: fromPokemon.sprite,
                                                     }}
+                                                    accessibilityLabel={`Sprite of ${fromPokemon.sprite}`}
+                                                    recyclingKey={fromPokemon.sprite}
+                                                    transition={200}
                                                 />
                                             ) : (
                                                 <View style={styles.spriteFallback}>
@@ -91,18 +96,23 @@ const Evolutions = ({ url }: { url: string }) => {
                                             {toPokemon?.sprite ? (
                                                 <Pressable
                                                     style={styles.pressableImage}
-                                                    onPress={() => goToPokemonDetailScreen(toPokemon)}>
+                                                    onPress={() => goToPokemonDetailScreen(toPokemon)}
+                                                >
                                                     <Image
                                                         style={styles.sprite}
                                                         source={{
-                                                            uri: toPokemon?.sprite,
+                                                            uri: toPokemon.sprite,
                                                         }}
+                                                        accessibilityLabel={`Sprite of ${toPokemon.sprite}`}
+                                                        recyclingKey={toPokemon.sprite}
+                                                        transition={200}
                                                     />
                                                 </Pressable>
                                             ) : (
                                                 <Pressable
                                                     style={styles.spriteFallback}
-                                                    onPress={() => goToPokemonDetailScreen(toPokemon)}>
+                                                    onPress={() => goToPokemonDetailScreen(toPokemon)}
+                                                >
                                                     <MyText>N/A</MyText>
                                                 </Pressable>
                                             )}

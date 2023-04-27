@@ -1,8 +1,9 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Image } from 'expo-image';
 import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo } from 'react';
-import { FlatList, Image, StyleSheet, View } from 'react-native';
+import { FlatList, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
 import Description from '../components/Description';
@@ -62,6 +63,9 @@ export default function ItemDetail() {
                         source={{
                             uri: data!.sprites.default,
                         }}
+                        accessibilityLabel={`Image of ${name}`}
+                        recyclingKey={name}
+                        transition={200}
                     />
                 ),
             });

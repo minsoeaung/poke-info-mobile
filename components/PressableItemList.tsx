@@ -1,10 +1,11 @@
+import { Image } from 'expo-image';
 import React from 'react';
-import { FlatList, Image, Pressable, StyleSheet, View } from 'react-native';
+import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
-import { app } from '../constants/colors';
-import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
+import { app } from '../constants/colors';
+import getFormattedName from '../utils/getFormattedName';
 
 type Props<T> = {
     data: T[];
@@ -59,6 +60,9 @@ export default function PressableItemList<T extends { name: string }>({
                                                 source={{
                                                     uri: sprite,
                                                 }}
+                                                accessibilityLabel={`Image of ${item.name}`}
+                                                recyclingKey={item.name}
+                                                transition={200}
                                             />
                                         )}
                                         <MyText

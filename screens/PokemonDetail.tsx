@@ -1,8 +1,9 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Image } from 'expo-image';
 import { PokeAPI } from 'pokeapi-types';
 import { useLayoutEffect, useMemo } from 'react';
-import { Dimensions, Image, StyleSheet, View } from 'react-native';
+import { Dimensions, StyleSheet, View } from 'react-native';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
 import Card from '../components/Card';
@@ -67,6 +68,9 @@ export default function PokemonDetail() {
                                 source={{
                                     uri: data.sprites.other['official-artwork']['front_default'],
                                 }}
+                                accessibilityLabel={`Official artwork of ${name}`}
+                                recyclingKey={`official_artwork_${name}`}
+                                transition={200}
                             />
                         </View>
                         <Card>

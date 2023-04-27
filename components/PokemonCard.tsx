@@ -1,14 +1,15 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { Image } from 'expo-image';
 import { memo } from 'react';
-import { Image, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
+import MyText from './MyText';
 import { app, cardColor, typeColor } from '../constants/colors';
 import { LocalPokemonType } from '../constants/pokemons';
 import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import MyText from './MyText';
 
 const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
     const { name, sprite, types } = pokemon;
@@ -24,7 +25,16 @@ const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
             <Pressable onPress={goToPokemonDetailScreen} style={styles.pressable}>
                 <MyText style={styles.name}>{getFormattedName(name)}</MyText>
                 <View style={styles.spriteContainer}>
-                    {sprite && <Image style={styles.sprite} source={{ uri: sprite }} />}
+                    {sprite && (
+                        <Image
+                            style={styles.sprite}
+                            source={{ uri: sprite }}
+                            contentFit="cover"
+                            accessibilityLabel={`Sprite of ${name}`}
+                            recyclingKey={name}
+                            transition={200}
+                        />
+                    )}
                 </View>
                 <View style={styles.types}>
                     {types.map((type, index) => (
@@ -40,7 +50,8 @@ const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
                                 borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
                                 color: 'white',
                                 fontSize: 10,
-                            }}>
+                            }}
+                        >
                             {type}
                         </MyText>
                     ))}
