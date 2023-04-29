@@ -23,39 +23,48 @@ const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
     return (
         <Animated.View entering={FadeInDown} style={[styles.pokemonCard, { backgroundColor }]}>
             <Pressable onPress={goToPokemonDetailScreen} style={styles.pressable}>
-                <MyText style={styles.name}>{getFormattedName(name)}</MyText>
-                <View style={styles.spriteContainer}>
-                    {sprite && (
-                        <Image
-                            style={styles.sprite}
-                            source={{ uri: sprite }}
-                            contentFit="cover"
-                            accessibilityLabel={`Sprite of ${name}`}
-                            recyclingKey={name}
-                            transition={200}
-                        />
-                    )}
-                </View>
-                <View style={styles.types}>
-                    {types.map((type, index) => (
+                {({ pressed }) => (
+                    <>
                         <MyText
-                            key={type}
-                            style={{
-                                backgroundColor: typeColor[type],
-                                paddingHorizontal: 5,
-                                paddingVertical: 2,
-                                borderBottomLeftRadius: index === 0 ? 5 : 0,
-                                borderTopLeftRadius: index === 0 ? 5 : 0,
-                                borderTopRightRadius: index === types.length - 1 ? 5 : 0,
-                                borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
-                                color: 'white',
-                                fontSize: 10,
-                            }}
+                            style={StyleSheet.flatten([styles.name, pressed ? { color: 'tomato' } : {}])}
+                            numberOfLines={1}
                         >
-                            {type}
+                            {getFormattedName(name)}
                         </MyText>
-                    ))}
-                </View>
+                        <View style={styles.spriteContainer}>
+                            {sprite && (
+                                <Image
+                                    style={styles.sprite}
+                                    source={{ uri: sprite }}
+                                    contentFit="cover"
+                                    accessibilityLabel={`Sprite of ${name}`}
+                                    recyclingKey={name}
+                                    transition={200}
+                                />
+                            )}
+                        </View>
+                        <View style={styles.types}>
+                            {types.map((type, index) => (
+                                <MyText
+                                    key={type}
+                                    style={{
+                                        backgroundColor: typeColor[type],
+                                        paddingHorizontal: 5,
+                                        paddingVertical: 2,
+                                        borderBottomLeftRadius: index === 0 ? 5 : 0,
+                                        borderTopLeftRadius: index === 0 ? 5 : 0,
+                                        borderTopRightRadius: index === types.length - 1 ? 5 : 0,
+                                        borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
+                                        color: app.lightColor,
+                                        fontSize: 8,
+                                    }}
+                                >
+                                    {type}
+                                </MyText>
+                            ))}
+                        </View>
+                    </>
+                )}
             </Pressable>
         </Animated.View>
     );
@@ -80,19 +89,20 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     name: {
-        letterSpacing: 1,
+        width: '100%',
         textAlign: 'center',
+        paddingHorizontal: 5,
+        paddingVertical: 4,
     },
     spriteContainer: {
         borderRadius: 10,
         width: '80%',
-        height: '60%',
+        height: '50%',
         backgroundColor: 'rgba(255, 255, 255, 0.5)',
     },
     sprite: {
         width: '100%',
         height: '100%',
-        resizeMode: 'contain',
     },
     types: {
         flexDirection: 'row',

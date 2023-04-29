@@ -2,8 +2,8 @@ import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Pressable, StyleSheet, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 
-import { app } from '../constants/colors';
 import MyText from './MyText';
+import { app } from '../constants/colors';
 
 const icons: { [key: string]: string } = {
     PokeDexStack: 'pokemon-go',
@@ -49,7 +49,8 @@ const MyTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
                         testID={options.tabBarTestID}
                         onPress={onPress}
                         onLongPress={onLongPress}
-                        style={styles.tab}>
+                        style={styles.tab}
+                    >
                         <Ionicons
                             name={icons[route.name] || ''}
                             style={StyleSheet.flatten([

@@ -3,10 +3,10 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import { Pressable, StyleSheet, View } from 'react-native';
 
+import MyText from './MyText';
 import { typeColor } from '../constants/colors';
 import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import MyText from './MyText';
 
 type Props = {
     types: PokeAPI.PokemonType[];
@@ -26,7 +26,8 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
                             navigation.push('TypeDetail', {
                                 name: type.name,
                             });
-                        }}>
+                        }}
+                    >
                         {({ pressed }) => (
                             <MyText
                                 style={{
@@ -37,7 +38,8 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
                                     color: 'white',
                                     marginRight: 15,
                                     elevation: 5,
-                                }}>
+                                }}
+                            >
                                 {getFormattedName(type.name)}
                             </MyText>
                         )}
@@ -62,7 +64,8 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
                         borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
                         color: 'white',
                         fontSize: 10,
-                    }}>
+                    }}
+                >
                     {type.type.name}
                 </MyText>
             ))}

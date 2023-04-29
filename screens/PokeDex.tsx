@@ -4,9 +4,9 @@ import { FlashList } from '@shopify/flash-list';
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { Dimensions, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import ClearInputButton from '../components/ClearInputButton';
-import MyText from '../components/MyText';
 import PokemonCard from '../components/PokemonCard';
 import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
@@ -32,22 +32,14 @@ export default function PokeDex() {
         navigation.setOptions({
             headerRight: () => (
                 <Pressable onPress={toggle}>
-                    {({ pressed }) => (
-                        <MyText
-                            style={StyleSheet.flatten([
-                                styles.searchBtn,
-                                {
-                                    color: pressed ? 'rgb(210, 230, 255)' : app.lightColor,
-                                },
-                            ])}
-                        >
-                            Search
-                        </MyText>
-                    )}
+                    <EvilIcons
+                        name="search"
+                        style={StyleSheet.flatten([styles.searchBtn, { color: isVisible ? 'tomato' : app.lightColor }])}
+                    />
                 </Pressable>
             ),
         });
-    }, [navigation]);
+    }, [navigation, isVisible]);
 
     return (
         <View style={styles.container}>
@@ -58,6 +50,7 @@ export default function PokeDex() {
                         value={value}
                         onChangeText={handleChangeText}
                         placeholder="Search..."
+                        selectionColor="tomato"
                     />
                     <ClearInputButton onPress={clearInput} />
                 </View>
@@ -84,8 +77,8 @@ export default function PokeDex() {
                     data={pokemons}
                     renderItem={({ item }: { item: LocalPokemonType }) => <PokemonCard pokemon={item} />}
                     keyExtractor={item => item.name}
-                    numColumns={3}
-                    estimatedItemSize={104}
+                    numColumns={4}
+                    estimatedItemSize={121}
                     contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
                     onScrollBeginDrag={() => isVisible && toggle()}
@@ -129,6 +122,7 @@ const styles = StyleSheet.create({
     searchBtn: {
         paddingVertical: 10,
         paddingLeft: 25,
+        fontSize: 30,
     },
     suggestionList: {
         top: 60,

@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
-import { app } from '../constants/colors';
 import MyText from './MyText';
+import { app } from '../constants/colors';
 
 type DescriptionProps = {
     label: string;
@@ -21,7 +21,8 @@ export default function Description({ label, value, noBorder, labelFlex = 4, val
                     borderBottomWidth: noBorder ? 0 : 0.5,
                     borderColor: app.darkColor,
                 },
-            ]}>
+            ]}
+        >
             <View style={{ flex: labelFlex }}>
                 <MyText style={styles.label}>{label}</MyText>
             </View>

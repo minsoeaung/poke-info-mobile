@@ -1,6 +1,6 @@
 export type ItemType = {
     name: string;
-    sprites: string;
+    sprites?: string;
 };
 
 // @ts-ignore

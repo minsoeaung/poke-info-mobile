@@ -1,8 +1,8 @@
 import { ReactNode } from 'react';
 import { ColorValue, StyleSheet, View } from 'react-native';
 
-import { app } from '../constants/colors';
 import MyText from './MyText';
+import { app } from '../constants/colors';
 
 type Props = {
     children: ReactNode;

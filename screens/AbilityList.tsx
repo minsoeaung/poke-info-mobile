@@ -25,6 +25,7 @@ export default function AbilityList() {
                     value={value}
                     onChangeText={handleChangeText}
                     placeholder="Search..."
+                    selectionColor="tomato"
                 />
                 <ClearInputButton onPress={clearInput} />
             </View>

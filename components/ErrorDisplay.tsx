@@ -1,7 +1,7 @@
 import { StyleSheet, View } from 'react-native';
 
-import { app } from '../constants/colors';
 import SmallGreyText from './SmallGreyText';
+import { app } from '../constants/colors';
 
 export default function ErrorDisplay({ error }: { error: string }) {
     return (

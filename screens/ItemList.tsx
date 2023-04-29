@@ -2,7 +2,7 @@ import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
-import React, { useRef } from 'react';
+import React, { memo, useRef } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 
@@ -28,6 +28,7 @@ export default function ItemList() {
                     value={value}
                     onChangeText={handleChangeText}
                     placeholder="Search..."
+                    selectionColor="tomato"
                 />
                 <ClearInputButton onPress={clearInput} />
             </View>
@@ -45,7 +46,7 @@ export default function ItemList() {
     );
 }
 
-const Item = ({ item }: { item: ItemType }) => {
+const Item = memo(({ item }: { item: ItemType }) => {
     const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'ItemList'>>();
 
     const handlePress = () => {
@@ -63,20 +64,26 @@ const Item = ({ item }: { item: ItemType }) => {
                         >
                             {getFormattedName(item.name)}
                         </MyText>
-                        <Image
-                            style={styles.itemSprite}
-                            source={{ uri: item.sprites }}
-                            contentFit="contain"
-                            accessibilityLabel={`Sprite of ${item.name}`}
-                            recyclingKey={item.name}
-                            transition={200}
-                        />
+                        {item.sprites ? (
+                            <Image
+                                style={styles.itemSprite}
+                                source={{ uri: item.sprites }}
+                                contentFit="contain"
+                                accessibilityLabel={`Sprite of ${item.name}`}
+                                recyclingKey={item.name}
+                                transition={200}
+                            />
+                        ) : (
+                            <View style={styles.noItemSprite}>
+                                <MyText style={styles.bad}>❗</MyText>
+                            </View>
+                        )}
                     </>
                 )}
             </Pressable>
         </Animated.View>
     );
-};
+});
 
 const styles = StyleSheet.create({
     container: {
@@ -128,5 +135,13 @@ const styles = StyleSheet.create({
     },
     itemSprite: {
         flex: 1,
+    },
+    noItemSprite: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    bad: {
+        fontSize: 14,
     },
 });

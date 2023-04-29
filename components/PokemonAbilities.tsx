@@ -3,10 +3,10 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { PokeAPI } from 'pokeapi-types';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { NativeStackParamList } from '../types';
-import getFormattedName from '../utils/getFormattedName';
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
+import { NativeStackParamList } from '../types';
+import getFormattedName from '../utils/getFormattedName';
 
 type Props = {
     abilities: PokeAPI.PokemonAbility[];
@@ -25,7 +25,8 @@ export default function PokemonAbilities({ abilities }: Props) {
                 <Pressable
                     key={ability.ability.name}
                     style={styles.ability}
-                    onPress={() => goToAbilityDetailScreen(ability.ability.name)}>
+                    onPress={() => goToAbilityDetailScreen(ability.ability.name)}
+                >
                     {({ pressed }) => (
                         <>
                             <MyText
@@ -37,7 +38,8 @@ export default function PokemonAbilities({ abilities }: Props) {
                                     borderRadius: 5,
                                     color: 'white',
                                     elevation: 5,
-                                }}>
+                                }}
+                            >
                                 {getFormattedName(ability.ability.name)}
                             </MyText>
                             <View>

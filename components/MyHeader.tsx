@@ -1,10 +1,11 @@
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { Pressable, StyleSheet, View } from 'react-native';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
+import MyText from './MyText';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
-import MyText from './MyText';
 
 type Props = {
     headerProps: NativeStackHeaderProps;
@@ -22,13 +23,10 @@ const MyHeader = ({ headerProps }: Props) => {
                 {({ pressed }) => (
                     <View style={[styles.headerLeft, options.headerStyle]}>
                         {back && (
-                            <MyText
-                                style={StyleSheet.flatten([
-                                    styles.backText,
-                                    { color: pressed ? 'tomato' : app.darkColor },
-                                ])}>
-                                {'<'}
-                            </MyText>
+                            <AntDesign
+                                name="back"
+                                style={StyleSheet.flatten([styles.back, { color: pressed ? 'tomato' : app.darkColor }])}
+                            />
                         )}
                         <MyText style={styles.titleText} numberOfLines={1}>
                             {title}
@@ -37,8 +35,7 @@ const MyHeader = ({ headerProps }: Props) => {
                 )}
             </Pressable>
             {typeof options.headerRight === 'function' && (
-                // @ts-ignore
-                <View style={styles.headerRight}>{options.headerRight()}</View>
+                <View style={styles.headerRight}>{options.headerRight({ canGoBack: !!back })}</View>
             )}
         </View>
     );
@@ -66,7 +63,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
-    backText: {
+    back: {
         fontSize: 25,
         paddingRight: 20,
         paddingVertical: 5,

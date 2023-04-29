@@ -26,6 +26,6 @@ const styles = StyleSheet.create({
     },
     sprite: {
         flex: 1,
-        width: '15%',
+        width: '20%',
     },
 });
