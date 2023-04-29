@@ -8,8 +8,8 @@ import { FlatList, StyleSheet, View } from 'react-native';
 import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
-import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
+import PikachuRunning from '../components/PikachuRunning';
 import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
 import pokemons from '../constants/pokemons';
@@ -73,7 +73,7 @@ export default function ItemDetail() {
     }, [data]);
 
     if (isLoading) {
-        return <LoadingText />;
+        return <PikachuRunning />;
     }
 
     if (error) {

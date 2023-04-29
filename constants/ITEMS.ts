@@ -1,4 +1,4 @@
-type ItemType = {
+export type ItemType = {
     name: string;
     sprites: string;
 };

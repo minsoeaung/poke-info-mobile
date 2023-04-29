@@ -1,19 +1,22 @@
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { FlashList } from '@shopify/flash-list';
+import { Image } from 'expo-image';
 import React, { useRef } from 'react';
-import { StyleSheet, TextInput, View } from 'react-native';
+import { Pressable, StyleSheet, TextInput, View } from 'react-native';
+import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import ClearInputButton from '../components/ClearInputButton';
-import PressableItemList from '../components/PressableItemList';
-import { ITEMS } from '../constants/ITEMS';
+import MyText from '../components/MyText';
+import { ITEMS, ItemType } from '../constants/ITEMS';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
 import { NativeStackParamList } from '../types';
+import getFormattedName from '../utils/getFormattedName';
 
 export default function ItemList() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(ITEMS);
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'ItemList'>>();
     const listRef = useRef(null);
     useScrollToTop(listRef);
 
@@ -29,18 +32,51 @@ export default function ItemList() {
                 <ClearInputButton onPress={clearInput} />
             </View>
             <View style={styles.itemListWrap}>
-                <PressableItemList
-                    listRef={listRef}
+                <FlashList
+                    ref={listRef}
                     data={list}
-                    onPressItem={item => {
-                        navigation.push('ItemDetail', item);
-                    }}
-                    spriteExtractor={item => item.sprites}
+                    numColumns={4}
+                    renderItem={({ item }) => <Item item={item} />}
+                    estimatedItemSize={85}
+                    keyExtractor={item => item.name}
                 />
             </View>
         </View>
     );
 }
+
+const Item = ({ item }: { item: ItemType }) => {
+    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'ItemList'>>();
+
+    const handlePress = () => {
+        navigation.push('ItemDetail', item);
+    };
+
+    return (
+        <Animated.View entering={FadeInDown} style={styles.item}>
+            <Pressable onPress={handlePress} style={styles.pressable}>
+                {({ pressed }) => (
+                    <>
+                        <MyText
+                            style={StyleSheet.flatten([styles.itemName, pressed ? { color: 'tomato' } : {}])}
+                            numberOfLines={1}
+                        >
+                            {getFormattedName(item.name)}
+                        </MyText>
+                        <Image
+                            style={styles.itemSprite}
+                            source={{ uri: item.sprites }}
+                            contentFit="contain"
+                            accessibilityLabel={`Sprite of ${item.name}`}
+                            recyclingKey={item.name}
+                            transition={200}
+                        />
+                    </>
+                )}
+            </Pressable>
+        </Animated.View>
+    );
+};
 
 const styles = StyleSheet.create({
     container: {
@@ -68,9 +104,29 @@ const styles = StyleSheet.create({
     },
     itemListWrap: {
         flex: 1,
-        backgroundColor: app.lightColor,
-        borderRadius: 10,
+    },
+    item: {
+        flex: 1,
         borderWidth: 0.5,
-        paddingHorizontal: 10,
+        aspectRatio: 1,
+        margin: 5,
+        borderRadius: 10,
+        elevation: 5,
+        borderColor: app.darkColor,
+        backgroundColor: app.lightColor,
+    },
+    pressable: {
+        flex: 1,
+    },
+    itemName: {
+        fontSize: 12,
+        textAlign: 'center',
+        paddingVertical: 4,
+        paddingHorizontal: 2,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
+    },
+    itemSprite: {
+        flex: 1,
     },
 });

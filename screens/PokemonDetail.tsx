@@ -10,8 +10,8 @@ import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import Evolutions from '../components/Evolutions';
-import LoadingText from '../components/LoadingText';
 import MyText from '../components/MyText';
+import PikachuRunning from '../components/PikachuRunning';
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
 import { app, cardColor } from '../constants/colors';
@@ -56,7 +56,7 @@ export default function PokemonDetail() {
     return (
         <View style={styles.container}>
             {isLoading ? (
-                <LoadingText />
+                <PikachuRunning />
             ) : error ? (
                 <ErrorDisplay error={error} />
             ) : (
