@@ -62,6 +62,7 @@ const styles = StyleSheet.create({
         fontSize: 25,
         paddingHorizontal: 10,
         paddingVertical: 5,
+        letterSpacing: 1,
     },
     back: {
         fontSize: 25,

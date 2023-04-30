@@ -79,6 +79,7 @@ const Evolutions = ({ url }: { url: string }) => {
                                                     source={{
                                                         uri: fromPokemon.sprite,
                                                     }}
+                                                    contentFit="contain"
                                                     accessibilityLabel={`Sprite of ${fromPokemon.sprite}`}
                                                     recyclingKey={fromPokemon.sprite}
                                                     transition={200}
@@ -103,6 +104,7 @@ const Evolutions = ({ url }: { url: string }) => {
                                                         source={{
                                                             uri: toPokemon.sprite,
                                                         }}
+                                                        contentFit="contain"
                                                         accessibilityLabel={`Sprite of ${toPokemon.sprite}`}
                                                         recyclingKey={toPokemon.sprite}
                                                         transition={200}
@@ -162,7 +164,6 @@ const styles = StyleSheet.create({
         width: '100%',
         height: '100%',
         alignSelf: 'center',
-        resizeMode: 'contain',
     },
     chainDescription: {
         color: app.darkColor,

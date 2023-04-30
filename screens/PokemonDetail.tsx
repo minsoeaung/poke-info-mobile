@@ -68,6 +68,7 @@ export default function PokemonDetail() {
                                 source={{
                                     uri: data.sprites.other['official-artwork']['front_default'],
                                 }}
+                                contentFit="contain"
                                 accessibilityLabel={`Official artwork of ${name}`}
                                 recyclingKey={`official_artwork_${name}`}
                                 transition={200}
@@ -147,7 +148,6 @@ const styles = StyleSheet.create({
         height: Dimensions.get('window').width - 1,
         flex: 1,
         alignSelf: 'center',
-        resizeMode: 'contain',
     },
     descriptionContainer: {
         borderWidth: 0.5,

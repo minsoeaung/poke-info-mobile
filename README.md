@@ -2,8 +2,6 @@
 
 Poke Info is a tool built with React Native (Expo) that provides some information about different pokemon characters, their types, evolutions, items, abilities and more. Users can use the app to look up stats for their favorite pokemon, item or ability by searching quick. The app is initially created for the purpose of trying React Native and TypeScript.
 
-![Poke_Info_Feature_Graphic](Poke_Info_Feature_Graphic.png)
-
 ## Features
 
 * A complete list of Pokémon with their visual images, types, abilities, stats and evolution chart

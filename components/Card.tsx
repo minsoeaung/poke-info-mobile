@@ -33,7 +33,6 @@ const Card = ({ children, title, titleBgColor, cardBgColor }: Props) => {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: app.lightColor,
         paddingHorizontal: 15,
         paddingVertical: 15,
         marginBottom: 15,
@@ -44,6 +43,8 @@ const styles = StyleSheet.create({
         paddingVertical: 5,
         paddingHorizontal: 10,
         marginBottom: 5,
+        borderRadius: 7,
+        letterSpacing: 1,
     },
 });
 

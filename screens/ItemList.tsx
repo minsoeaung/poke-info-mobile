@@ -118,9 +118,8 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         margin: 5,
         borderRadius: 10,
-        elevation: 5,
         borderColor: app.darkColor,
-        backgroundColor: app.lightColor,
+        backgroundColor: app.lightColor + app.transparency,
     },
     pressable: {
         flex: 1,
@@ -132,14 +131,19 @@ const styles = StyleSheet.create({
         paddingHorizontal: 2,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
+        backgroundColor: app.lightColor,
     },
     itemSprite: {
         flex: 1,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
     },
     noItemSprite: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
     },
     bad: {
         fontSize: 14,

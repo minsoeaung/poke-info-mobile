@@ -21,7 +21,10 @@ const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
     };
 
     return (
-        <Animated.View entering={FadeInDown} style={[styles.pokemonCard, { backgroundColor }]}>
+        <Animated.View
+            entering={FadeInDown}
+            style={[styles.pokemonCard, { backgroundColor: `${backgroundColor}${app.transparency}` }]}
+        >
             <Pressable onPress={goToPokemonDetailScreen} style={styles.pressable}>
                 {({ pressed }) => (
                     <>

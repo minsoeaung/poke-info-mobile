@@ -50,6 +50,7 @@ export default function PressableItemList<T extends { name: string }>({
                                     <View style={styles.spriteNameExtra}>
                                         {sprite && (
                                             <Image
+                                                contentFit="cover"
                                                 style={[
                                                     styles.sprite,
                                                     {
@@ -134,7 +135,6 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     sprite: {
-        resizeMode: 'cover',
         position: 'absolute',
     },
     name: {
