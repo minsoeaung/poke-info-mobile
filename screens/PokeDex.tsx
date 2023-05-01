@@ -1,12 +1,13 @@
+import EvilIcons from '@expo/vector-icons/EvilIcons';
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { Dimensions, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
-import EvilIcons from 'react-native-vector-icons/EvilIcons';
 
 import ClearInputButton from '../components/ClearInputButton';
+import PikachuRunning from '../components/PikachuRunning';
 import PokemonCard from '../components/PokemonCard';
 import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
@@ -19,6 +20,7 @@ import { NativeStackParamList } from '../types';
 const { height } = Dimensions.get('window');
 
 export default function PokeDex() {
+    const [ready, setReady] = useState(false);
     const pokemons: LocalPokemonType[] = useMemo(() => {
         return Object.values(POKEMONS);
     }, []);
@@ -43,6 +45,11 @@ export default function PokeDex() {
 
     return (
         <View style={styles.container}>
+            {!ready && (
+                <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut.duration(100)}>
+                    <PikachuRunning />
+                </Animated.View>
+            )}
             <Animated.View style={[StyleSheet.absoluteFill, styles.searchBoxContainer, animatedStyles]}>
                 <View style={styles.searchBox}>
                     <TextInput
@@ -82,6 +89,7 @@ export default function PokeDex() {
                     contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
                     onScrollBeginDrag={() => isVisible && toggle()}
+                    onLoad={() => setReady(true)}
                 />
             </View>
         </View>

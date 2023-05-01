@@ -3,7 +3,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
 
 import MyText from './MyText';
 import { app, cardColor, typeColor } from '../constants/colors';
@@ -21,10 +20,7 @@ const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
     };
 
     return (
-        <Animated.View
-            entering={FadeInDown}
-            style={[styles.pokemonCard, { backgroundColor: `${backgroundColor}${app.transparency}` }]}
-        >
+        <View style={[styles.pokemonCard, { backgroundColor: `${backgroundColor}${app.transparency}` }]}>
             <Pressable onPress={goToPokemonDetailScreen} style={styles.pressable}>
                 {({ pressed }) => (
                     <>
@@ -69,7 +65,7 @@ const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
                     </>
                 )}
             </Pressable>
-        </Animated.View>
+        </View>
     );
 };
 

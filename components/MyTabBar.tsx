@@ -1,11 +1,11 @@
+import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Pressable, StyleSheet, View } from 'react-native';
-import Ionicons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import MyText from './MyText';
 import { app } from '../constants/colors';
 
-const icons: { [key: string]: string } = {
+const icons = {
     PokeDexStack: 'pokemon-go',
     AbilitiesStack: 'alpha-a-box-outline',
     ItemsStack: 'toolbox-outline',
@@ -52,6 +52,7 @@ const MyTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
                         style={styles.tab}
                     >
                         <Ionicons
+                            // @ts-ignore
                             name={icons[route.name] || ''}
                             style={StyleSheet.flatten([
                                 styles.icon,

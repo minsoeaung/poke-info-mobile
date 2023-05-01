@@ -1,7 +1,7 @@
+import AntDesign from '@expo/vector-icons/AntDesign';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { Pressable, StyleSheet, View } from 'react-native';
-import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import MyText from './MyText';
 import { app } from '../constants/colors';

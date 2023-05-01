@@ -2,12 +2,13 @@ import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
-import React, { memo, useRef } from 'react';
+import React, { memo, useRef, useState } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
-import Animated, { FadeInDown } from 'react-native-reanimated';
+import Animated, { FadeOut } from 'react-native-reanimated';
 
 import ClearInputButton from '../components/ClearInputButton';
 import MyText from '../components/MyText';
+import PikachuRunning from '../components/PikachuRunning';
 import { ITEMS, ItemType } from '../constants/ITEMS';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
@@ -16,12 +17,18 @@ import { NativeStackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 export default function ItemList() {
+    const [ready, setReady] = useState(false);
     const { list, value, handleChangeText, clearInput } = useSearchableList(ITEMS);
     const listRef = useRef(null);
     useScrollToTop(listRef);
 
     return (
         <View style={styles.container}>
+            {!ready && (
+                <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut}>
+                    <PikachuRunning />
+                </Animated.View>
+            )}
             <View style={styles.searchInputWrap}>
                 <TextInput
                     style={styles.searchInput}
@@ -40,6 +47,7 @@ export default function ItemList() {
                     renderItem={({ item }) => <Item item={item} />}
                     estimatedItemSize={85}
                     keyExtractor={item => item.name}
+                    onLoad={() => setReady(true)}
                 />
             </View>
         </View>
@@ -54,7 +62,7 @@ const Item = memo(({ item }: { item: ItemType }) => {
     };
 
     return (
-        <Animated.View entering={FadeInDown} style={styles.item}>
+        <View style={styles.item}>
             <Pressable onPress={handlePress} style={styles.pressable}>
                 {({ pressed }) => (
                     <>
@@ -81,7 +89,7 @@ const Item = memo(({ item }: { item: ItemType }) => {
                     </>
                 )}
             </Pressable>
-        </Animated.View>
+        </View>
     );
 });
 
@@ -101,6 +109,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        zIndex: -1,
     },
     searchInput: {
         height: 40,
@@ -111,6 +120,7 @@ const styles = StyleSheet.create({
     },
     itemListWrap: {
         flex: 1,
+        zIndex: -1, // To eliminate flash while PikachuRunning doing exiting animation
     },
     item: {
         flex: 1,
