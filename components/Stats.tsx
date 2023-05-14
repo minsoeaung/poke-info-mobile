@@ -14,7 +14,8 @@ const Stats = ({ stats, barColor }: Props) => {
         <View style={styles.container}>
             {(Object.keys(stats) as (keyof typeof stats)[]).map(statName => {
                 if (statName === 'total') return null;
-                const ratio = getStatRatio(stats[statName][0]);
+                const value = stats[statName][0];
+                const ratio = getStatRatio(value);
 
                 return (
                     <View style={styles.row} key={statName}>
@@ -22,6 +23,9 @@ const Stats = ({ stats, barColor }: Props) => {
                             {statNamesInUI[statName]}
                         </MyText>
                         <View style={[styles.statBar, { borderColor: barColor }]}>
+                            <View style={[styles.statNumberContainer, StyleSheet.absoluteFill]}>
+                                <MyText style={styles.statNumber}>{value}</MyText>
+                            </View>
                             <View
                                 style={{
                                     flex: ratio,
@@ -61,6 +65,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         elevation: 10,
         overflow: 'hidden',
+    },
+    statNumberContainer: {
+        zIndex: 1,
+        paddingLeft: 5,
+    },
+    statNumber: {
+        color: app.darkColor,
+        letterSpacing: 1,
+        fontSize: 12,
     },
 });
 
