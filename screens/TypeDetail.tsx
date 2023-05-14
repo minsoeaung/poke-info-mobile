@@ -13,11 +13,11 @@ import PressableItemList from '../components/PressableItemList';
 import { app, cardColor, typeColor } from '../constants/colors';
 import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList } from '../types';
+import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import getTypeSlotString from '../utils/getTypeSlotString';
 
-type Props = NativeStackScreenProps<NativeStackParamList, 'TypeDetail'>;
+type Props = NativeStackScreenProps<StackParamList, 'TypeDetail'>;
 
 export default function TypeDetail({ route, navigation }: Props) {
     const { name } = route.params;
@@ -134,7 +134,7 @@ type TypesProps = {
 };
 
 function Types({ types }: TypesProps) {
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'TypeDetail'>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'TypeDetail'>>();
 
     return (
         <View style={styles.typeContainer}>

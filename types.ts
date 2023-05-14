@@ -1,7 +1,5 @@
 import { PokeAPI } from 'pokeapi-types';
 
-import { LocalPokemonType } from './constants/pokemons';
-
 type PokemonFormType = {
     slot: number;
     type: PokeAPI.NamedAPIResource;
@@ -36,13 +34,13 @@ type Name = {
     name: string;
 };
 
-export type NativeStackParamList = {
+export type StackParamList = {
     PokeDex: undefined;
     AbilityList: undefined;
     ItemList: undefined;
     About: undefined;
 
-    PokemonDetail: LocalPokemonType;
+    PokemonDetail: Name;
     TypeDetail: Name;
     AbilityDetail: Name;
     ItemDetail: Name;
@@ -67,3 +65,54 @@ type EvolutionTriggerName =
     | 'take-damage'
     | string
     | 'other';
+
+export type AbilityType = {
+    isHidden: boolean;
+    slot: number;
+    name: string;
+};
+
+export type PokemonSmDetailType = {
+    name: string;
+    sprite: string | null;
+    types: string[];
+    id: number;
+};
+
+export type PokemonDetailType = {
+    id: number;
+    name: string;
+    profile: {
+        sprite: string | null;
+        species: string;
+        types: string[];
+        height: string;
+        weight: string;
+        abilities: AbilityType[];
+        flavorTextEntry: {
+            diamond: string;
+        };
+        gender: {
+            female: number;
+            male: number;
+        } | null;
+    };
+    training: {
+        catchRate: number;
+        growthRate: string;
+        baseHappiness: number | null;
+        baseExp: number | null;
+        evYield: string;
+    };
+    breeding: { eggGroups: string[]; eggCycles: number | null };
+    stats: {
+        hp: number[];
+        attack: number[];
+        defense: number[];
+        specialAttack: number[];
+        specialDefense: number[];
+        speed: number[];
+        total: number[];
+    };
+    evolutions: string[];
+};

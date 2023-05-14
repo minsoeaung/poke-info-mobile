@@ -1,46 +1,51 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PokeAPI } from 'pokeapi-types';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { typeColor } from '../constants/colors';
-import { NativeStackParamList } from '../types';
-import getFormattedName from '../utils/getFormattedName';
+import { app, typeColor } from '../constants/colors';
+import { StackParamList } from '../types';
 
 type Props = {
-    types: PokeAPI.PokemonType[];
+    types: string[];
     isInScreen?: boolean;
 };
 
+const goodContrastColors = {
+    grass: app.darkColor,
+    electric: app.darkColor,
+    steel: app.darkColor,
+};
+
 export default function PokemonTypes({ types, isInScreen = false }: Props) {
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
     if (isInScreen) {
         return (
             <View style={styles.typeContainer}>
-                {types.map(({ type }) => (
+                {types.map(type => (
                     <Pressable
-                        key={type.name}
+                        key={type}
                         onPress={() => {
                             navigation.push('TypeDetail', {
-                                name: type.name,
+                                name: type,
                             });
                         }}
                     >
                         {({ pressed }) => (
                             <MyText
                                 style={{
-                                    backgroundColor: pressed ? 'rgb(130,183,255)' : typeColor[type.name],
+                                    backgroundColor: pressed ? 'rgb(130,183,255)' : typeColor[type],
                                     paddingHorizontal: 10,
                                     paddingVertical: 7,
-                                    borderRadius: 5,
-                                    color: 'white',
+                                    borderRadius: 10,
+                                    color: goodContrastColors[type] ? goodContrastColors[type] : app.lightColor,
                                     marginRight: 15,
-                                    elevation: 5,
+                                    elevation: 10,
+                                    textTransform: 'capitalize',
                                 }}
                             >
-                                {getFormattedName(type.name)}
+                                {type}
                             </MyText>
                         )}
                     </Pressable>
@@ -53,20 +58,20 @@ export default function PokemonTypes({ types, isInScreen = false }: Props) {
         <View style={styles.typeContainer}>
             {types.map((type, index) => (
                 <MyText
-                    key={type.type.name}
+                    key={type}
                     style={{
-                        backgroundColor: typeColor[type.type.name],
+                        backgroundColor: typeColor[type],
                         paddingHorizontal: 5,
                         paddingVertical: 2,
                         borderBottomLeftRadius: index === 0 ? 5 : 0,
                         borderTopLeftRadius: index === 0 ? 5 : 0,
                         borderTopRightRadius: index === types.length - 1 ? 5 : 0,
                         borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
-                        color: 'white',
+                        color: goodContrastColors[type] ? goodContrastColors[type] : app.lightColor,
                         fontSize: 10,
                     }}
                 >
-                    {type.type.name}
+                    {type}
                 </MyText>
             ))}
         </View>

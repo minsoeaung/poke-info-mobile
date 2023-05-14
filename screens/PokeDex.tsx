@@ -12,22 +12,31 @@ import PokemonCard from '../components/PokemonCard';
 import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
-import { default as POKEMONS, LocalPokemonType } from '../constants/pokemons';
+import pokemonDetails from '../constants/pokemonDetails';
 import useIsSearchVisible from '../hooks/useIsSearchVisible';
 import useSearchableList from '../hooks/useSearchableList';
-import { NativeStackParamList } from '../types';
+import { PokemonSmDetailType, StackParamList } from '../types';
 
 const { height } = Dimensions.get('window');
 
 export default function PokeDex() {
     const [ready, setReady] = useState(false);
-    const pokemons: LocalPokemonType[] = useMemo(() => {
-        return Object.values(POKEMONS);
-    }, []);
+
+    const pokemons: PokemonSmDetailType[] = useMemo(
+        () =>
+            Object.values(pokemonDetails).map(details => ({
+                name: details.name,
+                sprite: details.profile.sprite,
+                types: details.profile.types,
+                id: details.id,
+            })),
+        [],
+    );
+
     const { list, value, handleChangeText, clearInput } = useSearchableList(pokemons);
     const { animatedStyles, isVisible, toggle } = useIsSearchVisible();
     const listRef = useRef(null);
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'PokeDex'>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokeDex'>>();
     useScrollToTop(listRef);
 
     useLayoutEffect(() => {
@@ -71,7 +80,7 @@ export default function PokeDex() {
                     <PressableItemList
                         data={list}
                         onPressItem={item => {
-                            navigation.push('PokemonDetail', item);
+                            navigation.push('PokemonDetail', { name: item.name });
                         }}
                         spriteExtractor={item => item.sprite}
                         size="small"
@@ -82,7 +91,7 @@ export default function PokeDex() {
                 <FlashList
                     ref={listRef}
                     data={pokemons}
-                    renderItem={({ item }: { item: LocalPokemonType }) => <PokemonCard pokemon={item} />}
+                    renderItem={({ item }: { item: PokemonSmDetailType }) => <PokemonCard pokemon={item} />}
                     keyExtractor={item => item.name}
                     numColumns={4}
                     estimatedItemSize={121}
@@ -146,6 +155,7 @@ const styles = StyleSheet.create({
     },
     pokedex: {
         flex: 1,
+        height: Dimensions.get('screen').height,
         zIndex: -1,
     },
 });

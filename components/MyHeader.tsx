@@ -1,14 +1,15 @@
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { getHeaderTitle } from '@react-navigation/elements';
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
+import { StackHeaderProps } from '@react-navigation/stack';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 type Props = {
-    headerProps: NativeStackHeaderProps;
+    headerProps: StackHeaderProps | NativeStackHeaderProps;
 };
 
 const MyHeader = ({ headerProps }: Props) => {
@@ -63,6 +64,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
         letterSpacing: 1,
+        textTransform: 'capitalize',
     },
     back: {
         fontSize: 25,

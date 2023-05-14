@@ -1,179 +1,106 @@
+import { AntDesign } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
-import { PokeAPI } from 'pokeapi-types';
-import { memo, useMemo } from 'react';
+import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import { app } from '../constants/colors';
-import { LocalPokemonType } from '../constants/pokemons';
-import useFetchData from '../hooks/useFetchData';
-import { Chain, NativeStackParamList } from '../types';
-import getEvolutionDescription from '../utils/getEvolutionDescription';
-import getFormattedName from '../utils/getFormattedName';
-import getLocalPokemonByName from '../utils/getLocalPokemonByName';
+import { StackParamList } from '../types';
+import getPokemonDetailByName from '../utils/getPokemonDetailByName';
 
-const Evolutions = ({ url }: { url: string }) => {
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+type Props = {
+    evolutions: string[];
+};
 
-    const { isLoading, error, data } = useFetchData<PokeAPI.EvolutionChain>(url);
+const Evolutions = ({ evolutions }: Props) => {
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokemonDetail'>>();
 
-    const evoChain: Chain[] = useMemo(() => {
-        if (data) {
-            const chain = [];
-            let evoData = data.chain;
-            do {
-                const evoDetails = evoData.evolution_details[0];
-                chain.push({
-                    species_name: evoData.species.name,
-                    min_level: !evoDetails ? 1 : evoDetails.min_level,
-                    trigger_name: !evoDetails ? null : evoDetails.trigger.name,
-                    item: !evoDetails ? null : evoDetails.item,
-                });
-                evoData = evoData['evolves_to'][0];
-            } while (!!evoData && evoData.hasOwnProperty('evolves_to'));
-
-            return chain;
-        } else {
-            return [];
-        }
-    }, [data]);
-
-    const goToPokemonDetailScreen = (pokemon: LocalPokemonType | null) => {
-        if (pokemon) {
-            navigation.push('PokemonDetail', pokemon);
+    const goToPokemonDetailScreen = (name: string) => {
+        if (name) {
+            navigation.push('PokemonDetail', { name });
         }
     };
 
     return (
-        <View style={styles.evolutions}>
-            {isLoading ? (
-                <MyText style={styles.loadingOrError}>...</MyText>
-            ) : error ? (
-                <MyText style={styles.loadingOrError}>{error}</MyText>
-            ) : (
-                <View style={styles.chains}>
-                    {evoChain.map((chain, index) => {
-                        const from = chain;
-                        const fromPokemon = getLocalPokemonByName(from.species_name);
-                        const to = evoChain[index + 1];
+        <View style={styles.container}>
+            {evolutions.map((evo, index) => {
+                if (index % 2 !== 0) return;
+                if (index >= evolutions.length - 2) return;
 
-                        if (!to && evoChain.length > 1) {
-                            return null;
-                        }
+                const fromPokemon = getPokemonDetailByName(evo);
+                const reason = evolutions[index + 1];
+                const toPokemon = getPokemonDetailByName(evolutions[index + 2]);
 
-                        const toPokemon = getLocalPokemonByName(to?.species_name || '');
-
-                        return (
-                            <View style={[styles.chain]} key={from.species_name}>
-                                <View style={styles.chainImages}>
-                                    {fromPokemon && toPokemon && (
-                                        <Pressable
-                                            style={styles.pressableImage}
-                                            onPress={() => goToPokemonDetailScreen(fromPokemon)}
-                                        >
-                                            {fromPokemon?.sprite ? (
-                                                <Image
-                                                    style={styles.sprite}
-                                                    source={{
-                                                        uri: fromPokemon.sprite,
-                                                    }}
-                                                    contentFit="contain"
-                                                    accessibilityLabel={`Sprite of ${fromPokemon.sprite}`}
-                                                    recyclingKey={fromPokemon.sprite}
-                                                    transition={200}
-                                                />
-                                            ) : (
-                                                <View style={styles.spriteFallback}>
-                                                    <MyText>N/A</MyText>
-                                                </View>
-                                            )}
-                                        </Pressable>
-                                    )}
-                                    {to && (
-                                        <>
-                                            <MyText style={styles.arrow}>➡</MyText>
-                                            {toPokemon?.sprite ? (
-                                                <Pressable
-                                                    style={styles.pressableImage}
-                                                    onPress={() => goToPokemonDetailScreen(toPokemon)}
-                                                >
-                                                    <Image
-                                                        style={styles.sprite}
-                                                        source={{
-                                                            uri: toPokemon.sprite,
-                                                        }}
-                                                        contentFit="contain"
-                                                        accessibilityLabel={`Sprite of ${toPokemon.sprite}`}
-                                                        recyclingKey={toPokemon.sprite}
-                                                        transition={200}
-                                                    />
-                                                </Pressable>
-                                            ) : (
-                                                <Pressable
-                                                    style={styles.spriteFallback}
-                                                    onPress={() => goToPokemonDetailScreen(toPokemon)}
-                                                >
-                                                    <MyText>N/A</MyText>
-                                                </Pressable>
-                                            )}
-                                        </>
-                                    )}
-                                </View>
-                                <MyText style={styles.chainDescription}>
-                                    {to
-                                        ? getEvolutionDescription(from, to)
-                                        : `${getFormattedName(from.species_name)} does not evolve.`}
-                                </MyText>
+                return (
+                    <View key={fromPokemon.name}>
+                        <View style={styles.row}>
+                            <Pressable onPress={() => goToPokemonDetailScreen(fromPokemon.name)} style={styles.from}>
+                                <Image
+                                    style={styles.sprite}
+                                    source={{
+                                        uri: fromPokemon.profile.sprite || '',
+                                    }}
+                                    contentFit="contain"
+                                    accessibilityLabel={`Front default of ${fromPokemon.name}`}
+                                    recyclingKey={`front_default_${fromPokemon.name}`}
+                                    transition={200}
+                                />
+                            </Pressable>
+                            <View style={styles.arrow}>
+                                <AntDesign name="arrowright" size={24} color={app.lightColor} />
                             </View>
-                        );
-                    })}
-                </View>
-            )}
+                            <Pressable onPress={() => goToPokemonDetailScreen(toPokemon.name)} style={styles.to}>
+                                <Image
+                                    style={styles.sprite}
+                                    source={{
+                                        uri: toPokemon.profile.sprite || '',
+                                    }}
+                                    contentFit="contain"
+                                    accessibilityLabel={`Front default of ${toPokemon.name}`}
+                                    recyclingKey={`front_default_${toPokemon.name}`}
+                                    transition={200}
+                                />
+                            </Pressable>
+                        </View>
+                        <View style={styles.row}>
+                            <MyText style={styles.trigger}>
+                                {`${fromPokemon.name} evolves into ${toPokemon.name} ${reason}.`}
+                            </MyText>
+                        </View>
+                    </View>
+                );
+            })}
         </View>
     );
 };
 
 const styles = StyleSheet.create({
-    evolutions: {
+    container: {
         flex: 1,
     },
-    loadingOrError: {
-        textAlign: 'center',
-        paddingVertical: 20,
-    },
-    chains: {},
-    chain: {},
-    chainImages: {
+    row: {
+        display: 'flex',
         flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 10,
     },
-    pressableImage: {
-        flex: 1,
+    from: {
+        flex: 2,
+    },
+    sprite: {
         aspectRatio: 1,
     },
     arrow: {
-        color: app.darkColor,
-        fontSize: 20,
         flex: 1,
-        textAlign: 'center',
-    },
-    sprite: {
-        width: '100%',
-        height: '100%',
-        alignSelf: 'center',
-    },
-    chainDescription: {
-        color: app.darkColor,
-        textAlign: 'center',
-    },
-    spriteFallback: {
-        flex: 1,
-        aspectRatio: 1,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    to: {
+        flex: 2,
+    },
+    trigger: {
+        color: app.lightColor,
+        textTransform: 'capitalize',
     },
 });
 

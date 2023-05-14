@@ -7,9 +7,9 @@ import ItemList from './ItemList';
 import PokemonDetail from './PokemonDetail';
 import TypeDetail from './TypeDetail';
 import MyHeader from '../components/MyHeader';
-import { NativeStackParamList } from '../types';
+import { StackParamList } from '../types';
 
-const Stack = createNativeStackNavigator<NativeStackParamList>();
+const Stack = createNativeStackNavigator<StackParamList>();
 
 export const ItemsStack: React.FC = () => {
     return (

@@ -12,10 +12,10 @@ import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
 import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList } from '../types';
+import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
-type Props = NativeStackScreenProps<NativeStackParamList, 'AbilityDetail'>;
+type Props = NativeStackScreenProps<StackParamList, 'AbilityDetail'>;
 
 type PokemonsWithThisAbilityType = {
     name: string;

@@ -3,20 +3,20 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
+import { SharedElement } from 'react-navigation-shared-element';
 
 import MyText from './MyText';
 import { app, cardColor, typeColor } from '../constants/colors';
-import { LocalPokemonType } from '../constants/pokemons';
-import { NativeStackParamList } from '../types';
+import { PokemonSmDetailType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
-const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
-    const { name, sprite, types } = pokemon;
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
+    const { name, sprite, id, types } = pokemon;
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
     const backgroundColor = cardColor[types[0]];
 
     const goToPokemonDetailScreen = () => {
-        navigation.push('PokemonDetail', pokemon);
+        navigation.push('PokemonDetail', { name });
     };
 
     return (
@@ -32,20 +32,24 @@ const PokemonCard = ({ pokemon }: { pokemon: LocalPokemonType }) => {
                         </MyText>
                         <View style={styles.spriteContainer}>
                             {sprite && (
-                                <Image
-                                    style={styles.sprite}
-                                    source={{ uri: sprite }}
-                                    contentFit="cover"
-                                    accessibilityLabel={`Sprite of ${name}`}
-                                    recyclingKey={name}
-                                    transition={200}
-                                />
+                                <SharedElement id={`pokemon.sprite.${name}`}>
+                                    <Image
+                                        style={styles.sprite}
+                                        source={{
+                                            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+                                        }}
+                                        contentFit="cover"
+                                        accessibilityLabel={`Sprite of ${name}`}
+                                        recyclingKey={`front_default_${name}`}
+                                        transition={200}
+                                    />
+                                </SharedElement>
                             )}
                         </View>
                         <View style={styles.types}>
                             {types.map((type, index) => (
                                 <MyText
-                                    key={type}
+                                    key={index}
                                     style={{
                                         backgroundColor: typeColor[type],
                                         paddingHorizontal: 5,
@@ -97,11 +101,15 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         width: '80%',
         height: '50%',
-        backgroundColor: 'rgba(255, 255, 255, 0.5)',
+        backgroundColor: app.lightColor + app.transparency,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     sprite: {
-        width: '100%',
-        height: '100%',
+        width: '105%',
+        height: '105%',
+        aspectRatio: 1,
     },
     types: {
         flexDirection: 'row',

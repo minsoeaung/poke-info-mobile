@@ -13,7 +13,7 @@ import { ITEMS, ItemType } from '../constants/ITEMS';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
-import { NativeStackParamList } from '../types';
+import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 export default function ItemList() {
@@ -55,7 +55,7 @@ export default function ItemList() {
 }
 
 const Item = memo(({ item }: { item: ItemType }) => {
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'ItemList'>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'ItemList'>>();
 
     const handlePress = () => {
         navigation.push('ItemDetail', item);

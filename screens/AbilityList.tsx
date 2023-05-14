@@ -9,11 +9,11 @@ import ABILITIES from '../constants/ABILITIES';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
-import { NativeStackParamList } from '../types';
+import { StackParamList } from '../types';
 
 export default function AbilityList() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(ABILITIES);
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'AbilityList'>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'AbilityList'>>();
     const listRef = useRef(null);
     useScrollToTop(listRef);
 

@@ -14,7 +14,7 @@ import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
 import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList } from '../types';
+import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 type HeldByPokemonsType = { name: string };
@@ -26,9 +26,9 @@ type Results = {
 };
 
 export default function ItemDetail() {
-    const route = useRoute<RouteProp<NativeStackParamList, 'ItemDetail'>>();
+    const route = useRoute<RouteProp<StackParamList, 'ItemDetail'>>();
     const { name } = route.params;
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'ItemDetail'>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'ItemDetail'>>();
 
     const { isLoading, error, data } = useFetchData<PokeAPI.Item>(`https://pokeapi.co/api/v2/item/${name}`);
 

@@ -14,6 +14,7 @@ const About = () => {
     return (
         <View style={styles.container}>
             <Card>
+                <MyText>1</MyText>
                 <MyText style={styles.description}>
                     PokeInfo is a free, simple, and unofficial app that consumes REST API from{' '}
                     <OpenURLTextButton url={PokeAPIURL}>{PokeAPIURL}</OpenURLTextButton>. The app provides some useful

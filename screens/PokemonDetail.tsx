@@ -1,52 +1,32 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
-import { PokeAPI } from 'pokeapi-types';
-import { useLayoutEffect, useMemo } from 'react';
-import { Dimensions, StyleSheet, View } from 'react-native';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import { useLayoutEffect } from 'react';
+import { ScrollView, StyleSheet, View } from 'react-native';
+import { SharedElement } from 'react-navigation-shared-element';
 
-import Card from '../components/Card';
-import Description from '../components/Description';
-import ErrorDisplay from '../components/ErrorDisplay';
-import Evolutions from '../components/Evolutions';
-import MyText from '../components/MyText';
-import PikachuRunning from '../components/PikachuRunning';
-import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
+import Stats from '../components/Stats';
 import { app, cardColor } from '../constants/colors';
-import useFetchData from '../hooks/useFetchData';
-import { NativeStackParamList, PokemonType } from '../types';
-import getFormattedName from '../utils/getFormattedName';
-import getHeightString from '../utils/getHeightString';
-import getWeightString from '../utils/getWeightString';
+import { StackParamList } from '../types';
+import TitleAndContent from '../components/TitleAndContent';
+import MyText from '../components/MyText';
+import LabelAndValue from '../components/LabelAndValue';
+import PokemonAbilities from '../components/PokemonAbilities';
+import Evolutions from '../components/Evolutions';
+import getPokemonDetailByName from '../utils/getPokemonDetailByName';
 
 export default function PokemonDetail() {
-    const route = useRoute<RouteProp<NativeStackParamList, 'PokemonDetail'>>();
-    const { name, url, types } = route.params;
-    const color = cardColor[types[0]];
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList, 'PokemonDetail'>>();
-    const { isLoading, error, data } = useFetchData<PokemonType>(url);
-    const { isLoading: speciesLoading, data: species } = useFetchData<PokeAPI.PokemonSpecies>(
-        data ? data.species.url : null,
-    );
+    const route = useRoute<RouteProp<StackParamList, 'PokemonDetail'>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokemonDetail'>>();
+    const { name } = route.params;
 
-    const flavorTextEntry = useMemo(() => {
-        if (!species) return '';
-        const str = species.flavor_text_entries.find(
-            entry => entry.version.name === 'diamond' && entry.language.name === 'en',
-        )?.flavor_text;
-        return str?.replace(/(\r\n|\r|\n)/g, ' ') || '';
-    }, [species]);
-
-    const eggGroups = useMemo(() => {
-        if (!species) return [];
-        return species.egg_groups.map(gp => gp.name);
-    }, [species]);
+    const { profile, evolutions, breeding, training, stats } = getPokemonDetailByName(name);
+    const color = cardColor[profile.types[0]];
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: getFormattedName(name),
+            title: name,
             headerStyle: {
                 backgroundColor: color,
             },
@@ -54,112 +34,156 @@ export default function PokemonDetail() {
     }, []);
 
     return (
-        <View style={styles.container}>
-            {isLoading ? (
-                <PikachuRunning />
-            ) : error ? (
-                <ErrorDisplay error={error} />
-            ) : (
-                data && (
-                    <Animated.ScrollView entering={FadeIn}>
-                        <View style={styles.imageContainer}>
+        <ScrollView>
+            <View style={styles.container}>
+                <View style={styles.header}>
+                    <View style={styles.spriteContainer}>
+                        <SharedElement id={`pokemon.sprite.${name}`}>
                             <Image
-                                style={styles.image}
+                                style={styles.sprite}
                                 source={{
-                                    uri: data.sprites.other['official-artwork']['front_default'],
+                                    uri: profile.sprite || '',
+                                    // uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
                                 }}
-                                contentFit="contain"
-                                accessibilityLabel={`Official artwork of ${name}`}
-                                recyclingKey={`official_artwork_${name}`}
+                                contentFit="cover"
+                                accessibilityLabel={`Front default of ${name}`}
+                                recyclingKey={`front_default_${name}`}
                                 transition={200}
                             />
-                        </View>
-                        <Card>
-                            {speciesLoading ? (
-                                <MyText>...</MyText>
-                            ) : (
-                                flavorTextEntry && <MyText>{flavorTextEntry}</MyText>
-                            )}
-                        </Card>
-                        <Card title="Profile" titleBgColor={color}>
-                            <Description label="Type" value={<PokemonTypes types={data.types} isInScreen />} />
-                            <Description label="Abilities" value={<PokemonAbilities abilities={data.abilities} />} />
-                            <Description
-                                label="Egg groups"
-                                value={
-                                    <View style={styles.eggGroups}>
-                                        {eggGroups.map(name => (
-                                            <MyText key={name} style={styles.eggGroup}>
-                                                {getFormattedName(name)}
-                                            </MyText>
-                                        ))}
-                                    </View>
-                                }
-                            />
-                            <Description label="Height" value={<MyText>{getHeightString(data.height)}</MyText>} />
-                            <Description
-                                label="Weight"
-                                value={<MyText>{getWeightString(data.weight)}</MyText>}
-                                noBorder
-                            />
-                        </Card>
-                        <Card title="Stats" titleBgColor={color}>
-                            <Description label="Base experience" value={<MyText>{data.base_experience}</MyText>} />
-                            {data.stats.map(({ base_stat, stat }, index) => (
-                                <Description
-                                    key={stat.name}
-                                    label={getFormattedName(stat.name)}
-                                    value={<MyText>{base_stat}</MyText>}
-                                    noBorder={index === data?.stats.length - 1}
-                                />
-                            ))}
-                        </Card>
-                        {species && (
-                            <Card title="Evolutions" titleBgColor={color}>
-                                <Evolutions url={species.evolution_chain.url} />
-                            </Card>
-                        )}
-                    </Animated.ScrollView>
-                )
-            )}
-        </View>
+                        </SharedElement>
+                    </View>
+                    <View style={styles.typesAndStatsContainer}>
+                        <PokemonTypes types={profile.types} isInScreen />
+                        <Stats stats={stats} barColor={color} />
+                    </View>
+                </View>
+                <View style={[styles.intro]}>
+                    <MyText style={styles.speciesName}>{profile.species}</MyText>
+                    <MyText style={styles.flavorTextEntry}>{profile.flavorTextEntry.diamond}</MyText>
+                </View>
+                <TitleAndContent title="Profile" titleBgColor={color}>
+                    <LabelAndValue
+                        label="HEIGHT"
+                        value={<MyText style={{ color: app.lightColor }}>{profile.height}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="WEIGHT"
+                        value={<MyText style={{ color: app.lightColor }}>{profile.weight}</MyText>}
+                    />
+                    <LabelAndValue label="ABILITIES" value={<PokemonAbilities abilities={profile.abilities} />} />
+                </TitleAndContent>
+                <TitleAndContent title="Breeding" titleBgColor={color}>
+                    <LabelAndValue
+                        label="GENDER"
+                        value={
+                            <MyText style={{ color: app.lightColor }}>
+                                {profile.gender ? `${profile.gender.male} ♂  ${profile.gender.female} ♀` : 'Genderless'}
+                            </MyText>
+                        }
+                    />
+                    <LabelAndValue
+                        label="EGG GROUPS"
+                        value={
+                            <MyText
+                                style={{
+                                    color: app.lightColor,
+                                    textTransform: 'capitalize',
+                                }}
+                            >
+                                {breeding.eggGroups.join(', ')}
+                            </MyText>
+                        }
+                    />
+                    <LabelAndValue
+                        label="EGG CYCLES"
+                        value={
+                            <MyText
+                                style={{
+                                    color: app.lightColor,
+                                }}
+                            >
+                                {breeding.eggCycles}
+                            </MyText>
+                        }
+                    />
+                </TitleAndContent>
+                <TitleAndContent title="Training" titleBgColor={color}>
+                    <LabelAndValue
+                        label="EV YIELD"
+                        value={<MyText style={{ color: app.lightColor }}>{training.evYield}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="CATCH RATE"
+                        value={<MyText style={{ color: app.lightColor }}>{training.catchRate}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="BASE FRIENDSHIP"
+                        value={<MyText style={{ color: app.lightColor }}>{training.baseHappiness}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="BASE EXP"
+                        value={<MyText style={{ color: app.lightColor }}>{training.baseExp}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="GROWTH RATE"
+                        value={<MyText style={{ color: app.lightColor }}>{training.growthRate}</MyText>}
+                    />
+                </TitleAndContent>
+                <TitleAndContent title="Evolutions" titleBgColor={color}>
+                    {evolutions.length > 0 ? (
+                        <Evolutions evolutions={evolutions} />
+                    ) : (
+                        <MyText style={styles.nope}>{name} does not evolve.</MyText>
+                    )}
+                </TitleAndContent>
+            </View>
+        </ScrollView>
     );
 }
 
+const containerVerticalSize = 15;
+
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         paddingHorizontal: 10,
+        paddingVertical: containerVerticalSize,
         backgroundColor: app.darkColor,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 25,
     },
-    imageContainer: {
-        width: Dimensions.get('window').width - 70,
-        height: Dimensions.get('window').width - 70,
-        backgroundColor: app.lightColor,
-        borderRadius: Math.round(Dimensions.get('window').width + Dimensions.get('window').width) / 2,
-        elevation: 5,
-        flex: 1,
-        alignSelf: 'center',
-        marginTop: 10,
-        marginBottom: 20,
-    },
-    image: {
-        width: Dimensions.get('window').width - 1,
-        height: Dimensions.get('window').width - 1,
-        flex: 1,
-        alignSelf: 'center',
-    },
-    descriptionContainer: {
-        borderWidth: 0.5,
-        borderRadius: 10,
-        backgroundColor: app.lightColor,
-        marginBottom: 15,
-        paddingHorizontal: 10,
-    },
-    eggGroups: {
+    header: {
+        display: 'flex',
         flexDirection: 'row',
+        gap: 15,
     },
-    eggGroup: {
-        marginRight: 10,
+    spriteContainer: {
+        flex: 3,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+    sprite: {
+        width: '125%',
+        aspectRatio: 1,
+    },
+    typesAndStatsContainer: {
+        flex: 5,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: containerVerticalSize,
+    },
+    intro: {},
+    speciesName: {
+        color: app.lightColor,
+        fontSize: 17,
+        letterSpacing: 1,
+    },
+    flavorTextEntry: {
+        color: app.lightColor,
+        marginTop: 15,
+    },
+    nope: {
+        color: app.lightColor,
     },
 });

@@ -1,19 +1,18 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
-import { PokeAPI } from 'pokeapi-types';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
-import { NativeStackParamList } from '../types';
+import { AbilityType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 type Props = {
-    abilities: PokeAPI.PokemonAbility[];
+    abilities: AbilityType[];
 };
 
 export default function PokemonAbilities({ abilities }: Props) {
-    const navigation = useNavigation<NativeStackNavigationProp<NativeStackParamList>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
     const goToAbilityDetailScreen = (name: string) => {
         navigation.push('AbilityDetail', { name });
@@ -23,9 +22,9 @@ export default function PokemonAbilities({ abilities }: Props) {
         <View style={styles.container}>
             {abilities.map((ability, index) => (
                 <Pressable
-                    key={ability.ability.name}
+                    key={ability.name}
                     style={styles.ability}
-                    onPress={() => goToAbilityDetailScreen(ability.ability.name)}
+                    onPress={() => goToAbilityDetailScreen(ability.name)}
                 >
                     {({ pressed }) => (
                         <>
@@ -35,16 +34,16 @@ export default function PokemonAbilities({ abilities }: Props) {
                                     marginTop: index === 0 ? 0 : 5,
                                     paddingHorizontal: 10,
                                     paddingVertical: 7,
-                                    borderRadius: 5,
+                                    borderRadius: 10,
                                     color: 'white',
                                     elevation: 5,
                                 }}
                             >
-                                {getFormattedName(ability.ability.name)}
+                                {getFormattedName(ability.name)}
                             </MyText>
                             <View>
                                 <SmallGreyText text={` Slot ${ability.slot}`} />
-                                {ability.is_hidden && <SmallGreyText text=" ( hidden )" />}
+                                {ability.isHidden && <SmallGreyText text=" ( hidden )" />}
                             </View>
                         </>
                     )}

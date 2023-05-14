@@ -1,14 +1,15 @@
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import React from 'react';
+import { createSharedElementStackNavigator } from 'react-navigation-shared-element';
 
 import AbilityDetail from './AbilityDetail';
 import PokeDex from './PokeDex';
 import PokemonDetail from './PokemonDetail';
 import TypeDetail from './TypeDetail';
 import MyHeader from '../components/MyHeader';
-import { NativeStackParamList } from '../types';
+import { StackParamList } from '../types';
+import { CardStyleInterpolators } from '@react-navigation/stack';
 
-const Stack = createNativeStackNavigator<NativeStackParamList>();
+const Stack = createSharedElementStackNavigator<StackParamList>();
 
 const PokeDexStack: React.FC = () => {
     return (
@@ -16,10 +17,26 @@ const PokeDexStack: React.FC = () => {
             initialRouteName="PokeDex"
             screenOptions={{
                 header: props => <MyHeader headerProps={props} />,
+                cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
             }}
         >
             <Stack.Screen name="PokeDex" component={PokeDex} />
-            <Stack.Screen name="PokemonDetail" component={PokemonDetail} />
+            <Stack.Screen
+                name="PokemonDetail"
+                component={PokemonDetail}
+                sharedElements={(route, otherRoute, showing) => {
+                    if (['PokeDex'].includes(otherRoute.name) && showing) {
+                        const { name } = route.params; // No type safety here
+                        return [
+                            {
+                                id: `pokemon.sprite.${name}`,
+                                animation: 'move',
+                                resize: 'auto',
+                            },
+                        ];
+                    }
+                }}
+            />
             <Stack.Screen name="TypeDetail" component={TypeDetail} />
             <Stack.Screen name="AbilityDetail" component={AbilityDetail} />
         </Stack.Navigator>
