@@ -3,18 +3,19 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-naviga
 import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PressableItemList from '../components/PressableItemList';
+import TitleAndContent from '../components/TitleAndContent';
 import { app, cardColor, typeColor } from '../constants/colors';
 import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import getTypeSlotString from '../utils/getTypeSlotString';
-import TitleAndContent from '../components/TitleAndContent';
 
 type Props = NativeStackScreenProps<StackParamList, 'TypeDetail'>;
 
@@ -155,9 +156,17 @@ function Types({ types }: TypesProps) {
                                 paddingHorizontal: 10,
                                 paddingVertical: 7,
                                 borderRadius: 10,
-                                color: ['grass', 'steel', 'fairy', 'ground', 'bug', 'ice', 'normal', 'rock'].includes(
-                                    type.name,
-                                )
+                                color: [
+                                    'grass',
+                                    'steel',
+                                    'fairy',
+                                    'ground',
+                                    'bug',
+                                    'ice',
+                                    'normal',
+                                    'rock',
+                                    'electric',
+                                ].includes(type.name)
                                     ? app.darkColor
                                     : app.lightColor,
                                 marginRight: 5,

@@ -8,12 +8,22 @@ type Props = {
     title: string;
     titleBgColor: string;
     children: ReactNode;
+    titleColor?: string;
+    noElevation?: boolean;
 };
 
-const TitleAndContent = ({ title, titleBgColor, children }: Props) => {
+const TitleAndContent = ({ title, titleBgColor, children, titleColor = app.darkColor, noElevation = false }: Props) => {
     return (
-        <View style={[styles.container, { borderColor: titleBgColor }]}>
-            <MyText style={StyleSheet.flatten([styles.title, { backgroundColor: titleBgColor + app.transparency }])}>
+        <View style={[styles.container, { borderColor: titleBgColor, elevation: noElevation ? 0 : 10 }]}>
+            <MyText
+                style={StyleSheet.flatten([
+                    styles.title,
+                    {
+                        backgroundColor: titleBgColor + app.transparency,
+                        color: titleColor,
+                    },
+                ])}
+            >
                 {title}
             </MyText>
             <View style={styles.children}>{children}</View>
@@ -24,7 +34,6 @@ const TitleAndContent = ({ title, titleBgColor, children }: Props) => {
 const styles = StyleSheet.create({
     container: {
         borderWidth: 0.3,
-        elevation: 10,
         backgroundColor: app.darkColor,
         borderRadius: 10,
     },
@@ -41,6 +50,8 @@ const styles = StyleSheet.create({
         paddingVertical: 15,
         paddingHorizontal: 20,
         gap: 10,
+        // borderBottomLeftRadius: 10,
+        // borderBottomRightRadius: 10,
     },
 });
 

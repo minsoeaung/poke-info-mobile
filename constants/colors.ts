@@ -6,6 +6,7 @@ export const app = {
     darkColor: '#0D2F41',
     lightColor: '#F0F1EC',
     transparency: 'CC', // 80%
+    abilityColor: '#2f4f4f',
 };
 
 export const cardColor: Type = {

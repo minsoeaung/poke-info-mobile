@@ -4,11 +4,11 @@ import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
-import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PressableItemList from '../components/PressableItemList';
+import TitleAndContent from '../components/TitleAndContent';
 import { app } from '../constants/colors';
 import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
@@ -77,16 +77,21 @@ export default function AbilityDetail({ navigation, route }: Props) {
             renderItem={null}
             style={styles.container}
             ListHeaderComponent={
-                <Card>
+                <View style={styles.descriptionContainer}>
                     {!!flavorText && <MyText style={styles.description}>{flavorText}</MyText>}
                     {!!effectEntry && <MyText style={styles.description}>{effectEntry}</MyText>}
                     <MyText style={styles.description}>
-                        {'Originated generation: ' + getFormattedName(data!.generation.name)}
+                        {'Originated Generation  -  ' + getFormattedName(data!.generation.name)}
                     </MyText>
-                </Card>
+                </View>
             }
             ListEmptyComponent={
-                <Card title="Pokémon with this ability">
+                <TitleAndContent
+                    title="Pokémon with this ability"
+                    titleBgColor={app.lightColor}
+                    titleColor={app.darkColor}
+                    noElevation
+                >
                     <PressableItemList
                         listRef={listRef}
                         data={pokemonsWithThisAbility}
@@ -99,7 +104,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
                         spriteExtractor={item => pokemons[item.name]?.sprite}
                         extraExtractor={item => (item.isHidden ? 'hidden' : '')}
                     />
-                </Card>
+                </TitleAndContent>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />
@@ -112,10 +117,15 @@ const styles = StyleSheet.create({
         padding: 10,
         backgroundColor: app.darkColor,
     },
+    descriptionContainer: {
+        paddingHorizontal: 10,
+        paddingBottom: 20,
+    },
     description: {
         paddingVertical: 10,
+        color: app.lightColor,
     },
     footer: {
-        marginBottom: 10,
+        marginBottom: 20,
     },
 });
