@@ -4,6 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
+import { app } from '../constants/colors';
 import { AbilityType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
@@ -23,21 +24,19 @@ export default function PokemonAbilities({ abilities }: Props) {
             {abilities.map((ability, index) => (
                 <Pressable
                     key={ability.name}
-                    style={styles.ability}
+                    style={styles.pressable}
                     onPress={() => goToAbilityDetailScreen(ability.name)}
                 >
                     {({ pressed }) => (
                         <>
                             <MyText
-                                style={{
-                                    backgroundColor: pressed ? 'rgb(130,183,255)' : '#2f4f4f',
-                                    marginTop: index === 0 ? 0 : 5,
-                                    paddingHorizontal: 10,
-                                    paddingVertical: 7,
-                                    borderRadius: 10,
-                                    color: 'white',
-                                    elevation: 5,
-                                }}
+                                style={StyleSheet.flatten([
+                                    styles.abilityName,
+                                    {
+                                        backgroundColor: pressed ? 'rgb(130,183,255)' : '#2f4f4f',
+                                        marginTop: index === 0 ? 0 : 5,
+                                    },
+                                ])}
                             >
                                 {getFormattedName(ability.name)}
                             </MyText>
@@ -55,10 +54,20 @@ export default function PokemonAbilities({ abilities }: Props) {
 
 const styles = StyleSheet.create({
     container: {
+        flex: 1,
         alignItems: 'flex-start',
+        gap: 5,
     },
-    ability: {
+    pressable: {
         flexDirection: 'row',
         alignItems: 'center',
+        flexWrap: 'wrap',
+    },
+    abilityName: {
+        paddingHorizontal: 10,
+        paddingVertical: 7,
+        borderRadius: 10,
+        color: app.lightColor,
+        elevation: 5,
     },
 });

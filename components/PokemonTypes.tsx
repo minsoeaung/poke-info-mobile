@@ -8,71 +8,41 @@ import { StackParamList } from '../types';
 
 type Props = {
     types: string[];
-    isInScreen?: boolean;
 };
 
-const goodContrastColors = {
-    grass: app.darkColor,
-    electric: app.darkColor,
-    steel: app.darkColor,
-};
+const shouldUseDark = ['grass', 'electric', 'steel', 'ice', 'ground'];
 
-export default function PokemonTypes({ types, isInScreen = false }: Props) {
+export default function PokemonTypes({ types }: Props) {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
-
-    if (isInScreen) {
-        return (
-            <View style={styles.typeContainer}>
-                {types.map(type => (
-                    <Pressable
-                        key={type}
-                        onPress={() => {
-                            navigation.push('TypeDetail', {
-                                name: type,
-                            });
-                        }}
-                    >
-                        {({ pressed }) => (
-                            <MyText
-                                style={{
-                                    backgroundColor: pressed ? 'rgb(130,183,255)' : typeColor[type],
-                                    paddingHorizontal: 10,
-                                    paddingVertical: 7,
-                                    borderRadius: 10,
-                                    color: goodContrastColors[type] ? goodContrastColors[type] : app.lightColor,
-                                    marginRight: 15,
-                                    elevation: 10,
-                                    textTransform: 'capitalize',
-                                }}
-                            >
-                                {type}
-                            </MyText>
-                        )}
-                    </Pressable>
-                ))}
-            </View>
-        );
-    }
 
     return (
         <View style={styles.typeContainer}>
-            {types.map((type, index) => (
-                <MyText
+            {types.map(type => (
+                <Pressable
                     key={type}
-                    style={{
-                        backgroundColor: typeColor[type],
-                        paddingHorizontal: 5,
-                        paddingVertical: 2,
-                        borderBottomLeftRadius: index === 0 ? 5 : 0,
-                        borderTopLeftRadius: index === 0 ? 5 : 0,
-                        borderTopRightRadius: index === types.length - 1 ? 5 : 0,
-                        borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
-                        color: goodContrastColors[type] ? goodContrastColors[type] : app.lightColor,
-                        fontSize: 10,
+                    onPress={() => {
+                        navigation.push('TypeDetail', {
+                            name: type,
+                        });
                     }}
                 >
-                    {type}
-                </MyText>
+                    {({ pressed }) => (
+                        <MyText
+                            style={{
+                                backgroundColor: pressed ? 'rgb(130,183,255)' : typeColor[type],
+                                paddingHorizontal: 10,
+                                paddingVertical: 7,
+                                borderRadius: 10,
+                                color: shouldUseDark.includes(type) ? app.darkColor : app.lightColor,
+                                marginRight: 15,
+                                elevation: 10,
+                                textTransform: 'capitalize',
+                            }}
+                        >
+                            {type}
+                        </MyText>
+                    )}
+                </Pressable>
             ))}
         </View>
     );

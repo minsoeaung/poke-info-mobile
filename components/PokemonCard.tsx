@@ -25,7 +25,12 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
                 {({ pressed }) => (
                     <>
                         <MyText
-                            style={StyleSheet.flatten([styles.name, pressed ? { color: 'tomato' } : {}])}
+                            style={StyleSheet.flatten([
+                                styles.name,
+                                pressed
+                                    ? { color: 'tomato' }
+                                    : { color: types[0] === 'dark' ? app.lightColor : app.darkColor },
+                            ])}
                             numberOfLines={1}
                         >
                             {getFormattedName(name)}
@@ -58,7 +63,7 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
                                         borderTopLeftRadius: index === 0 ? 5 : 0,
                                         borderTopRightRadius: index === types.length - 1 ? 5 : 0,
                                         borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
-                                        color: app.lightColor,
+                                        color: types[index] === 'grass' ? app.darkColor : app.lightColor,
                                         fontSize: 8,
                                     }}
                                 >

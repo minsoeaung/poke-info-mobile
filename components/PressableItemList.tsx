@@ -62,7 +62,7 @@ export default function PressableItemList<T extends { name: string }>({
                                                     uri: sprite,
                                                 }}
                                                 accessibilityLabel={`Image of ${item.name}`}
-                                                recyclingKey={item.name}
+                                                recyclingKey={`front_default_${item.name}`}
                                                 transition={200}
                                             />
                                         )}
@@ -70,7 +70,7 @@ export default function PressableItemList<T extends { name: string }>({
                                             style={StyleSheet.flatten([
                                                 styles.name,
                                                 {
-                                                    color: pressed ? 'tomato' : 'black',
+                                                    color: pressed ? 'tomato' : app.lightColor,
                                                     marginLeft: sprite ? 50 : 0,
                                                 },
                                             ])}
@@ -85,7 +85,7 @@ export default function PressableItemList<T extends { name: string }>({
                                     </View>
                                     <MyText
                                         style={{
-                                            color: pressed ? 'tomato' : 'black',
+                                            color: pressed ? 'tomato' : app.lightColor,
                                         }}
                                     >
                                         {'>'}

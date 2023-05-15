@@ -5,15 +5,15 @@ import { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 import { SharedElement } from 'react-navigation-shared-element';
 
+import Evolutions from '../components/Evolutions';
+import LabelAndValue from '../components/LabelAndValue';
+import MyText from '../components/MyText';
+import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
 import Stats from '../components/Stats';
+import TitleAndContent from '../components/TitleAndContent';
 import { app, cardColor } from '../constants/colors';
 import { StackParamList } from '../types';
-import TitleAndContent from '../components/TitleAndContent';
-import MyText from '../components/MyText';
-import LabelAndValue from '../components/LabelAndValue';
-import PokemonAbilities from '../components/PokemonAbilities';
-import Evolutions from '../components/Evolutions';
 import getPokemonDetailByName from '../utils/getPokemonDetailByName';
 
 export default function PokemonDetail() {
@@ -53,7 +53,7 @@ export default function PokemonDetail() {
                         </SharedElement>
                     </View>
                     <View style={styles.typesAndStatsContainer}>
-                        <PokemonTypes types={profile.types} isInScreen />
+                        <PokemonTypes types={profile.types} />
                         <Stats stats={stats} barColor={color} />
                     </View>
                 </View>
@@ -178,6 +178,7 @@ const styles = StyleSheet.create({
         color: app.lightColor,
         fontSize: 17,
         letterSpacing: 1,
+        elevation: 10,
     },
     flavorTextEntry: {
         color: app.lightColor,
@@ -185,5 +186,8 @@ const styles = StyleSheet.create({
     },
     nope: {
         color: app.lightColor,
+        textTransform: 'capitalize',
+        textAlign: 'center',
+        paddingVertical: 10,
     },
 });

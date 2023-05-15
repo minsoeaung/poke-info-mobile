@@ -29,7 +29,6 @@ const styles = StyleSheet.create({
     label: {
         flex: 2,
         color: app.lightColor,
-        // color: 'tomato',
         textTransform: 'capitalize',
         fontSize: 13,
     },

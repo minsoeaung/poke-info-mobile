@@ -3,8 +3,6 @@ import { NativeStackNavigationProp, NativeStackScreenProps } from '@react-naviga
 import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
-
-import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import MyText from '../components/MyText';
@@ -16,6 +14,7 @@ import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import getTypeSlotString from '../utils/getTypeSlotString';
+import TitleAndContent from '../components/TitleAndContent';
 
 type Props = NativeStackScreenProps<StackParamList, 'TypeDetail'>;
 
@@ -62,7 +61,7 @@ export default function TypeDetail({ route, navigation }: Props) {
             style={styles.container}
             ListHeaderComponent={
                 <>
-                    <Card title="Attack" titleBgColor={cardColor[name]}>
+                    <TitleAndContent title="Attack" titleBgColor={cardColor[name]}>
                         {data!.damage_relations.double_damage_to.length > 0 && (
                             <Description
                                 label="2x damage"
@@ -83,8 +82,9 @@ export default function TypeDetail({ route, navigation }: Props) {
                                 noBorder
                             />
                         )}
-                    </Card>
-                    <Card title="Defense" titleBgColor={cardColor[name]}>
+                    </TitleAndContent>
+                    <View style={styles.gap} />
+                    <TitleAndContent title="Defense" titleBgColor={cardColor[name]}>
                         {data!.damage_relations.double_damage_from.length > 0 && (
                             <Description
                                 label="2x damage"
@@ -105,11 +105,12 @@ export default function TypeDetail({ route, navigation }: Props) {
                                 noBorder
                             />
                         )}
-                    </Card>
+                    </TitleAndContent>
+                    <View style={styles.gap} />
                 </>
             }
             ListEmptyComponent={
-                <Card title={getFormattedName(name) + ' Pokémon'} titleBgColor={cardColor[name]}>
+                <TitleAndContent title={getFormattedName(name) + ' Pokémon'} titleBgColor={cardColor[name]}>
                     <PressableItemList
                         data={pokemonsWithThisType}
                         onPressItem={item => {
@@ -119,7 +120,7 @@ export default function TypeDetail({ route, navigation }: Props) {
                         spriteExtractor={item => pokemons[item.name]?.sprite}
                         extraExtractor={item => getTypeSlotString(item.typeSlot)}
                     />
-                </Card>
+                </TitleAndContent>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />
@@ -153,8 +154,12 @@ function Types({ types }: TypesProps) {
                                 backgroundColor: pressed ? 'rgb(130,183,255)' : typeColor[type.name],
                                 paddingHorizontal: 10,
                                 paddingVertical: 7,
-                                borderRadius: 5,
-                                color: 'white',
+                                borderRadius: 10,
+                                color: ['grass', 'steel', 'fairy', 'ground', 'bug', 'ice', 'normal', 'rock'].includes(
+                                    type.name,
+                                )
+                                    ? app.darkColor
+                                    : app.lightColor,
                                 marginRight: 5,
                                 elevation: 5,
                                 marginTop: 5,
@@ -186,5 +191,8 @@ const styles = StyleSheet.create({
     },
     footer: {
         marginBottom: 10,
+    },
+    gap: {
+        marginTop: 25,
     },
 });

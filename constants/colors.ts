@@ -31,7 +31,7 @@ export const cardColor: Type = {
 
 export const typeColor: Type = {
     fire: '#f08030',
-    grass: '#78c850',
+    grass: '#B1FAB8',
     electric: '#f8d030',
     water: '#a890f0',
     ground: '#e0c068',

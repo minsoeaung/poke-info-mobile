@@ -38,6 +38,7 @@ const styles = StyleSheet.create({
         paddingVertical: 12,
     },
     label: {
-        color: 'grey',
+        color: app.lightColor,
+        letterSpacing: 1,
     },
 });
