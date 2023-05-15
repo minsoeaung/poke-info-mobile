@@ -10,7 +10,7 @@ type Props = {
     types: string[];
 };
 
-const shouldUseDark = ['grass', 'electric', 'steel', 'ice', 'ground'];
+const shouldUseDark = ['grass', 'electric', 'steel', 'ice', 'ground', 'bug', 'rock'];
 
 export default function PokemonTypes({ types }: Props) {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
@@ -29,7 +29,7 @@ export default function PokemonTypes({ types }: Props) {
                     {({ pressed }) => (
                         <MyText
                             style={{
-                                backgroundColor: pressed ? 'rgb(130,183,255)' : typeColor[type],
+                                backgroundColor: typeColor[type],
                                 paddingHorizontal: 10,
                                 paddingVertical: 7,
                                 borderRadius: 10,
@@ -37,6 +37,8 @@ export default function PokemonTypes({ types }: Props) {
                                 marginRight: 15,
                                 elevation: 10,
                                 textTransform: 'capitalize',
+                                borderWidth: 1,
+                                borderColor: pressed ? 'tomato' : app.darkColor,
                             }}
                         >
                             {type}

@@ -31,7 +31,7 @@ export default function PressableItemList<T extends { name: string }>({
                 data={data}
                 keyExtractor={key => key.name}
                 ItemSeparatorComponent={() => <View style={styles.separator} />}
-                ListEmptyComponent={() => <MyText style={styles.emptyText}>Empty!</MyText>}
+                ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
                 renderItem={({ item }) => (
                     <Pressable onPress={() => onPressItem(item)}>
                         {({ pressed }) => {
@@ -128,6 +128,7 @@ const styles = StyleSheet.create({
     emptyText: {
         paddingVertical: 50,
         textAlign: 'center',
+        color: app.lightColor,
     },
     spriteNameExtra: {
         flexDirection: 'row',

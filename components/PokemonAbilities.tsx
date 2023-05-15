@@ -33,8 +33,8 @@ export default function PokemonAbilities({ abilities }: Props) {
                                 style={StyleSheet.flatten([
                                     styles.abilityName,
                                     {
-                                        backgroundColor: pressed ? 'rgb(130,183,255)' : app.abilityColor,
                                         marginTop: index === 0 ? 0 : 5,
+                                        borderColor: pressed ? 'tomato' : app.darkColor,
                                     },
                                 ])}
                             >
@@ -67,7 +67,9 @@ const styles = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 7,
         borderRadius: 10,
+        borderWidth: 1,
         color: app.lightColor,
+        backgroundColor: app.abilityColor,
         elevation: 5,
     },
 });

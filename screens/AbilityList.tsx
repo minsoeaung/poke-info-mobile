@@ -26,6 +26,7 @@ export default function AbilityList() {
                     onChangeText={handleChangeText}
                     placeholder="Search..."
                     selectionColor="tomato"
+                    placeholderTextColor="grey"
                 />
                 <ClearInputButton onPress={clearInput} />
             </View>
@@ -50,9 +51,10 @@ const styles = StyleSheet.create({
         backgroundColor: app.darkColor,
     },
     searchInputWrap: {
-        backgroundColor: app.lightColor,
+        backgroundColor: app.darkColor,
+        borderColor: app.lightColor,
         borderRadius: 10,
-        borderWidth: 0.5,
+        borderWidth: 0.2,
         marginBottom: 10,
         paddingRight: 5,
         position: 'relative',
@@ -64,13 +66,15 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingLeft: 20,
         fontFamily: fonts.fontDotGothic,
+        color: app.lightColor,
         width: '90%',
     },
     abilityListWrap: {
         flex: 1,
-        backgroundColor: app.lightColor,
+        backgroundColor: app.darkColor,
+        borderColor: app.lightColor,
         borderRadius: 10,
-        borderWidth: 0.5,
+        borderWidth: 0.2,
         paddingHorizontal: 10,
     },
 });

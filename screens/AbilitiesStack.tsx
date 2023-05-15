@@ -16,6 +16,7 @@ export const AbilitiesStack: React.FC = () => {
             initialRouteName="AbilityList"
             screenOptions={{
                 header: props => <MyHeader headerProps={props} />,
+                animation: 'fade_from_bottom',
             }}
         >
             <Stack.Screen name="AbilityList" component={AbilityList} options={{ title: 'Abilities' }} />

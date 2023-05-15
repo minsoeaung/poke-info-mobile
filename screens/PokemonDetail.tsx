@@ -59,7 +59,9 @@ export default function PokemonDetail() {
                 </View>
                 <View style={[styles.intro]}>
                     <MyText style={styles.speciesName}>{profile.species}</MyText>
-                    <MyText style={styles.flavorTextEntry}>{profile.flavorTextEntry.diamond}</MyText>
+                    {!!profile.flavorTextEntry.diamond && (
+                        <MyText style={styles.flavorTextEntry}>{profile.flavorTextEntry.diamond}</MyText>
+                    )}
                 </View>
                 <TitleAndContent title="Profile" titleBgColor={color}>
                     <LabelAndValue

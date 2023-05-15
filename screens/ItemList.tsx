@@ -36,6 +36,7 @@ export default function ItemList() {
                     onChangeText={handleChangeText}
                     placeholder="Search..."
                     selectionColor="tomato"
+                    placeholderTextColor="grey"
                 />
                 <ClearInputButton onPress={clearInput} />
             </View>
@@ -101,9 +102,10 @@ const styles = StyleSheet.create({
         backgroundColor: app.darkColor,
     },
     searchInputWrap: {
-        backgroundColor: app.lightColor,
+        backgroundColor: app.darkColor,
+        borderColor: app.lightColor,
         borderRadius: 10,
-        borderWidth: 0.5,
+        borderWidth: 0.2,
         marginBottom: 10,
         paddingRight: 5,
         position: 'relative',
@@ -117,6 +119,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         fontFamily: fonts.fontDotGothic,
         width: '90%',
+        color: app.lightColor,
     },
     itemListWrap: {
         flex: 1,
@@ -128,8 +131,9 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         margin: 5,
         borderRadius: 10,
-        borderColor: app.darkColor,
-        backgroundColor: app.lightColor + app.transparency,
+        borderColor: app.lightColor,
+        backgroundColor: app.darkColor,
+        overflow: 'hidden',
     },
     pressable: {
         flex: 1,
@@ -139,8 +143,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
         paddingVertical: 4,
         paddingHorizontal: 2,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
         backgroundColor: app.lightColor,
     },
     itemSprite: {

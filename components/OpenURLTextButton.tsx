@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
         // borderBottomWidth: 1,
         // borderBottomColor: 'tomato',
         color: 'tomato',
+        textDecorationLine: 'underline',
     },
 });
 

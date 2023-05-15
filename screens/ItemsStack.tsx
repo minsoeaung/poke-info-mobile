@@ -17,6 +17,7 @@ export const ItemsStack: React.FC = () => {
             initialRouteName="ItemList"
             screenOptions={{
                 header: props => <MyHeader headerProps={props} />,
+                animation: 'fade_from_bottom',
             }}
         >
             <Stack.Screen name="ItemList" component={ItemList} options={{ title: 'Items' }} />

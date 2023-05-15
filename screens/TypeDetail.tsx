@@ -135,6 +135,8 @@ type TypesProps = {
     }[];
 };
 
+const shouldUseDark = ['grass', 'steel', 'fairy', 'ground', 'bug', 'ice', 'normal', 'rock', 'electric'];
+
 function Types({ types }: TypesProps) {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'TypeDetail'>>();
 
@@ -156,19 +158,7 @@ function Types({ types }: TypesProps) {
                                 paddingHorizontal: 10,
                                 paddingVertical: 7,
                                 borderRadius: 10,
-                                color: [
-                                    'grass',
-                                    'steel',
-                                    'fairy',
-                                    'ground',
-                                    'bug',
-                                    'ice',
-                                    'normal',
-                                    'rock',
-                                    'electric',
-                                ].includes(type.name)
-                                    ? app.darkColor
-                                    : app.lightColor,
+                                color: shouldUseDark.includes(type.name) ? app.darkColor : app.lightColor,
                                 marginRight: 5,
                                 elevation: 5,
                                 marginTop: 5,

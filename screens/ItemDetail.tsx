@@ -4,9 +4,6 @@ import { Image } from 'expo-image';
 import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
-
-import Card from '../components/Card';
-import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
@@ -16,6 +13,8 @@ import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import LabelAndValue from '../components/LabelAndValue';
+import TitleAndContent from '../components/TitleAndContent';
 
 type HeldByPokemonsType = { name: string };
 
@@ -87,24 +86,28 @@ export default function ItemDetail() {
             style={styles.container}
             ListHeaderComponent={
                 <>
-                    <Card>
-                        {!!flavorText && <MyText>{flavorText}</MyText>}
-                        {!!effectEntry && <MyText>{effectEntry}</MyText>}
-                    </Card>
-                    <Card>
-                        <Description
-                            label="Cost: "
-                            value={<MyText>{data!.cost > 0 ? data!.cost : 'Not for sale'}</MyText>}
-                            noBorder
+                    <View style={styles.aboutItem}>
+                        {!!flavorText && <MyText style={styles.whiteText}>{flavorText}</MyText>}
+                        {!!effectEntry && <MyText style={styles.whiteText}>{effectEntry}</MyText>}
+                    </View>
+                    <View style={styles.labelsAndValues}>
+                        <LabelAndValue
+                            label="Cost"
+                            value={
+                                <MyText style={styles.whiteText}>{data!.cost > 0 ? data!.cost : 'Not for sale'}</MyText>
+                            }
                         />
                         {data!.fling_power > 0 && (
-                            <Description label="Fling Power:" value={<MyText>{data!.fling_power}</MyText>} noBorder />
+                            <LabelAndValue
+                                label="Fling Power"
+                                value={<MyText style={styles.whiteText}>{data!.fling_power}</MyText>}
+                            />
                         )}
-                    </Card>
+                    </View>
                 </>
             }
             ListEmptyComponent={
-                <Card title="Pokémon that might be found holding this item">
+                <TitleAndContent titleBgColor={app.lightColor} title="Pokémon that might be found holding this item">
                     <PressableItemList
                         data={heldByPokemons}
                         onPressItem={item => {
@@ -112,7 +115,7 @@ export default function ItemDetail() {
                         }}
                         spriteExtractor={item => pokemons[item.name]?.sprite}
                     />
-                </Card>
+                </TitleAndContent>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />
@@ -123,6 +126,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
+        paddingTop: 20,
         backgroundColor: app.darkColor,
     },
     footer: {
@@ -131,5 +135,19 @@ const styles = StyleSheet.create({
     itemImage: {
         width: 30,
         height: 30,
+    },
+    aboutItem: {
+        color: app.lightColor,
+        gap: 15,
+        marginHorizontal: 10,
+    },
+    labelsAndValues: {
+        gap: 15,
+        marginVertical: 20,
+        marginLeft: 30,
+    },
+    whiteText: {
+        color: app.lightColor,
+        letterSpacing: 0.5,
     },
 });
