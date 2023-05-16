@@ -9,13 +9,13 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import ClearInputButton from '../components/ClearInputButton';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonCard from '../components/PokemonCard';
-import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import pokemonDetails from '../constants/pokemonDetails';
 import useIsSearchVisible from '../hooks/useIsSearchVisible';
 import useSearchableList from '../hooks/useSearchableList';
 import { PokemonSmDetailType, StackParamList } from '../types';
+import PokemonCellItem from '../components/PokemonCellItem';
 
 const { height } = Dimensions.get('window');
 
@@ -55,7 +55,7 @@ export default function PokeDex() {
     return (
         <View style={styles.container}>
             {!ready && (
-                <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut.duration(100)}>
+                <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut}>
                     <PikachuRunning />
                 </Animated.View>
             )}
@@ -67,6 +67,7 @@ export default function PokeDex() {
                         onChangeText={handleChangeText}
                         placeholder="Search..."
                         selectionColor="tomato"
+                        placeholderTextColor="grey"
                     />
                     <ClearInputButton onPress={clearInput} />
                 </View>
@@ -77,13 +78,14 @@ export default function PokeDex() {
                     exiting={FadeOut.duration(275)}
                     style={[StyleSheet.absoluteFill, styles.suggestionList]}
                 >
-                    <PressableItemList
+                    <FlashList
+                        ref={listRef}
                         data={list}
-                        onPressItem={item => {
-                            navigation.push('PokemonDetail', { name: item.name });
+                        keyExtractor={item => item.name}
+                        estimatedItemSize={60}
+                        renderItem={({ item, index }) => {
+                            return <PokemonCellItem item={item} color={app.darkColor} size="small" />;
                         }}
-                        spriteExtractor={item => item.sprite}
-                        size="small"
                     />
                 </Animated.View>
             )}
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
     },
     searchBox: {
         backgroundColor: app.lightColor,
-        borderWidth: 0.5,
+        borderWidth: 1,
         borderRadius: 10,
         elevation: 5,
         borderColor: app.darkColor,
@@ -135,6 +137,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.fontDotGothic,
         width: '90%',
         color: app.darkColor,
+        letterSpacing: 1,
     },
     searchBtn: {
         paddingVertical: 10,
@@ -150,13 +153,13 @@ const styles = StyleSheet.create({
         paddingRight: 10,
         height: height / 3,
         backgroundColor: app.darkColor,
-        borderWidth: 1.5,
-        borderColor: app.abilityColor,
+        borderWidth: 1,
+        borderColor: 'tomato',
         elevation: 10,
     },
     pokedex: {
         flex: 1,
-        height: Dimensions.get('screen').height,
+        // height: Dimensions.get('screen').height,
         zIndex: -1,
     },
 });

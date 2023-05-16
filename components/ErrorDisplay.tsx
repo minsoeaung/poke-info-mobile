@@ -6,7 +6,7 @@ import { app } from '../constants/colors';
 export default function ErrorDisplay({ error }: { error: string }) {
     return (
         <View style={styles.container}>
-            <SmallGreyText text={error} />
+            <SmallGreyText text={error || 'Something went wrong'} />
         </View>
     );
 }

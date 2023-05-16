@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
     },
     item: {
         flex: 1,
-        borderWidth: 0.5,
+        borderWidth: StyleSheet.hairlineWidth,
         aspectRatio: 1,
         margin: 5,
         borderRadius: 10,

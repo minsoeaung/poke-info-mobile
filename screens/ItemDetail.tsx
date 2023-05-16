@@ -3,19 +3,21 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo } from 'react';
-import { FlatList, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
-import PressableItemList from '../components/PressableItemList';
 import { app } from '../constants/colors';
-import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import Animated, { FadeOut } from 'react-native-reanimated';
+import { FlashList } from '@shopify/flash-list';
+import PokemonCellItem from '../components/PokemonCellItem';
+import TitleOnlyCard from '../components/TitleOnlyCard';
 
 type HeldByPokemonsType = { name: string };
 
@@ -73,7 +75,11 @@ export default function ItemDetail() {
     }, [data]);
 
     if (isLoading) {
-        return <PikachuRunning />;
+        return (
+            <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut}>
+                <PikachuRunning />
+            </Animated.View>
+        );
     }
 
     if (error) {
@@ -81,74 +87,85 @@ export default function ItemDetail() {
     }
 
     return (
-        <FlatList
-            data={[]}
-            renderItem={null}
-            style={styles.container}
-            ListHeaderComponent={
-                <>
-                    <View style={styles.aboutItem}>
-                        {!!flavorText && <MyText style={styles.whiteText}>{flavorText}</MyText>}
-                        {!!effectEntry && <MyText style={styles.whiteText}>{effectEntry}</MyText>}
-                    </View>
-                    <View style={styles.labelsAndValues}>
-                        <LabelAndValue
-                            label="Cost"
-                            value={
-                                <MyText style={styles.whiteText}>{data!.cost > 0 ? data!.cost : 'Not for sale'}</MyText>
-                            }
+        <View style={styles.container}>
+            <FlashList
+                data={heldByPokemons}
+                estimatedItemSize={60}
+                renderItem={({ item, index }) => {
+                    return (
+                        <PokemonCellItem
+                            item={item}
+                            color={app.lightColor}
+                            isLast={index === heldByPokemons.length - 1}
                         />
-                        {data!.fling_power > 0 && (
+                    );
+                }}
+                contentContainerStyle={styles.contentContainer}
+                ListHeaderComponentStyle={styles.listHeaderContainer}
+                ListHeaderComponent={
+                    <>
+                        <Card>
+                            {!!flavorText && <MyText style={styles.description}>{flavorText}</MyText>}
+                            {!!effectEntry && <MyText style={styles.description}>{effectEntry}</MyText>}
+                        </Card>
+                        <Card>
                             <LabelAndValue
-                                label="Fling Power"
-                                value={<MyText style={styles.whiteText}>{data!.fling_power}</MyText>}
+                                label="Cost"
+                                value={
+                                    <MyText style={styles.description2}>
+                                        {data!.cost > 0 ? data!.cost : 'Not for sale'}
+                                    </MyText>
+                                }
                             />
-                        )}
-                    </View>
-                </>
-            }
-            ListEmptyComponent={
-                <Card titleBgColor={app.lightColor} title="Pokémon that might be found holding this item">
-                    <PressableItemList
-                        data={heldByPokemons}
-                        onPressItem={item => {
-                            navigation.push('PokemonDetail', pokemons[item.name]);
-                        }}
-                        spriteExtractor={item => pokemons[item.name]?.sprite}
-                    />
-                </Card>
-            }
-            ListFooterComponent={<View style={styles.footer} />}
-        />
+                            {data!.fling_power > 0 && (
+                                <LabelAndValue
+                                    label="Fling Power"
+                                    value={<MyText style={styles.description2}>{data!.fling_power}</MyText>}
+                                />
+                            )}
+                        </Card>
+                        <TitleOnlyCard
+                            borderColor={app.lightColor}
+                            title="Pokémon that might be found holding this item"
+                            titleBgColor={app.lightColor}
+                        />
+                    </>
+                }
+                ListEmptyComponent={<MyText style={styles.emptyText}>None!</MyText>}
+            />
+        </View>
     );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
-        paddingTop: 20,
         backgroundColor: app.darkColor,
     },
-    footer: {
-        marginBottom: 10,
+    contentContainer: {
+        padding: 10,
+    },
+    listHeaderContainer: {
+        gap: 25,
     },
     itemImage: {
-        width: 30,
-        height: 30,
+        width: 50,
+        height: 50,
     },
-    aboutItem: {
+    description: {
+        paddingVertical: 10,
         color: app.lightColor,
-        gap: 15,
-        marginHorizontal: 10,
     },
-    labelsAndValues: {
-        gap: 15,
-        marginVertical: 20,
-        marginLeft: 30,
-    },
-    whiteText: {
+    description2: {
         color: app.lightColor,
-        letterSpacing: 0.5,
+    },
+    emptyText: {
+        paddingVertical: 50,
+        textAlign: 'center',
+        color: app.lightColor,
+        borderWidth: StyleSheet.hairlineWidth,
+        borderColor: app.lightColor,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
     },
 });

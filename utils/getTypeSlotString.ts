@@ -1,6 +1,6 @@
-const getTypeSlotString = (slot: number): string | null => {
+const getTypeSlotString = (slot: number): string => {
     if (slot === 1) {
-        return null;
+        return '';
     }
 
     let order: string;

@@ -10,6 +10,7 @@ type Props = {
     titleBgColor?: string;
     titleColor?: string;
     noElevation?: boolean;
+    childrenGap?: number;
 };
 
 const Card = ({
@@ -18,9 +19,18 @@ const Card = ({
     children,
     titleColor = app.darkColor,
     noElevation = false,
+    childrenGap = 10,
 }: Props) => {
     return (
-        <View style={[styles.container, { borderColor: titleBgColor, elevation: noElevation ? 0 : 10 }]}>
+        <View
+            style={[
+                styles.container,
+                {
+                    borderColor: titleBgColor,
+                    elevation: noElevation ? 0 : 10,
+                },
+            ]}
+        >
             {title && (
                 <MyText
                     style={StyleSheet.flatten([
@@ -34,14 +44,14 @@ const Card = ({
                     {title}
                 </MyText>
             )}
-            <View style={styles.children}>{children}</View>
+            <View style={[styles.children, { gap: childrenGap }]}>{children}</View>
         </View>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
-        borderWidth: 0.3,
+        borderWidth: StyleSheet.hairlineWidth,
         backgroundColor: app.darkColor,
         borderRadius: 10,
     },
@@ -53,6 +63,7 @@ const styles = StyleSheet.create({
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
         letterSpacing: 1,
+        textTransform: 'capitalize',
     },
     children: {
         paddingVertical: 15,

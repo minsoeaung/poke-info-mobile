@@ -10,13 +10,13 @@ type Props = {
     types: string[];
 };
 
-const shouldUseDark = ['grass', 'electric', 'steel', 'ice', 'ground', 'bug', 'rock'];
+const shouldUseDark = ['grass', 'steel', 'electric', 'steel', 'ice', 'ground', 'bug', 'fairy', 'normal'];
 
 export default function PokemonTypes({ types }: Props) {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
     return (
-        <View style={styles.typeContainer}>
+        <View style={styles.container}>
             {types.map(type => (
                 <Pressable
                     key={type}
@@ -28,18 +28,15 @@ export default function PokemonTypes({ types }: Props) {
                 >
                     {({ pressed }) => (
                         <MyText
-                            style={{
-                                backgroundColor: typeColor[type],
-                                paddingHorizontal: 10,
-                                paddingVertical: 7,
-                                borderRadius: 10,
-                                color: shouldUseDark.includes(type) ? app.darkColor : app.lightColor,
-                                marginRight: 15,
-                                elevation: 10,
-                                textTransform: 'capitalize',
-                                borderWidth: 1,
-                                borderColor: pressed ? app.lightColor : app.darkColor,
-                            }}
+                            style={StyleSheet.flatten([
+                                styles.typeText,
+                                {
+                                    backgroundColor: typeColor[type],
+                                    color: shouldUseDark.includes(type) ? app.darkColor : app.lightColor,
+                                    borderColor: pressed ? 'tomato' : app.darkColor,
+                                    borderWidth: 1.5,
+                                },
+                            ])}
                         >
                             {type}
                         </MyText>
@@ -51,7 +48,17 @@ export default function PokemonTypes({ types }: Props) {
 }
 
 const styles = StyleSheet.create({
-    typeContainer: {
+    container: {
         flexDirection: 'row',
+        flexWrap: 'wrap',
+        gap: 5,
+    },
+    typeText: {
+        paddingHorizontal: 10,
+        paddingVertical: 7,
+        borderRadius: 10,
+        elevation: 10,
+        textTransform: 'capitalize',
+        borderWidth: 1,
     },
 });

@@ -1,6 +1,7 @@
+import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
 import React from 'react';
-import { FlatList, Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
@@ -13,7 +14,7 @@ type Props<T> = {
     size?: 'small' | 'medium' | 'large';
     spriteExtractor?: (item: T) => string | null;
     extraExtractor?: (item: T) => string | null;
-    listRef?: React.LegacyRef<FlatList<T>> | null;
+    listRef?: React.LegacyRef<FlashList<T>> | null;
 };
 
 export default function PressableItemList<T extends { name: string }>({
@@ -26,12 +27,12 @@ export default function PressableItemList<T extends { name: string }>({
 }: Props<T>) {
     return (
         <View style={styles.listContainer}>
-            <FlatList
+            <FlashList
                 ref={listRef}
                 data={data}
                 keyExtractor={key => key.name}
-                ItemSeparatorComponent={() => <View style={styles.separator} />}
                 ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
+                estimatedItemSize={54}
                 renderItem={({ item }) => (
                     <Pressable onPress={() => onPressItem(item)}>
                         {({ pressed }) => {
@@ -114,16 +115,14 @@ const spriteSize = {
 };
 
 const styles = StyleSheet.create({
-    listContainer: {},
+    listContainer: {
+        flex: 1,
+    },
     listItem: {
         paddingHorizontal: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-    },
-    separator: {
-        borderBottomColor: app.darkColor,
-        borderBottomWidth: 0.5,
     },
     emptyText: {
         paddingVertical: 50,

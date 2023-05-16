@@ -41,7 +41,7 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
                                     <Image
                                         style={styles.sprite}
                                         source={{
-                                            uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${id}.png`,
+                                            uri: sprite,
                                         }}
                                         contentFit="cover"
                                         accessibilityLabel={`Sprite of ${name}`}

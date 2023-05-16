@@ -19,13 +19,14 @@ const PokeDexStack: React.FC = () => {
                 header: props => <MyHeader headerProps={props} />,
                 cardStyleInterpolator: CardStyleInterpolators.forFadeFromBottomAndroid,
             }}
+            detachInactiveScreens={false}
         >
             <Stack.Screen name="PokeDex" component={PokeDex} />
             <Stack.Screen
                 name="PokemonDetail"
                 component={PokemonDetail}
                 sharedElements={(route, otherRoute, showing) => {
-                    if (['PokeDex'].includes(otherRoute.name) && showing) {
+                    if (['PokeDex', 'TypeDetail'].includes(otherRoute.name) && showing) {
                         const { name } = route.params; // No type safety here
                         return [
                             {
