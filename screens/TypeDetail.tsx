@@ -4,12 +4,12 @@ import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { FlatList, Pressable, StyleSheet, View } from 'react-native';
 
+import Card from '../components/Card';
 import Description from '../components/Description';
 import ErrorDisplay from '../components/ErrorDisplay';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PressableItemList from '../components/PressableItemList';
-import TitleAndContent from '../components/TitleAndContent';
 import { app, cardColor, typeColor } from '../constants/colors';
 import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
@@ -62,7 +62,7 @@ export default function TypeDetail({ route, navigation }: Props) {
             style={styles.container}
             ListHeaderComponent={
                 <>
-                    <TitleAndContent title="Attack" titleBgColor={cardColor[name]}>
+                    <Card title="Attack" titleBgColor={cardColor[name]}>
                         {data!.damage_relations.double_damage_to.length > 0 && (
                             <Description
                                 label="2x damage"
@@ -83,9 +83,9 @@ export default function TypeDetail({ route, navigation }: Props) {
                                 noBorder
                             />
                         )}
-                    </TitleAndContent>
+                    </Card>
                     <View style={styles.gap} />
-                    <TitleAndContent title="Defense" titleBgColor={cardColor[name]}>
+                    <Card title="Defense" titleBgColor={cardColor[name]}>
                         {data!.damage_relations.double_damage_from.length > 0 && (
                             <Description
                                 label="2x damage"
@@ -106,12 +106,12 @@ export default function TypeDetail({ route, navigation }: Props) {
                                 noBorder
                             />
                         )}
-                    </TitleAndContent>
+                    </Card>
                     <View style={styles.gap} />
                 </>
             }
             ListEmptyComponent={
-                <TitleAndContent title={getFormattedName(name) + ' Pokémon'} titleBgColor={cardColor[name]}>
+                <Card title={getFormattedName(name) + ' Pokémon'} titleBgColor={cardColor[name]}>
                     <PressableItemList
                         data={pokemonsWithThisType}
                         onPressItem={item => {
@@ -121,7 +121,7 @@ export default function TypeDetail({ route, navigation }: Props) {
                         spriteExtractor={item => pokemons[item.name]?.sprite}
                         extraExtractor={item => getTypeSlotString(item.typeSlot)}
                     />
-                </TitleAndContent>
+                </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />

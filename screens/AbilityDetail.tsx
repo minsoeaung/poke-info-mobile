@@ -4,11 +4,11 @@ import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
 
+import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PressableItemList from '../components/PressableItemList';
-import TitleAndContent from '../components/TitleAndContent';
 import { app } from '../constants/colors';
 import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
@@ -86,7 +86,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
                 </View>
             }
             ListEmptyComponent={
-                <TitleAndContent
+                <Card
                     title="Pokémon with this ability"
                     titleBgColor={app.lightColor}
                     titleColor={app.darkColor}
@@ -104,7 +104,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
                         spriteExtractor={item => pokemons[item.name]?.sprite}
                         extraExtractor={item => (item.isHidden ? 'hidden' : '')}
                     />
-                </TitleAndContent>
+                </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />

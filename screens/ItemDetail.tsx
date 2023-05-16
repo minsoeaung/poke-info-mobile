@@ -4,7 +4,10 @@ import { Image } from 'expo-image';
 import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { FlatList, StyleSheet, View } from 'react-native';
+
+import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
+import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PressableItemList from '../components/PressableItemList';
@@ -13,8 +16,6 @@ import pokemons from '../constants/pokemons';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import LabelAndValue from '../components/LabelAndValue';
-import TitleAndContent from '../components/TitleAndContent';
 
 type HeldByPokemonsType = { name: string };
 
@@ -107,7 +108,7 @@ export default function ItemDetail() {
                 </>
             }
             ListEmptyComponent={
-                <TitleAndContent titleBgColor={app.lightColor} title="Pokémon that might be found holding this item">
+                <Card titleBgColor={app.lightColor} title="Pokémon that might be found holding this item">
                     <PressableItemList
                         data={heldByPokemons}
                         onPressItem={item => {
@@ -115,7 +116,7 @@ export default function ItemDetail() {
                         }}
                         spriteExtractor={item => pokemons[item.name]?.sprite}
                     />
-                </TitleAndContent>
+                </Card>
             }
             ListFooterComponent={<View style={styles.footer} />}
         />

@@ -11,7 +11,7 @@ import MyText from '../components/MyText';
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
 import Stats from '../components/Stats';
-import TitleAndContent from '../components/TitleAndContent';
+import Card from '../components/Card';
 import { app, cardColor } from '../constants/colors';
 import { StackParamList } from '../types';
 import getPokemonDetailByName from '../utils/getPokemonDetailByName';
@@ -63,7 +63,7 @@ export default function PokemonDetail() {
                         <MyText style={styles.flavorTextEntry}>{profile.flavorTextEntry.diamond}</MyText>
                     )}
                 </View>
-                <TitleAndContent title="Profile" titleBgColor={color}>
+                <Card title="Profile" titleBgColor={color}>
                     <LabelAndValue
                         label="HEIGHT"
                         value={<MyText style={{ color: app.lightColor }}>{profile.height}</MyText>}
@@ -73,8 +73,8 @@ export default function PokemonDetail() {
                         value={<MyText style={{ color: app.lightColor }}>{profile.weight}</MyText>}
                     />
                     <LabelAndValue label="ABILITIES" value={<PokemonAbilities abilities={profile.abilities} />} />
-                </TitleAndContent>
-                <TitleAndContent title="Breeding" titleBgColor={color}>
+                </Card>
+                <Card title="Breeding" titleBgColor={color}>
                     <LabelAndValue
                         label="GENDER"
                         value={
@@ -108,8 +108,8 @@ export default function PokemonDetail() {
                             </MyText>
                         }
                     />
-                </TitleAndContent>
-                <TitleAndContent title="Training" titleBgColor={color}>
+                </Card>
+                <Card title="Training" titleBgColor={color}>
                     <LabelAndValue
                         label="EV YIELD"
                         value={<MyText style={{ color: app.lightColor }}>{training.evYield}</MyText>}
@@ -130,14 +130,14 @@ export default function PokemonDetail() {
                         label="GROWTH RATE"
                         value={<MyText style={{ color: app.lightColor }}>{training.growthRate}</MyText>}
                     />
-                </TitleAndContent>
-                <TitleAndContent title="Evolutions" titleBgColor={color}>
+                </Card>
+                <Card title="Evolutions" titleBgColor={color}>
                     {evolutions.length > 0 ? (
                         <Evolutions evolutions={evolutions} />
                     ) : (
                         <MyText style={styles.nope}>{name} does not evolve.</MyText>
                     )}
-                </TitleAndContent>
+                </Card>
             </View>
         </ScrollView>
     );

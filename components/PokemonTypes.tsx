@@ -38,7 +38,7 @@ export default function PokemonTypes({ types }: Props) {
                                 elevation: 10,
                                 textTransform: 'capitalize',
                                 borderWidth: 1,
-                                borderColor: pressed ? 'tomato' : app.darkColor,
+                                borderColor: pressed ? app.lightColor : app.darkColor,
                             }}
                         >
                             {type}
