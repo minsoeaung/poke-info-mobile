@@ -30,8 +30,6 @@ const Stats = ({ stats, barColor }: Props) => {
                                 style={{
                                     flex: ratio,
                                     backgroundColor: barColor,
-                                    borderTopLeftRadius: 10,
-                                    borderBottomLeftRadius: 10,
                                 }}
                             />
                         </View>
@@ -59,7 +57,7 @@ const styles = StyleSheet.create({
     },
     statBar: {
         flex: 2,
-        borderWidth: 0.5,
+        borderWidth: StyleSheet.hairlineWidth,
         display: 'flex',
         flexDirection: 'row',
         borderRadius: 10,
@@ -72,8 +70,10 @@ const styles = StyleSheet.create({
     },
     statNumber: {
         color: app.darkColor,
-        letterSpacing: 1,
-        fontSize: 12,
+        fontSize: 10,
+        textShadowColor: 'rgba(255, 255, 255, 0.75)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 1,
     },
 });
 

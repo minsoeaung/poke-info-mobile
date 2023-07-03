@@ -3,7 +3,6 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
-import { SharedElement } from 'react-navigation-shared-element';
 
 import MyText from './MyText';
 import { app, cardColor, typeColor } from '../constants/colors';
@@ -11,7 +10,7 @@ import { PokemonSmDetailType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
-    const { name, sprite, id, types } = pokemon;
+    const { name, sprite, types } = pokemon;
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
     const backgroundColor = cardColor[types[0]];
 
@@ -20,104 +19,117 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
     };
 
     return (
-        <View style={[styles.pokemonCard, { backgroundColor: `${backgroundColor}${app.transparency}` }]}>
-            <Pressable onPress={goToPokemonDetailScreen} style={styles.pressable}>
-                {({ pressed }) => (
-                    <>
-                        <MyText
-                            style={StyleSheet.flatten([
-                                styles.name,
-                                pressed
-                                    ? { color: 'tomato' }
-                                    : { color: types[0] === 'dark' ? app.lightColor : app.darkColor },
-                            ])}
-                            numberOfLines={1}
-                        >
-                            {getFormattedName(name)}
-                        </MyText>
-                        <View style={styles.spriteContainer}>
-                            {sprite && (
-                                <SharedElement id={`pokemon.sprite.${name}`}>
-                                    <Image
-                                        style={styles.sprite}
-                                        source={{
-                                            uri: sprite,
-                                        }}
-                                        contentFit="cover"
-                                        accessibilityLabel={`Sprite of ${name}`}
-                                        recyclingKey={`front_default_${name}`}
-                                        transition={200}
-                                    />
-                                </SharedElement>
-                            )}
-                        </View>
-                        <View style={styles.types}>
-                            {types.map((type, index) => (
-                                <MyText
-                                    key={index}
-                                    style={{
+        <Pressable onPress={goToPokemonDetailScreen} style={styles.pressable}>
+            {({ pressed }) => (
+                <View
+                    style={[
+                        styles.pokemonCard,
+                        {
+                            borderColor: pressed ? 'tomato' : app.darkColor,
+                            backgroundColor,
+                        },
+                    ]}
+                >
+                    <MyText style={styles.name} numberOfLines={1}>
+                        {getFormattedName(name)}
+                    </MyText>
+                    <View style={styles.spriteContainer}>
+                        {sprite && (
+                            <Image
+                                style={styles.sprite}
+                                source={{
+                                    // uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+                                    uri: sprite,
+                                }}
+                                contentFit="cover"
+                                accessibilityLabel={`Sprite of ${name}`}
+                                recyclingKey={`front_default_${name}`}
+                                transition={200}
+                            />
+                        )}
+                    </View>
+                    <View style={styles.types}>
+                        {types.map((type, index) => (
+                            <MyText
+                                key={index}
+                                style={StyleSheet.flatten([
+                                    styles.type,
+                                    {
                                         backgroundColor: typeColor[type],
-                                        paddingHorizontal: 5,
-                                        paddingVertical: 2,
                                         borderBottomLeftRadius: index === 0 ? 5 : 0,
                                         borderTopLeftRadius: index === 0 ? 5 : 0,
                                         borderTopRightRadius: index === types.length - 1 ? 5 : 0,
                                         borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
-                                        color: types[index] === 'grass' ? app.darkColor : app.lightColor,
-                                        fontSize: 8,
-                                    }}
-                                >
-                                    {type}
-                                </MyText>
-                            ))}
-                        </View>
-                    </>
-                )}
-            </Pressable>
-        </View>
+                                    },
+                                ])}
+                            >
+                                {type}
+                            </MyText>
+                        ))}
+                    </View>
+                </View>
+            )}
+        </Pressable>
     );
 };
 
 export default memo(PokemonCard);
 
 const styles = StyleSheet.create({
-    pokemonCard: {
-        aspectRatio: 9 / 13,
-        flex: 1,
-        margin: 5,
-        borderRadius: 10,
-        elevation: 5,
-        borderColor: app.darkColor,
-        borderWidth: 0.5,
-    },
     pressable: {
+        flex: 1,
+        aspectRatio: 9 / 13,
+        margin: 5,
+    },
+    pokemonCard: {
+        flex: 1,
+        borderRadius: 10,
+        paddingTop: 5,
+        paddingBottom: 7,
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-evenly',
-        height: '100%',
+        justifyContent: 'space-between',
+        borderWidth: 2,
     },
     name: {
         width: '100%',
         textAlign: 'center',
-        paddingHorizontal: 5,
-        paddingVertical: 4,
+        paddingHorizontal: 3,
+        paddingVertical: 3,
+        color: app.darkColor,
+
+        textShadowColor: 'rgba(255, 255, 255, 1)',
+        textShadowOffset: { width: 1, height: 1 },
+        textShadowRadius: 1,
     },
     spriteContainer: {
-        borderRadius: 10,
         width: '80%',
         height: '50%',
-        backgroundColor: app.lightColor + app.transparency,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+
+        backgroundColor: app.lightColor + app.transparency,
+        borderRadius: 10,
     },
     sprite: {
-        width: '105%',
-        height: '105%',
+        width: '115%',
+        height: '115%',
         aspectRatio: 1,
     },
     types: {
         flexDirection: 'row',
         justifyContent: 'center',
+    },
+    type: {
+        paddingHorizontal: 3,
+        paddingVertical: 2,
+        color: app.lightColor,
+        fontSize: 7,
+
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: 1.5, height: 1 },
+        textShadowRadius: 1,
+        textTransform: 'capitalize',
     },
 });

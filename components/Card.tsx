@@ -51,19 +51,21 @@ const Card = ({
 
 const styles = StyleSheet.create({
     container: {
-        borderWidth: StyleSheet.hairlineWidth,
-        backgroundColor: app.darkColor,
+        backgroundColor: app.grey + app.transparency,
+        overflow: 'hidden',
         borderRadius: 10,
     },
     title: {
         fontSize: 18,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingHorizontal: 20,
+        paddingVertical: 3,
         elevation: 5,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
         letterSpacing: 1,
         textTransform: 'capitalize',
+
+        textShadowColor: 'rgba(255, 255, 255, 1)',
+        textShadowOffset: { width: 0.5, height: 0.5 },
+        textShadowRadius: 1,
     },
     children: {
         paddingVertical: 15,

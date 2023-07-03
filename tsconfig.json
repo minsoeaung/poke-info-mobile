@@ -12,7 +12,8 @@
     "moduleResolution": "node",
     "noEmit": true,
     "strict": true,
-    "target": "es2021"
+    "target": "es2021",
+    "strictNullChecks": true
   },
   "exclude": [
     "node_modules",

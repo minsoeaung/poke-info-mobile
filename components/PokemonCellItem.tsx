@@ -37,7 +37,6 @@ const PokemonCellItem = <T extends { name: string; typeSlot?: number }>({
             style={[
                 styles.pokemonCell,
                 {
-                    borderBottomWidth: isLast ? StyleSheet.hairlineWidth : 0,
                     borderBottomLeftRadius: isLast ? 10 : 0,
                     borderBottomRightRadius: isLast ? 10 : 0,
                     borderColor: color,
@@ -84,21 +83,20 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 10,
         position: 'relative',
-        borderLeftWidth: StyleSheet.hairlineWidth,
-        borderRightWidth: StyleSheet.hairlineWidth,
+        backgroundColor: app.grey + app.transparency,
     },
     spriteAndName: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 10,
+        gap: 20,
     },
     spriteContainer: {
         width: 50,
         height: 50,
     },
     sprite: {
-        width: '100%',
-        height: '100%',
+        width: '115%',
+        height: '115%',
     },
     name: {
         textTransform: 'capitalize',

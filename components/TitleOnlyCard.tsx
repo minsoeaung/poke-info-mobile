@@ -30,20 +30,23 @@ const TitleOnlyCard = ({ borderColor, title, titleBgColor }: Props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        borderWidth: StyleSheet.hairlineWidth,
+        // borderWidth: StyleSheet.hairlineWidth,
         backgroundColor: app.darkColor,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
+        overflow: 'hidden',
     },
     title: {
         fontSize: 18,
-        paddingHorizontal: 10,
-        paddingVertical: 5,
-        elevation: 5,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        paddingHorizontal: 20,
+        paddingVertical: 3,
         letterSpacing: 1,
+        elevation: 5,
         textTransform: 'capitalize',
+
+        textShadowColor: 'rgba(255, 255, 255, 1)',
+        textShadowOffset: { width: 0.5, height: 0.5 },
+        textShadowRadius: 1,
     },
 });
 

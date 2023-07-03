@@ -1,23 +1,23 @@
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { FlashList } from '@shopify/flash-list';
 import { Image } from 'expo-image';
 import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
+import Animated, { FadeOut } from 'react-native-reanimated';
 
 import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
+import PokemonCellItem from '../components/PokemonCellItem';
+import TitleOnlyCard from '../components/TitleOnlyCard';
 import { app } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import Animated, { FadeOut } from 'react-native-reanimated';
-import { FlashList } from '@shopify/flash-list';
-import PokemonCellItem from '../components/PokemonCellItem';
-import TitleOnlyCard from '../components/TitleOnlyCard';
 
 type HeldByPokemonsType = { name: string };
 
@@ -131,7 +131,11 @@ export default function ItemDetail() {
                         />
                     </>
                 }
-                ListEmptyComponent={<MyText style={styles.emptyText}>None!</MyText>}
+                ListEmptyComponent={
+                    <View style={styles.listEmpty}>
+                        <MyText style={styles.emptyText}>None!</MyText>
+                    </View>
+                }
             />
         </View>
     );
@@ -159,13 +163,14 @@ const styles = StyleSheet.create({
     description2: {
         color: app.lightColor,
     },
+    listEmpty: {
+        backgroundColor: app.grey,
+        borderBottomLeftRadius: 10,
+        borderBottomRightRadius: 10,
+    },
     emptyText: {
         paddingVertical: 50,
         textAlign: 'center',
         color: app.lightColor,
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: app.lightColor,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
     },
 });

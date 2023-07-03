@@ -16,7 +16,7 @@ export default function MyText(props: Props) {
     return (
         <Text
             {...props}
-            style={{ color: app.darkColor, ...style, fontFamily: fonts.fontDotGothic }}
+            style={{ color: app.darkColor, fontFamily: fonts.audioWide, ...style }}
             numberOfLines={numberOfLines ? numberOfLines : 0}
         >
             {children}

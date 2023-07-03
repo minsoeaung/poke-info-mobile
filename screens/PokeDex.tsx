@@ -1,4 +1,4 @@
-import EvilIcons from '@expo/vector-icons/EvilIcons';
+import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
@@ -9,13 +9,13 @@ import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 import ClearInputButton from '../components/ClearInputButton';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonCard from '../components/PokemonCard';
+import PokemonCellItem from '../components/PokemonCellItem';
 import { app } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import pokemonDetails from '../constants/pokemonDetails';
 import useIsSearchVisible from '../hooks/useIsSearchVisible';
 import useSearchableList from '../hooks/useSearchableList';
 import { PokemonSmDetailType, StackParamList } from '../types';
-import PokemonCellItem from '../components/PokemonCellItem';
 
 const { height } = Dimensions.get('window');
 
@@ -43,7 +43,7 @@ export default function PokeDex() {
         navigation.setOptions({
             headerRight: () => (
                 <Pressable onPress={toggle}>
-                    <EvilIcons
+                    <FontAwesome
                         name="search"
                         style={StyleSheet.flatten([styles.searchBtn, { color: isVisible ? 'tomato' : app.lightColor }])}
                     />
@@ -76,14 +76,13 @@ export default function PokeDex() {
                 <Animated.View
                     entering={FadeIn.duration(275)}
                     exiting={FadeOut.duration(275)}
-                    style={[StyleSheet.absoluteFill, styles.suggestionList]}
+                    style={[StyleSheet.absoluteFill, styles.suggestionListView]}
                 >
                     <FlashList
-                        ref={listRef}
                         data={list}
                         keyExtractor={item => item.name}
                         estimatedItemSize={60}
-                        renderItem={({ item, index }) => {
+                        renderItem={({ item }) => {
                             return <PokemonCellItem item={item} color={app.darkColor} size="small" />;
                         }}
                     />
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
         height: 40,
         paddingVertical: 10,
         paddingLeft: 20,
-        fontFamily: fonts.fontDotGothic,
+        fontFamily: fonts.audioWide,
         width: '90%',
         color: app.darkColor,
         letterSpacing: 1,
@@ -142,9 +141,9 @@ const styles = StyleSheet.create({
     searchBtn: {
         paddingVertical: 10,
         paddingLeft: 25,
-        fontSize: 30,
+        fontSize: 22,
     },
-    suggestionList: {
+    suggestionListView: {
         top: 60,
         left: 20,
         right: 20,
@@ -152,7 +151,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         height: height / 3,
-        backgroundColor: app.darkColor,
+        backgroundColor: app.grey,
         borderWidth: 1,
         borderColor: 'tomato',
         elevation: 10,

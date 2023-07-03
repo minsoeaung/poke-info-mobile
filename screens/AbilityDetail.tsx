@@ -1,11 +1,11 @@
-import { useScrollToTop } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
 import { PokeAPI } from 'pokeapi-types';
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useLayoutEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
 
+import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
@@ -15,7 +15,6 @@ import { app } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import Card from '../components/Card';
 
 type Props = NativeStackScreenProps<StackParamList, 'AbilityDetail'>;
 
@@ -62,9 +61,6 @@ export default function AbilityDetail({ navigation, route }: Props) {
         navigation.setOptions({ title: getFormattedName(name) });
     }, []);
 
-    const listRef = useRef(null);
-    useScrollToTop(listRef);
-
     if (isLoading) {
         return (
             <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut}>
@@ -80,7 +76,6 @@ export default function AbilityDetail({ navigation, route }: Props) {
     return (
         <View style={styles.container}>
             <FlashList
-                ref={listRef}
                 data={pokemonsWithThisAbility}
                 keyExtractor={item => item.name}
                 estimatedItemSize={60}
@@ -138,7 +133,7 @@ const styles = StyleSheet.create({
         color: app.lightColor,
         borderWidth: StyleSheet.hairlineWidth,
         borderColor: app.lightColor,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
     },
 });

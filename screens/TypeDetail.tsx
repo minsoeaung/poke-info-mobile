@@ -9,6 +9,7 @@ import Animated, { FadeOut } from 'react-native-reanimated';
 import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LabelAndValue from '../components/LabelAndValue';
+import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonCellItem from '../components/PokemonCellItem';
 import PokemonTypes from '../components/PokemonTypes';
@@ -17,7 +18,6 @@ import { app, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import MyText from '../components/MyText';
 
 type Props = NativeStackScreenProps<StackParamList, 'TypeDetail'>;
 
@@ -40,9 +40,6 @@ export default function TypeDetail({ route, navigation }: Props) {
     useLayoutEffect(() => {
         navigation.setOptions({
             title: getFormattedName(name),
-            headerStyle: {
-                backgroundColor: cardColor[name],
-            },
         });
     }, []);
 

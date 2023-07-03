@@ -10,8 +10,6 @@ type Props = {
     types: string[];
 };
 
-const shouldUseDark = ['grass', 'steel', 'electric', 'steel', 'ice', 'ground', 'bug', 'fairy', 'normal'];
-
 export default function PokemonTypes({ types }: Props) {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
@@ -32,9 +30,7 @@ export default function PokemonTypes({ types }: Props) {
                                 styles.typeText,
                                 {
                                     backgroundColor: typeColor[type],
-                                    color: shouldUseDark.includes(type) ? app.darkColor : app.lightColor,
-                                    borderColor: pressed ? 'tomato' : app.darkColor,
-                                    borderWidth: 1.5,
+                                    borderColor: pressed ? 'tomato' : 'transparent',
                                 },
                             ])}
                         >
@@ -51,14 +47,18 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        gap: 5,
+        gap: 10,
     },
     typeText: {
         paddingHorizontal: 10,
-        paddingVertical: 7,
-        borderRadius: 10,
-        elevation: 10,
+        paddingVertical: 3,
+        borderRadius: 7,
         textTransform: 'capitalize',
-        borderWidth: 1,
+        borderWidth: 2,
+
+        color: app.lightColor,
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: 1.3, height: 1.3 },
+        textShadowRadius: 1,
     },
 });

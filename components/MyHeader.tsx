@@ -1,15 +1,13 @@
-import AntDesign from '@expo/vector-icons/AntDesign';
+import { MaterialIcons } from '@expo/vector-icons';
 import { getHeaderTitle } from '@react-navigation/elements';
-import { StackHeaderProps } from '@react-navigation/stack';
+import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import { app } from '../constants/colors';
-import { fonts } from '../constants/fonts';
-import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 
 type Props = {
-    headerProps: StackHeaderProps | NativeStackHeaderProps;
+    headerProps: NativeStackHeaderProps;
 };
 
 const MyHeader = ({ headerProps }: Props) => {
@@ -24,9 +22,12 @@ const MyHeader = ({ headerProps }: Props) => {
                 {({ pressed }) => (
                     <View style={[styles.headerLeft, options.headerStyle]}>
                         {back && (
-                            <AntDesign
-                                name="back"
-                                style={StyleSheet.flatten([styles.back, { color: pressed ? 'tomato' : app.darkColor }])}
+                            <MaterialIcons
+                                name="arrow-back-ios"
+                                style={StyleSheet.flatten([
+                                    styles.back,
+                                    { color: pressed ? '#00FFFF' : app.lightColor },
+                                ])}
                             />
                         )}
                         <MyText style={styles.titleText} numberOfLines={1}>
@@ -51,25 +52,34 @@ const styles = StyleSheet.create({
         backgroundColor: app.darkColor,
     },
     headerLeft: {
-        backgroundColor: app.lightColor,
+        backgroundColor: 'tomato',
         borderTopRightRadius: 10,
         borderBottomRightRadius: 10,
         paddingHorizontal: 20,
         flexDirection: 'row',
-        fontFamily: fonts.fontDotGothic,
         fontSize: 22,
     },
     titleText: {
-        fontSize: 25,
+        fontSize: 22,
         paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingVertical: 3,
         letterSpacing: 1,
         textTransform: 'capitalize',
+        color: app.lightColor,
+
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: 1.5, height: 1.5 },
+        textShadowRadius: 1,
     },
     back: {
         fontSize: 25,
         paddingRight: 20,
         paddingVertical: 5,
+        color: 'tomato',
+
+        textShadowColor: 'rgba(0, 0, 0, 0.75)',
+        textShadowOffset: { width: 1.5, height: 1.5 },
+        textShadowRadius: 1,
     },
     headerRight: {
         paddingRight: 15,

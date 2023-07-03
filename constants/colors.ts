@@ -3,10 +3,11 @@ type Type = {
 };
 
 export const app = {
-    darkColor: '#0D2F41',
-    lightColor: '#F0F1EC',
+    darkColor: '#000000',
+    lightColor: '#FFFFFF',
     transparency: 'CC', // 80%
     abilityColor: '#2f4f4f',
+    grey: '#373846',
 };
 
 export const cardColor: Type = {

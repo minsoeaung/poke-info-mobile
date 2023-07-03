@@ -3,15 +3,14 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
-import { SharedElement } from 'react-navigation-shared-element';
 
+import Card from '../components/Card';
 import Evolutions from '../components/Evolutions';
 import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
 import Stats from '../components/Stats';
-import Card from '../components/Card';
 import { app, cardColor } from '../constants/colors';
 import { StackParamList } from '../types';
 import getPokemonDetailByName from '../utils/getPokemonDetailByName';
@@ -21,15 +20,12 @@ export default function PokemonDetail() {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokemonDetail'>>();
     const { name } = route.params;
 
-    const { profile, evolutions, breeding, training, stats } = getPokemonDetailByName(name);
+    const { profile, evolutions, id, breeding, training, stats } = getPokemonDetailByName(name);
     const color = cardColor[profile.types[0]];
 
     useLayoutEffect(() => {
         navigation.setOptions({
             title: name,
-            headerStyle: {
-                backgroundColor: color,
-            },
         });
     }, []);
 
@@ -38,19 +34,17 @@ export default function PokemonDetail() {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.spriteContainer}>
-                        <SharedElement id={`pokemon.sprite.${name}`}>
-                            <Image
-                                style={styles.sprite}
-                                source={{
-                                    uri: profile.sprite || '',
-                                    // uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-                                }}
-                                contentFit="cover"
-                                accessibilityLabel={`Front default of ${name}`}
-                                recyclingKey={`front_default_${name}`}
-                                transition={200}
-                            />
-                        </SharedElement>
+                        <Image
+                            style={styles.sprite}
+                            source={{
+                                // uri: profile.sprite || '',
+                                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+                            }}
+                            contentFit="cover"
+                            accessibilityLabel={`Official artwork of ${name}`}
+                            recyclingKey={`official_artwork_${name}`}
+                            transition={200}
+                        />
                     </View>
                     <View style={styles.typesAndStatsContainer}>
                         <PokemonTypes types={profile.types} />
@@ -79,7 +73,9 @@ export default function PokemonDetail() {
                         label="GENDER"
                         value={
                             <MyText style={{ color: app.lightColor }}>
-                                {profile.gender ? `${profile.gender.male} ♂  ${profile.gender.female} ♀` : 'Genderless'}
+                                {profile.gender
+                                    ? `${profile.gender.male} ♂️  ${profile.gender.female} ♀️`
+                                    : 'Genderless'}
                             </MyText>
                         }
                     />
@@ -164,9 +160,12 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+
+        backgroundColor: app.grey + app.transparency,
+        borderRadius: 10,
     },
     sprite: {
-        width: '125%',
+        width: '100%',
         aspectRatio: 1,
     },
     typesAndStatsContainer: {
@@ -178,9 +177,13 @@ const styles = StyleSheet.create({
     intro: {},
     speciesName: {
         color: app.lightColor,
-        fontSize: 17,
+        fontSize: 20,
         letterSpacing: 1,
         elevation: 10,
+
+        // textShadowColor: 'rgba(255, 255, 255, 1)',
+        // textShadowOffset: { width: 1, height: 1 },
+        // textShadowRadius: 1,
     },
     flavorTextEntry: {
         color: app.lightColor,

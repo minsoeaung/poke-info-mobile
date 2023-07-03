@@ -41,6 +41,7 @@ const Evolutions = ({ evolutions }: Props) => {
                                     style={styles.sprite}
                                     source={{
                                         uri: fromPokemon.profile.sprite || '',
+                                        // uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${fromPokemon.id}.png`,
                                     }}
                                     contentFit="contain"
                                     accessibilityLabel={`Front default of ${fromPokemon.name}`}

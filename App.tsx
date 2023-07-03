@@ -1,4 +1,5 @@
-import { DotGothic16_400Regular, useFonts } from '@expo-google-fonts/dotgothic16';
+import { Audiowide_400Regular } from '@expo-google-fonts/audiowide';
+import { useFonts } from '@expo-google-fonts/dotgothic16';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { StatusBar } from 'expo-status-bar';
@@ -10,7 +11,7 @@ import { BottomTabsNavigator } from './screens/BottomTabsNavigator';
 SplashScreen.preventAutoHideAsync().catch(() => {});
 
 export default function App() {
-    const [fontsLoaded] = useFonts({ DotGothic16_400Regular });
+    const [fontsLoaded] = useFonts({ Audiowide_400Regular });
 
     const onLayoutRootView = useCallback(async () => {
         if (fontsLoaded) {
