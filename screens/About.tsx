@@ -27,7 +27,7 @@ const About = () => {
             <Card>
                 <LabelAndValue
                     label="Version"
-                    value={<MyText style={styles.version}>{Constants.manifest?.version || '1.3.1'}</MyText>}
+                    value={<MyText style={styles.version}>{Constants.manifest?.version || '1.5.0'}</MyText>}
                 />
                 <LabelAndValue
                     label="Source Code"

@@ -15,6 +15,7 @@ import Stats from '../components/Stats';
 import { app, cardColor } from '../constants/colors';
 import { StackParamList } from '../types';
 import getPokemonDetailByName from '../utils/getPokemonDetailByName';
+import getFormattedName from '../utils/getFormattedName';
 
 export default function PokemonDetail() {
     const route = useRoute<RouteProp<StackParamList, 'PokemonDetail'>>();
@@ -26,7 +27,7 @@ export default function PokemonDetail() {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            title: name,
+            title: getFormattedName(name),
         });
     }, []);
 

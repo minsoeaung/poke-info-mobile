@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: 22,
-        paddingHorizontal: 10,
         paddingVertical: 3,
         letterSpacing: 1,
         textTransform: 'capitalize',

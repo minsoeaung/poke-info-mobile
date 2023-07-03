@@ -41,6 +41,7 @@ const PokemonCellItem = <T extends { name: string; typeSlot?: number }>({
                     borderBottomRightRadius: isLast ? 10 : 0,
                     borderColor: color,
                     paddingVertical: sizeToPaddingVertical[size],
+                    paddingBottom: isLast ? 10 : 0,
                 },
             ]}
             onPress={() => {
@@ -95,8 +96,8 @@ const styles = StyleSheet.create({
         height: 50,
     },
     sprite: {
-        width: '115%',
-        height: '115%',
+        width: '110%',
+        height: '110%',
     },
     name: {
         textTransform: 'capitalize',

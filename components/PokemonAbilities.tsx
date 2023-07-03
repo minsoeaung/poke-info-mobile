@@ -23,7 +23,7 @@ export default function PokemonAbilities({ abilities }: Props) {
         <View style={styles.container}>
             {abilities.map((ability, index) => (
                 <Pressable
-                    key={ability.name}
+                    key={ability.slot}
                     style={styles.pressable}
                     onPress={() => goToAbilityDetailScreen(ability.name)}
                 >
