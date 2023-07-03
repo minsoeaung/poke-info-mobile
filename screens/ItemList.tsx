@@ -63,34 +63,36 @@ const Item = memo(({ item }: { item: ItemType }) => {
     };
 
     return (
-        <View style={styles.item}>
-            <Pressable onPress={handlePress} style={styles.pressable}>
-                {({ pressed }) => (
-                    <>
-                        <MyText
-                            style={StyleSheet.flatten([styles.itemName, pressed ? { color: 'tomato' } : {}])}
-                            numberOfLines={1}
-                        >
-                            {getFormattedName(item.name)}
-                        </MyText>
-                        {item.sprites ? (
-                            <Image
-                                style={styles.itemSprite}
-                                source={{ uri: item.sprites }}
-                                contentFit="contain"
-                                accessibilityLabel={`Sprite of ${item.name}`}
-                                recyclingKey={item.name}
-                                transition={200}
-                            />
-                        ) : (
-                            <View style={styles.noItemSprite}>
-                                <MyText style={styles.bad}>❗</MyText>
-                            </View>
-                        )}
-                    </>
-                )}
-            </Pressable>
-        </View>
+        <Pressable onPress={handlePress} style={styles.pressable}>
+            {({ pressed }) => (
+                <View
+                    style={StyleSheet.flatten([
+                        styles.item,
+                        {
+                            borderColor: pressed ? 'tomato' : 'transparent',
+                        },
+                    ])}
+                >
+                    <MyText style={styles.itemName} numberOfLines={1}>
+                        {getFormattedName(item.name)}
+                    </MyText>
+                    {item.sprites ? (
+                        <Image
+                            style={styles.itemSprite}
+                            source={{ uri: item.sprites }}
+                            contentFit="contain"
+                            accessibilityLabel={`Sprite of ${item.name}`}
+                            recyclingKey={item.name}
+                            transition={200}
+                        />
+                    ) : (
+                        <View style={styles.noItemSprite}>
+                            <MyText style={styles.bad}>❗</MyText>
+                        </View>
+                    )}
+                </View>
+            )}
+        </Pressable>
     );
 });
 
@@ -102,10 +104,8 @@ const styles = StyleSheet.create({
         backgroundColor: app.darkColor,
     },
     searchInputWrap: {
-        backgroundColor: app.darkColor,
-        borderColor: app.lightColor,
+        backgroundColor: app.grey + app.transparency,
         borderRadius: 10,
-        borderWidth: 0.2,
         marginBottom: 10,
         paddingRight: 5,
         position: 'relative',
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
         height: 40,
         paddingVertical: 10,
         paddingLeft: 20,
-        fontFamily: fonts.fontDotGothic,
+        fontFamily: fonts.audioWide,
         width: '90%',
         color: app.lightColor,
     },
@@ -125,39 +125,33 @@ const styles = StyleSheet.create({
         flex: 1,
         zIndex: -1, // To eliminate flash while PikachuRunning doing exiting animation
     },
-    item: {
+    pressable: {
         flex: 1,
-        borderWidth: StyleSheet.hairlineWidth,
         aspectRatio: 1,
         margin: 5,
         borderRadius: 10,
-        // borderColor: app.lightColor,
-        elevation: 10,
-        backgroundColor: app.grey + app.transparency,
         overflow: 'hidden',
     },
-    pressable: {
+    item: {
         flex: 1,
+        borderWidth: 2,
+        borderRadius: 10,
+        backgroundColor: app.grey + app.transparency,
     },
     itemName: {
         fontSize: 13,
         textAlign: 'center',
         paddingVertical: 4,
         paddingHorizontal: 2,
-        color: 'white',
-        // backgroundColor: app.lightColor,
+        color: app.lightColor,
     },
     itemSprite: {
         flex: 1,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
     },
     noItemSprite: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
     },
     bad: {
         fontSize: 14,

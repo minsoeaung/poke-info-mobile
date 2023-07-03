@@ -1,7 +1,7 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
-import { memo } from 'react';
+import React, { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
@@ -34,7 +34,7 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
                         {getFormattedName(name)}
                     </MyText>
                     <View style={styles.spriteContainer}>
-                        {sprite && (
+                        {sprite ? (
                             <Image
                                 style={styles.sprite}
                                 source={{
@@ -46,6 +46,8 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
                                 recyclingKey={`front_default_${name}`}
                                 transition={200}
                             />
+                        ) : (
+                            <MyText style={styles.bad}>❗</MyText>
                         )}
                     </View>
                     <View style={styles.types}>
@@ -116,6 +118,9 @@ const styles = StyleSheet.create({
         width: '115%',
         height: '115%',
         aspectRatio: 1,
+    },
+    bad: {
+        fontSize: 14,
     },
     types: {
         flexDirection: 'row',

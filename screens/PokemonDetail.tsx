@@ -1,7 +1,8 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
-import { useLayoutEffect } from 'react';
+import React, { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
@@ -34,17 +35,21 @@ export default function PokemonDetail() {
             <View style={styles.container}>
                 <View style={styles.header}>
                     <View style={styles.spriteContainer}>
-                        <Image
-                            style={styles.sprite}
-                            source={{
-                                // uri: profile.sprite || '',
-                                uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
-                            }}
-                            contentFit="cover"
-                            accessibilityLabel={`Official artwork of ${name}`}
-                            recyclingKey={`official_artwork_${name}`}
-                            transition={200}
-                        />
+                        {profile?.sprite ? (
+                            <Image
+                                style={styles.sprite}
+                                source={{
+                                    // uri: profile.sprite,
+                                    uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+                                }}
+                                contentFit="cover"
+                                accessibilityLabel={`Official artwork of ${name}`}
+                                recyclingKey={`official_artwork_${name}`}
+                                transition={200}
+                            />
+                        ) : (
+                            <MaterialIcons name="image-not-supported" size={24} color="grey" />
+                        )}
                     </View>
                     <View style={styles.typesAndStatsContainer}>
                         <PokemonTypes types={profile.types} />
@@ -167,6 +172,9 @@ const styles = StyleSheet.create({
     sprite: {
         width: '100%',
         aspectRatio: 1,
+    },
+    bad: {
+        fontSize: 20,
     },
     typesAndStatsContainer: {
         flex: 5,

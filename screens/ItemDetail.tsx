@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
         color: app.lightColor,
     },
     listEmpty: {
-        backgroundColor: app.grey,
+        backgroundColor: app.grey + app.transparency,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
     },

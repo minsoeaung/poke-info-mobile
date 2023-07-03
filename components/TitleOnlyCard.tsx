@@ -30,7 +30,6 @@ const TitleOnlyCard = ({ borderColor, title, titleBgColor }: Props) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // borderWidth: StyleSheet.hairlineWidth,
         backgroundColor: app.darkColor,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
