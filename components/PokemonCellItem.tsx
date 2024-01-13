@@ -10,6 +10,7 @@ import { app } from '../constants/colors';
 import pokemonDetails from '../constants/pokemonDetails';
 import { StackParamList } from '../types';
 import getTypeSlotString from '../utils/getTypeSlotString';
+import { MaterialIcons } from '@expo/vector-icons';
 
 type Props<T> = {
     item: T;
@@ -52,16 +53,20 @@ const PokemonCellItem = <T extends { name: string; typeSlot?: number }>({
                 <>
                     <View style={styles.spriteAndName}>
                         <View style={styles.spriteContainer}>
-                            <Image
-                                style={styles.sprite}
-                                source={{
-                                    uri: pokemonDetails[item.name]?.profile.sprite || '',
-                                }}
-                                contentFit="cover"
-                                accessibilityLabel={`Sprite of ${item.name}`}
-                                recyclingKey={`front_default_${item.name}`}
-                                transition={200}
-                            />
+                            {pokemonDetails[item.name]?.profile.sprite ? (
+                                <Image
+                                    style={styles.sprite}
+                                    source={{
+                                        uri: pokemonDetails[item.name]?.profile.sprite || '',
+                                    }}
+                                    contentFit="cover"
+                                    accessibilityLabel={`Sprite of ${item.name}`}
+                                    recyclingKey={`front_default_${item.name}`}
+                                    transition={200}
+                                />
+                            ) : (
+                                <MaterialIcons name="image-not-supported" size={18} color="grey" />
+                            )}
                         </View>
                         <MyText
                             style={StyleSheet.flatten([styles.name, { color: pressed ? 'tomato' : app.lightColor }])}
@@ -94,6 +99,9 @@ const styles = StyleSheet.create({
     spriteContainer: {
         width: 50,
         height: 50,
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     sprite: {
         width: '110%',
