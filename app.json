@@ -2,7 +2,7 @@
   "expo": {
     "name": "Poke Info",
     "slug": "poke_info",
-    "version": "1.5.0",
+    "version": "1.5.1",
     "platforms": [
       "android"
     ],
@@ -23,7 +23,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.minsoeaung.pokeinfo",
-      "buildNumber": "1.5.0"
+      "buildNumber": "1.5.1"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +31,7 @@
         "backgroundColor": "#FFF0E5"
       },
       "package": "com.minsoeaung.pokeinfo",
-      "versionCode": 9,
+      "versionCode": 10,
       "permissions": []
     },
     "web": {
@@ -45,7 +45,8 @@
           "android.permission.READ_EXTERNAL_STORAGE",
           "android.permission.WRITE_EXTERNAL_STORAGE"
         ]
-      ]
+      ],
+      "expo-font"
     ],
     "extra": {
       "eas": {
