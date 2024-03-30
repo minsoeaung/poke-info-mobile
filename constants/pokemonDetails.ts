@@ -42177,7 +42177,7 @@ const pokemonDetails: {
 		"evolutions": [
 			"darumaka",
 			"at level 35",
-			"darmanitan"
+			"darmanitan-standard"
 		]
 	},
 	"darmanitan-standard": {
@@ -42250,7 +42250,7 @@ const pokemonDetails: {
 		"evolutions": [
 			"darumaka",
 			"at level 35",
-			"darmanitan"
+			"darmanitan-standard"
 		]
 	},
 	"maractus": {
@@ -77079,7 +77079,7 @@ const pokemonDetails: {
 		"evolutions": [
 			"darumaka",
 			"at level 35",
-			"darmanitan"
+			"darmanitan-standard"
 		]
 	},
 	"meloetta-pirouette": {
@@ -88323,7 +88323,7 @@ const pokemonDetails: {
 		"evolutions": [
 			"darumaka",
 			"at level 35",
-			"darmanitan"
+			"darmanitan-standard"
 		]
 	},
 	"darmanitan-galar-standard": {
@@ -88396,7 +88396,7 @@ const pokemonDetails: {
 		"evolutions": [
 			"darumaka",
 			"at level 35",
-			"darmanitan"
+			"darmanitan-standard"
 		]
 	},
 	"darmanitan-galar-zen": {
@@ -88470,7 +88470,7 @@ const pokemonDetails: {
 		"evolutions": [
 			"darumaka",
 			"at level 35",
-			"darmanitan"
+			"darmanitan-standard"
 		]
 	},
 	"yamask-galar": {

@@ -1,4 +1,7 @@
+import { useSQLiteContext } from 'expo-sqlite/next';
 import { useEffect, useState } from 'react';
+
+import { fetchData } from '../utils/fetchData';
 
 interface ResData<T> {
     isLoading: boolean;
@@ -6,22 +9,21 @@ interface ResData<T> {
     data: T | null;
 }
 
-const useFetchData = <T>(url: string | null, refresh?: boolean): ResData<T> => {
+const useFetchData = <T>(url: string): ResData<T> => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState('');
-    const [data, setData] = useState(null);
+    const [data, setData] = useState<T | null>(null);
+
+    const db = useSQLiteContext();
 
     useEffect(() => {
         let isMounted: boolean = true;
 
         (async () => {
             try {
-                if (url) {
-                    const res = await fetch(url);
-                    const data = await res.json();
-                    if (data && isMounted) {
-                        setData(data);
-                    }
+                const data = await fetchData<T>(url, db);
+                if (data && isMounted) {
+                    setData(data);
                 }
             } catch (e) {
                 if (e instanceof Error) {
@@ -37,7 +39,7 @@ const useFetchData = <T>(url: string | null, refresh?: boolean): ResData<T> => {
         return () => {
             isMounted = false;
         };
-    }, [url, refresh]);
+    }, [url]);
 
     return { data, error, isLoading };
 };

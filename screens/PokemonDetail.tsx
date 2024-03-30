@@ -4,17 +4,20 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import React, { useLayoutEffect } from 'react';
 import { ScrollView, StyleSheet, View } from 'react-native';
+import Animated, { FadeOut } from 'react-native-reanimated';
 
 import Card from '../components/Card';
+import ErrorDisplay from '../components/ErrorDisplay';
 import Evolutions from '../components/Evolutions';
 import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
+import PikachuRunning from '../components/PikachuRunning';
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
 import Stats from '../components/Stats';
 import { app, cardColor } from '../constants/colors';
+import { useFetchPokemonDetail } from '../hooks/useFetchPokemonDetail';
 import { StackParamList } from '../types';
-import getPokemonDetailByName from '../utils/getPokemonDetailByName';
 import getFormattedName from '../utils/getFormattedName';
 
 export default function PokemonDetail() {
@@ -22,14 +25,34 @@ export default function PokemonDetail() {
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokemonDetail'>>();
     const { name } = route.params;
 
-    const { profile, evolutions, id, breeding, training, stats } = getPokemonDetailByName(name);
-    const color = cardColor[profile.types[0]];
+    const { data, error, isLoading } = useFetchPokemonDetail(name);
 
     useLayoutEffect(() => {
         navigation.setOptions({
             title: getFormattedName(name),
         });
     }, []);
+
+    if (isLoading) {
+        return (
+            <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut}>
+                <PikachuRunning />
+            </Animated.View>
+        );
+    }
+
+    if (error) {
+        return <ErrorDisplay error={error} />;
+    }
+
+    if (data === null) {
+        return <ErrorDisplay error="Something went wrong!" />;
+    }
+
+    console.log('data', data);
+
+    const { profile, evolutions, id, breeding, training, stats } = data;
+    const color = profile ? cardColor[profile.types[0]] : '';
 
     return (
         <ScrollView>
