@@ -2,6 +2,7 @@ import React from 'react';
 import { Pressable, StyleSheet } from 'react-native';
 
 import MyText from './MyText';
+import { colors } from '../constants/colors';
 
 type Props = {
     onPress: () => void;
@@ -11,7 +12,9 @@ const ClearInputButton = ({ onPress }: Props) => {
     return (
         <Pressable style={styles.xParent} onPress={onPress}>
             {({ pressed }) => (
-                <MyText style={StyleSheet.flatten([styles.x, { color: pressed ? 'tomato' : 'grey' }])}>X</MyText>
+                <MyText style={StyleSheet.flatten([styles.x, { color: pressed ? 'tomato' : colors.cardText }])}>
+                    X
+                </MyText>
             )}
         </Pressable>
     );
@@ -19,14 +22,12 @@ const ClearInputButton = ({ onPress }: Props) => {
 
 const styles = StyleSheet.create({
     xParent: {
+        width: '10%',
         justifyContent: 'center',
         alignItems: 'center',
-        paddingLeft: 10,
-        paddingRight: 6,
     },
     x: {
-        width: 16,
-        height: 16,
+        fontSize: 20,
     },
 });
 

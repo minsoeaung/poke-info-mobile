@@ -8,7 +8,7 @@ import AboutStack from './AboutStack';
 import { ItemsStack } from './ItemsStack';
 import PokeDexStack from './PokeDexStack';
 import MyTabBar from '../components/MyTabBar';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 
 const BottomTabs = createBottomTabNavigator();
 
@@ -18,12 +18,12 @@ export const BottomTabsNavigator: React.FC = () => {
             <BottomTabs.Navigator
                 tabBar={props => <MyTabBar {...props} />}
                 screenOptions={() => ({ headerShown: false })}
-                sceneContainerStyle={{ backgroundColor: app.darkColor }}
+                sceneContainerStyle={{ backgroundColor: colors.background }}
             >
                 <BottomTabs.Screen name="PokeDexStack" component={PokeDexStack} options={{ title: 'PokeDex' }} />
                 <BottomTabs.Screen name="AbilitiesStack" component={AbilitiesStack} options={{ title: 'Abilities' }} />
                 <BottomTabs.Screen name="ItemsStack" component={ItemsStack} options={{ title: 'Items' }} />
-                <BottomTabs.Screen name="AboutStack" component={AboutStack} options={{ title: 'About' }} />
+                <BottomTabs.Screen name="AboutStack" component={AboutStack} options={{ title: 'Settings' }} />
             </BottomTabs.Navigator>
         </View>
     );
@@ -33,6 +33,6 @@ const styles = StyleSheet.create({
     main: {
         flex: 1,
         paddingTop: Constants.statusBarHeight,
-        backgroundColor: app.darkColor,
+        backgroundColor: colors.background,
     },
 });

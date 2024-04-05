@@ -20,7 +20,7 @@ export const fetchData = async <T>(url: string, db: SQLiteDatabase): Promise<T |
                             PRAGMA journal_mode = WAL;
                             CREATE TABLE IF NOT EXISTS pokeApis (key VARCHAR(300) PRIMARY KEY NOT NULL, value TEXT NOT NULL);
                         `);
-            await db.runAsync('INSERT INTO pokeApis (key, value) VALUES (?, ?)', url, JSON.stringify(data));
+            await db.runAsync('INSERT or IGNORE INTO pokeApis (key, value) VALUES (?, ?)', url, JSON.stringify(data));
             return data;
         }
     }

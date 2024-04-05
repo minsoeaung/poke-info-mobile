@@ -10,7 +10,7 @@ import ClearInputButton from '../components/ClearInputButton';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonCard from '../components/PokemonCard';
 import PokemonCellItem from '../components/PokemonCellItem';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import pokemonDetails from '../constants/pokemonDetails';
 import useIsSearchVisible from '../hooks/useIsSearchVisible';
@@ -45,7 +45,7 @@ export default function PokeDex() {
                 <Pressable onPress={toggle}>
                     <FontAwesome
                         name="search"
-                        style={StyleSheet.flatten([styles.searchBtn, { color: isVisible ? 'tomato' : app.lightColor }])}
+                        style={StyleSheet.flatten([styles.searchBtn, { color: isVisible ? 'tomato' : colors.text }])}
                     />
                 </Pressable>
             ),
@@ -83,7 +83,7 @@ export default function PokeDex() {
                         keyExtractor={item => item.name}
                         estimatedItemSize={60}
                         renderItem={({ item }) => {
-                            return <PokemonCellItem item={item} color={app.darkColor} size="small" />;
+                            return <PokemonCellItem item={item} color={colors.background} size="small" />;
                         }}
                     />
                 </Animated.View>
@@ -94,8 +94,8 @@ export default function PokeDex() {
                     data={pokemons}
                     renderItem={({ item }: { item: PokemonSmDetailType }) => <PokemonCard pokemon={item} />}
                     keyExtractor={item => item.name}
-                    numColumns={4}
-                    estimatedItemSize={121}
+                    numColumns={2}
+                    estimatedItemSize={82}
                     contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
                     onScrollBeginDrag={() => isVisible && toggle()}
@@ -109,7 +109,7 @@ export default function PokeDex() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: app.darkColor,
+        backgroundColor: colors.background,
         paddingHorizontal: 5,
     },
     searchBoxContainer: {
@@ -120,11 +120,11 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     searchBox: {
-        backgroundColor: app.lightColor,
+        backgroundColor: colors.text,
         borderWidth: 1,
         borderRadius: 10,
         elevation: 5,
-        borderColor: app.darkColor,
+        borderColor: colors.background,
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -133,9 +133,9 @@ const styles = StyleSheet.create({
         height: 40,
         paddingVertical: 10,
         paddingLeft: 20,
-        fontFamily: fonts.audioWide,
+        fontFamily: fonts.fontDotGothic,
         width: '90%',
-        color: app.darkColor,
+        color: colors.background,
         letterSpacing: 1,
     },
     searchBtn: {
@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
         paddingLeft: 10,
         paddingRight: 10,
         height: height / 3,
-        backgroundColor: app.grey,
+        backgroundColor: colors.card,
         borderWidth: 1,
         borderColor: 'tomato',
         elevation: 10,

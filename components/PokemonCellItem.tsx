@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
@@ -6,11 +7,12 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 import pokemonDetails from '../constants/pokemonDetails';
 import { StackParamList } from '../types';
+import getFormattedName from '../utils/getFormattedName';
 import getTypeSlotString from '../utils/getTypeSlotString';
-import { MaterialIcons } from '@expo/vector-icons';
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 type Props<T> = {
     item: T;
@@ -24,12 +26,12 @@ const sizeToPaddingVertical = {
     small: 0,
 };
 
-const PokemonCellItem = <T extends { name: string; typeSlot?: number }>({
-    item,
-    color,
-    isLast = false,
-    size = 'default',
-}: Props<T>) => {
+const PokemonCellItem = <T extends { name: string; typeSlot?: number, isHidden?: boolean }>({
+                                                                                                item,
+                                                                                                color,
+                                                                                                isLast = false,
+                                                                                                size = 'default',
+                                                                                            }: Props<T>) => {
     const typeSlotStr = typeof item?.typeSlot === 'number' ? getTypeSlotString(item.typeSlot) : '';
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'TypeDetail'>>();
 
@@ -38,11 +40,9 @@ const PokemonCellItem = <T extends { name: string; typeSlot?: number }>({
             style={[
                 styles.pokemonCell,
                 {
-                    borderBottomLeftRadius: isLast ? 10 : 0,
-                    borderBottomRightRadius: isLast ? 10 : 0,
-                    borderColor: color,
+                    borderBottomLeftRadius: isLast ? 5 : 0,
+                    borderBottomRightRadius: isLast ? 5 : 0,
                     paddingVertical: sizeToPaddingVertical[size],
-                    paddingBottom: isLast ? 10 : 0,
                 },
             ]}
             onPress={() => {
@@ -68,14 +68,24 @@ const PokemonCellItem = <T extends { name: string; typeSlot?: number }>({
                                 <MaterialIcons name="image-not-supported" size={18} color="grey" />
                             )}
                         </View>
-                        <MyText
-                            style={StyleSheet.flatten([styles.name, { color: pressed ? 'tomato' : app.lightColor }])}
-                        >
-                            {item.name}
-                        </MyText>
-                        {typeSlotStr && <SmallGreyText text={typeSlotStr} />}
+                        <View>
+                            <MyText
+                                style={StyleSheet.flatten([styles.name, { color: pressed ? 'tomato' : colors.cardText }])}
+                            >
+                                {getFormattedName(item.name)}
+                            </MyText>
+                            {(typeSlotStr || item.isHidden) && (
+                                <MyText>
+                                    {typeSlotStr && <SmallGreyText text={typeSlotStr} />}
+                                    {typeSlotStr && ' '}
+                                    {item.isHidden && <SmallGreyText text="(hidden ability)" />}
+                                </MyText>
+                            )}
+                        </View>
                     </View>
-                    <MyText style={{ color: pressed ? 'tomato' : app.lightColor }}>{'> '}</MyText>
+                    <MyText style={StyleSheet.flatten([styles.arrow, { color: pressed ? 'tomato' : colors.cardText }])}>
+                        {'> '}
+                    </MyText>
                 </>
             )}
         </Pressable>
@@ -87,14 +97,16 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: 10,
-        position: 'relative',
-        backgroundColor: app.grey + app.transparency,
+        paddingHorizontal: 15,
+        backgroundColor: colors.card,
+        borderBottomWidth: hairlineWidth,
+        borderBottomColor: 'black',
     },
     spriteAndName: {
         flexDirection: 'row',
         alignItems: 'center',
-        gap: 20,
+        gap: 15,
+        flex: 15,
     },
     spriteContainer: {
         width: 50,
@@ -104,11 +116,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     sprite: {
-        width: '110%',
-        height: '110%',
+        width: '100%',
+        height: '100%',
+        aspectRatio: 1,
     },
-    name: {
-        textTransform: 'capitalize',
+    name: {},
+    arrow: {
+        flex: 1,
     },
 });
 

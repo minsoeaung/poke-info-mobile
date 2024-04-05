@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { app } from '../constants/colors';
 import { PokemonDetailType } from '../types';
 
 type Props = {
@@ -53,7 +52,7 @@ const styles = StyleSheet.create({
     },
     statName: {
         flex: 1,
-        color: app.lightColor,
+        color: 'white',
     },
     statBar: {
         flex: 2,
@@ -67,13 +66,14 @@ const styles = StyleSheet.create({
     statNumberContainer: {
         zIndex: 1,
         paddingLeft: 5,
+        justifyContent: 'center',
     },
     statNumber: {
-        color: app.darkColor,
-        fontSize: 10,
-        textShadowColor: 'rgba(255, 255, 255, 0.75)',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 1,
+        color: 'black',
+        fontSize: 12,
+        textShadowColor: 'rgba(255, 255, 255, 0.5)',
+        textShadowOffset: { width: 0.5, height: 0.5 },
+        textShadowRadius: 0.5,
     },
 });
 

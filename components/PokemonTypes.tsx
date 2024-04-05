@@ -3,11 +3,11 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { app, typeColor } from '../constants/colors';
+import { colors, typeColor } from '../constants/colors';
 import { StackParamList } from '../types';
 
 type Props = {
-    types: string[];
+    types: (keyof typeof typeColor)[];
 };
 
 export default function PokemonTypes({ types }: Props) {
@@ -24,6 +24,7 @@ export default function PokemonTypes({ types }: Props) {
                         });
                     }}
                 >
+
                     {({ pressed }) => (
                         <MyText
                             style={StyleSheet.flatten([
@@ -51,14 +52,14 @@ const styles = StyleSheet.create({
     },
     typeText: {
         paddingHorizontal: 10,
-        paddingVertical: 3,
-        borderRadius: 7,
+        paddingVertical: 5,
+        borderRadius: 5,
         textTransform: 'capitalize',
         borderWidth: 2,
+        color: colors.typeText,
 
-        color: app.lightColor,
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: 1.3, height: 1.3 },
-        textShadowRadius: 1,
+        textShadowColor: 'rgba(0, 0, 0, 0.9)',
+        textShadowOffset: { width: 0.5, height: 0.5 },
+        textShadowRadius: 3,
     },
 });

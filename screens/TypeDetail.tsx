@@ -14,7 +14,7 @@ import PikachuRunning from '../components/PikachuRunning';
 import PokemonCellItem from '../components/PokemonCellItem';
 import PokemonTypes from '../components/PokemonTypes';
 import TitleOnlyCard from '../components/TitleOnlyCard';
-import { app, cardColor } from '../constants/colors';
+import { colors, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -159,7 +159,7 @@ const extractTypeName = (type: TypesProps['types'][number]) => type.name;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: app.darkColor,
+        backgroundColor: colors.background,
     },
     contentContainer: {
         padding: 10,
@@ -170,9 +170,9 @@ const styles = StyleSheet.create({
     emptyText: {
         paddingVertical: 50,
         textAlign: 'center',
-        color: app.lightColor,
+        color: colors.text,
         borderWidth: StyleSheet.hairlineWidth,
-        borderColor: app.lightColor,
+        borderColor: colors.text,
         borderBottomLeftRadius: 10,
         borderBottomRightRadius: 10,
     },

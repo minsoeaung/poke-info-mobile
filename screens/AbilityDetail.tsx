@@ -11,7 +11,7 @@ import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonCellItem from '../components/PokemonCellItem';
 import TitleOnlyCard from '../components/TitleOnlyCard';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -91,9 +91,9 @@ export default function AbilityDetail({ navigation, route }: Props) {
                             </MyText>
                         </Card>
                         <TitleOnlyCard
-                            borderColor={app.lightColor}
+                            borderColor={colors.text}
                             title="Pokémon with this ability"
-                            titleBgColor={app.lightColor}
+                            titleBgColor={colors.text}
                         />
                     </>
                 }
@@ -101,7 +101,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
                     return (
                         <PokemonCellItem
                             item={item}
-                            color={app.lightColor}
+                            color={colors.text}
                             isLast={index === pokemonsWithThisAbility.length - 1}
                         />
                     );
@@ -115,24 +115,22 @@ export default function AbilityDetail({ navigation, route }: Props) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: app.darkColor,
+        backgroundColor: colors.background,
     },
     contentContainer: {
         padding: 10,
     },
     listHeaderContainer: {
-        gap: 25,
+        gap: 15,
     },
     description: {
         paddingVertical: 10,
-        color: app.lightColor,
     },
     emptyText: {
         paddingVertical: 50,
         textAlign: 'center',
-        color: app.lightColor,
         borderWidth: StyleSheet.hairlineWidth,
-        borderColor: app.lightColor,
+        borderColor: colors.text,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
     },

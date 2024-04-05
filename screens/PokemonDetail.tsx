@@ -1,4 +1,4 @@
-import { MaterialIcons } from '@expo/vector-icons';
+import { Entypo, FontAwesome, FontAwesome5, FontAwesome6, MaterialIcons } from '@expo/vector-icons';
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
@@ -15,10 +15,11 @@ import PikachuRunning from '../components/PikachuRunning';
 import PokemonAbilities from '../components/PokemonAbilities';
 import PokemonTypes from '../components/PokemonTypes';
 import Stats from '../components/Stats';
-import { app, cardColor } from '../constants/colors';
+import { cardColor, colors } from '../constants/colors';
 import { useFetchPokemonDetail } from '../hooks/useFetchPokemonDetail';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 export default function PokemonDetail() {
     const route = useRoute<RouteProp<StackParamList, 'PokemonDetail'>>();
@@ -49,22 +50,26 @@ export default function PokemonDetail() {
         return <ErrorDisplay error="Something went wrong!" />;
     }
 
-    console.log('data', data);
-
     const { profile, evolutions, id, breeding, training, stats } = data;
     const color = profile ? cardColor[profile.types[0]] : '';
 
     return (
         <ScrollView>
-            <View style={styles.container}>
+            <View style={StyleSheet.flatten([styles.container])}>
                 <View style={styles.header}>
-                    <View style={styles.spriteContainer}>
+                    <View
+                        style={StyleSheet.flatten([
+                            styles.spriteContainer,
+                            {
+                                backgroundColor: colors.card,
+                            },
+                        ])}
+                    >
                         {profile?.sprite ? (
                             <Image
                                 style={styles.sprite}
                                 source={{
-                                    // uri: profile.sprite,
-                                    uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
+                                    uri: profile.sprite,
                                 }}
                                 contentFit="cover"
                                 accessibilityLabel={`Official artwork of ${name}`}
@@ -80,7 +85,7 @@ export default function PokemonDetail() {
                         <Stats stats={stats} barColor={color} />
                     </View>
                 </View>
-                <View style={[styles.intro]}>
+                <View style={styles.intro}>
                     <MyText style={styles.speciesName}>{profile.species}</MyText>
                     {!!profile.flavorTextEntry.diamond && (
                         <MyText style={styles.flavorTextEntry}>{profile.flavorTextEntry.diamond}</MyText>
@@ -88,79 +93,86 @@ export default function PokemonDetail() {
                 </View>
                 <Card title="Profile" titleBgColor={color}>
                     <LabelAndValue
-                        label="HEIGHT"
-                        value={<MyText style={{ color: app.lightColor }}>{profile.height}</MyText>}
+                        label={
+                            <MyText>
+                                <Entypo name="ruler" color="tomato" /> Height
+                            </MyText>
+                        }
+                        value={<MyText>{profile.height}</MyText>}
                     />
                     <LabelAndValue
-                        label="WEIGHT"
-                        value={<MyText style={{ color: app.lightColor }}>{profile.weight}</MyText>}
+                        label={
+                            <MyText>
+                                <FontAwesome5 name="weight-hanging" color="tomato" /> Weight
+                            </MyText>
+                        }
+                        value={<MyText>{profile.weight}</MyText>}
                     />
-                    <LabelAndValue label="ABILITIES" value={<PokemonAbilities abilities={profile.abilities} />} />
+                    <LabelAndValue
+                        label={
+                            <MyText>
+                                <FontAwesome6 name="dumbbell" color="tomato" /> Abilities
+                            </MyText>
+                        }
+                        value={<PokemonAbilities abilities={profile.abilities} />}
+                    />
                 </Card>
                 <Card title="Breeding" titleBgColor={color}>
                     <LabelAndValue
-                        label="GENDER"
+                        label={
+                            <MyText>
+                                <FontAwesome name="circle" color="tomato" /> Gender
+                            </MyText>
+                        }
                         value={
-                            <MyText style={{ color: app.lightColor }}>
+                            <MyText>
                                 {profile.gender
-                                    ? `${profile.gender.male} ♂️  ${profile.gender.female} ♀️`
+                                    ? `♂️ ${profile.gender.male} %, ♀️ ${profile.gender.female} %`
                                     : 'Genderless'}
                             </MyText>
                         }
                     />
                     <LabelAndValue
-                        label="EGG GROUPS"
+                        label={
+                            <MyText>
+                                <FontAwesome6 name="egg" color="tomato" /> Egg Groups
+                            </MyText>
+                        }
                         value={
                             <MyText
                                 style={{
-                                    color: app.lightColor,
                                     textTransform: 'capitalize',
                                 }}
                             >
-                                {breeding.eggGroups.join(', ')}
+                                {getFormattedName(breeding.eggGroups.join(', '))}
                             </MyText>
                         }
                     />
                     <LabelAndValue
-                        label="EGG CYCLES"
-                        value={
-                            <MyText
-                                style={{
-                                    color: app.lightColor,
-                                }}
-                            >
-                                {breeding.eggCycles}
+                        label={
+                            <MyText>
+                                <FontAwesome name="rotate-right" color="tomato" /> Egg cycles
                             </MyText>
                         }
+                        value={<MyText>{breeding.eggCycles}</MyText>}
                     />
                 </Card>
                 <Card title="Training" titleBgColor={color}>
-                    <LabelAndValue
-                        label="EV YIELD"
-                        value={<MyText style={{ color: app.lightColor }}>{training.evYield}</MyText>}
-                    />
-                    <LabelAndValue
-                        label="CATCH RATE"
-                        value={<MyText style={{ color: app.lightColor }}>{training.catchRate}</MyText>}
-                    />
-                    <LabelAndValue
-                        label="BASE FRIENDSHIP"
-                        value={<MyText style={{ color: app.lightColor }}>{training.baseHappiness}</MyText>}
-                    />
-                    <LabelAndValue
-                        label="BASE EXP"
-                        value={<MyText style={{ color: app.lightColor }}>{training.baseExp}</MyText>}
-                    />
-                    <LabelAndValue
-                        label="GROWTH RATE"
-                        value={<MyText style={{ color: app.lightColor }}>{training.growthRate}</MyText>}
-                    />
+                    <LabelAndValue label="EV Yield" value={<MyText>{training.evYield}</MyText>} />
+                    <LabelAndValue label="Catch Rate" value={<MyText>{training.catchRate}</MyText>} />
+                    <LabelAndValue label="Base Friendship" value={<MyText>{training.baseHappiness}</MyText>} />
+                    <LabelAndValue label="Base Exp." value={<MyText>{training.baseExp}</MyText>} />
+                    <LabelAndValue label="Growth Rate" value={<MyText>{training.growthRate}</MyText>} />
                 </Card>
                 <Card title="Evolutions" titleBgColor={color}>
                     {evolutions.length > 0 ? (
                         <Evolutions evolutions={evolutions} />
                     ) : (
-                        <MyText style={styles.nope}>{name} does not evolve.</MyText>
+                        <MyText style={styles.nope}>
+                            <MyText style={{ color: 'tomato' }}>{getFormattedName(name)}</MyText>
+                            {' '}
+                            does not evolve.
+                        </MyText>
                     )}
                 </Card>
             </View>
@@ -174,10 +186,10 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: 10,
         paddingVertical: containerVerticalSize,
-        backgroundColor: app.darkColor,
         display: 'flex',
         flexDirection: 'column',
-        gap: 25,
+        gap: 15,
+        backgroundColor: colors.background,
     },
     header: {
         display: 'flex',
@@ -189,12 +201,13 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-
-        backgroundColor: app.grey + app.transparency,
-        borderRadius: 10,
+        borderRadius: 5,
+        overflow: 'hidden',
+        borderWidth: hairlineWidth,
+        borderColor: 'black',
     },
     sprite: {
-        width: '100%',
+        width: '118%',
         aspectRatio: 1,
     },
     bad: {
@@ -206,24 +219,20 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         gap: containerVerticalSize,
     },
-    intro: {},
+    intro: {
+        marginVertical: 10,
+    },
     speciesName: {
-        color: app.lightColor,
-        fontSize: 20,
+        color: colors.text,
+        fontSize: 24,
         letterSpacing: 1,
-        elevation: 10,
-
-        // textShadowColor: 'rgba(255, 255, 255, 1)',
-        // textShadowOffset: { width: 1, height: 1 },
-        // textShadowRadius: 1,
     },
     flavorTextEntry: {
-        color: app.lightColor,
+        color: colors.text,
         marginTop: 15,
     },
     nope: {
-        color: app.lightColor,
-        textTransform: 'capitalize',
+        color: colors.cardText,
         textAlign: 'center',
         paddingVertical: 10,
     },

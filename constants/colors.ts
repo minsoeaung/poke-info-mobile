@@ -1,16 +1,18 @@
-type Type = {
-    [key: string]: string;
-};
+export const colors = {
+    headerText: 'white',
+    typeText: 'white',
 
-export const app = {
-    darkColor: '#000000',
-    lightColor: '#FFFFFF',
-    transparency: 'CC', // 80%
-    abilityColor: '#2f4f4f',
-    grey: '#373846',
-};
+    background: '#0D2F41',
+    text: 'white',
 
-export const cardColor: Type = {
+    transparency: 'ff', // 80%
+    abilityButton: '#2f4f4f',
+
+    card: 'white',
+    cardText: 'black',
+} as const;
+
+export const cardColor = {
     fire: '#FDDFDF',
     grass: '#DEFDE0',
     electric: '#FCF7DE',
@@ -29,25 +31,25 @@ export const cardColor: Type = {
     steel: '#caccce',
     ice: '#9EE4D9',
     dark: '#778899',
-};
+} as const;
 
-export const typeColor: Type = {
-    fire: '#f08030',
-    grass: '#B1FAB8',
-    electric: '#f8d030',
-    water: '#a890f0',
-    ground: '#e0c068',
-    rock: '#b8a038',
-    fairy: '#ee99ac',
-    poison: '#a040a0',
-    bug: '#a8b820',
-    dragon: '#7038f8',
-    psychic: '#f85888',
-    flying: '#a890f0',
-    fighting: '#c02038',
-    normal: '#a8a878',
-    ghost: '#705898',
-    steel: '#b8b8d0',
-    ice: '#98d8d8',
-    dark: '#705848',
-};
+export const typeColor = {
+    fire: '#ff6128',
+    grass: '#40c01f',
+    electric: '#ffdc00',
+    water: '#2493ff',
+    ground: '#ad7a36',
+    rock: '#bdb98a',
+    fairy: '#ffb3ff',
+    poison: '#9a4cd0',
+    bug: '#a0a61f',
+    dragon: '#5160d7',
+    psychic: '#ff6380',
+    flying: '#96caff',
+    fighting: '#ffa400',
+    normal: '#7d7d7d',
+    ghost: '#6f4371',
+    steel: '#6ab0d4',
+    ice: '#40c0ff',
+    dark: '#4e4545',
+} as const;

@@ -4,7 +4,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 import { AbilityType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
@@ -24,7 +24,7 @@ export default function PokemonAbilities({ abilities }: Props) {
             {abilities.map((ability, index) => (
                 <Pressable
                     key={ability.slot}
-                    style={styles.pressable}
+                    style={StyleSheet.flatten([styles.pressable])}
                     onPress={() => goToAbilityDetailScreen(ability.name)}
                 >
                     {({ pressed }) => (
@@ -40,10 +40,7 @@ export default function PokemonAbilities({ abilities }: Props) {
                             >
                                 {getFormattedName(ability.name)}
                             </MyText>
-                            <View>
-                                <SmallGreyText text={` Slot ${ability.slot}`} />
-                                {ability.isHidden && <SmallGreyText text=" ( hidden )" />}
-                            </View>
+                            {ability.isHidden && <SmallGreyText text=" (hidden ability)" />}
                         </>
                     )}
                 </Pressable>
@@ -65,14 +62,13 @@ const styles = StyleSheet.create({
     },
     abilityName: {
         paddingHorizontal: 10,
-        paddingVertical: 3,
-        borderRadius: 7,
+        paddingVertical: 4,
+        borderRadius: 5,
         borderWidth: 2,
-
-        backgroundColor: app.abilityColor,
-        color: app.lightColor,
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: 1.5, height: 1.5 },
+        textShadowColor: 'rgba(0, 0, 0, 0.5)',
+        textShadowOffset: { width: 0.5, height: 0.5 },
         textShadowRadius: 1,
+        backgroundColor: colors.background,
+        color: colors.text,
     },
 });

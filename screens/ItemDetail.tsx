@@ -6,7 +6,6 @@ import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
-
 import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LabelAndValue from '../components/LabelAndValue';
@@ -14,10 +13,11 @@ import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonCellItem from '../components/PokemonCellItem';
 import TitleOnlyCard from '../components/TitleOnlyCard';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 type HeldByPokemonsType = { name: string };
 
@@ -57,22 +57,7 @@ export default function ItemDetail() {
 
     useLayoutEffect(() => {
         navigation.setOptions({ title: getFormattedName(name) });
-        if (data && data.sprites.default) {
-            navigation.setOptions({
-                headerRight: () => (
-                    <Image
-                        style={styles.itemImage}
-                        source={{
-                            uri: data!.sprites.default,
-                        }}
-                        accessibilityLabel={`Image of ${name}`}
-                        recyclingKey={name}
-                        transition={200}
-                    />
-                ),
-            });
-        }
-    }, [data]);
+    }, []);
 
     if (isLoading) {
         return (
@@ -93,11 +78,7 @@ export default function ItemDetail() {
                 estimatedItemSize={60}
                 renderItem={({ item, index }) => {
                     return (
-                        <PokemonCellItem
-                            item={item}
-                            color={app.lightColor}
-                            isLast={index === heldByPokemons.length - 1}
-                        />
+                        <PokemonCellItem item={item} color={colors.text} isLast={index === heldByPokemons.length - 1} />
                     );
                 }}
                 contentContainerStyle={styles.contentContainer}
@@ -105,6 +86,28 @@ export default function ItemDetail() {
                 ListHeaderComponent={
                     <>
                         <Card>
+                            {!!data!.sprites.default && (
+                                // <Box
+                                //     setup={{
+                                //         ...demoFrameWarning,
+                                //         width: 100,
+                                //         height: 100,
+                                //         margin: 5,
+                                //         scale: 0.5,
+                                //         backgroundColor: 'white',
+                                //     }}
+                                // >
+                                <Image
+                                    style={styles.itemImage}
+                                    source={{
+                                        uri: data!.sprites.default,
+                                    }}
+                                    accessibilityLabel={`Image of ${name}`}
+                                    recyclingKey={name}
+                                    transition={200}
+                                />
+                                // </Box>
+                            )}
                             {!!flavorText && <MyText style={styles.description}>{flavorText}</MyText>}
                             {!!effectEntry && <MyText style={styles.description}>{effectEntry}</MyText>}
                         </Card>
@@ -125,9 +128,9 @@ export default function ItemDetail() {
                             )}
                         </Card>
                         <TitleOnlyCard
-                            borderColor={app.lightColor}
+                            borderColor={colors.text}
                             title="Pokémon that might be found holding this item"
-                            titleBgColor={app.lightColor}
+                            titleBgColor={colors.text}
                         />
                     </>
                 }
@@ -144,33 +147,34 @@ export default function ItemDetail() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: app.darkColor,
+        backgroundColor: colors.background,
     },
     contentContainer: {
         padding: 10,
     },
     listHeaderContainer: {
-        gap: 25,
+        gap: 15,
     },
     itemImage: {
-        width: 50,
-        height: 50,
+        width: 100,
+        height: 100,
+        aspectRatio: 1,
+        borderRadius: 5,
+        borderWidth: hairlineWidth,
+        borderColor: 'black',
     },
     description: {
         paddingVertical: 10,
-        color: app.lightColor,
     },
-    description2: {
-        color: app.lightColor,
-    },
+    description2: {},
     listEmpty: {
-        backgroundColor: app.grey + app.transparency,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+        backgroundColor: colors.card,
+        borderBottomLeftRadius: 5,
+        borderBottomRightRadius: 5,
     },
     emptyText: {
-        paddingVertical: 50,
+        height: 150,
+        textAlignVertical: 'center',
         textAlign: 'center',
-        color: app.lightColor,
     },
 });

@@ -11,7 +11,7 @@ const getTypeSlotString = (slot: number): string => {
         order = slot + (slot === 2 ? 'nd' : 'rd');
     }
 
-    return order + ' slot';
+    return order + ' Slot';
 };
 
 export default getTypeSlotString;

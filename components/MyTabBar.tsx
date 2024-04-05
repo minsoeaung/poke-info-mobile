@@ -1,16 +1,9 @@
-import Ionicons from '@expo/vector-icons/MaterialCommunityIcons';
+import { FontAwesome6, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { app } from '../constants/colors';
-
-const icons = {
-    PokeDexStack: 'pokemon-go',
-    AbilitiesStack: 'alpha-a-box-outline',
-    ItemsStack: 'toolbox-outline',
-    AboutStack: 'alert-octagon-outline',
-};
+import { colors } from '../constants/colors';
 
 const MyTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
     return (
@@ -40,6 +33,16 @@ const MyTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
                     });
                 };
 
+                const iconStyles = StyleSheet.flatten([
+                    styles.icon,
+                    {
+                        backgroundColor: isFocused ? colors.text : colors.background,
+                        color: isFocused ? colors.background : colors.text,
+                        paddingHorizontal: 15,
+                        borderRadius: 10,
+                    },
+                ]);
+
                 return (
                     <Pressable
                         key={label}
@@ -51,19 +54,10 @@ const MyTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
                         onLongPress={onLongPress}
                         style={styles.tab}
                     >
-                        <Ionicons
-                            // @ts-ignore
-                            name={icons[route.name] || ''}
-                            style={StyleSheet.flatten([
-                                styles.icon,
-                                {
-                                    backgroundColor: isFocused ? app.lightColor : app.darkColor,
-                                    color: isFocused ? app.darkColor : app.lightColor,
-                                    paddingHorizontal: 15,
-                                    borderRadius: 10,
-                                },
-                            ])}
-                        />
+                        {route.name === 'PokeDexStack' && <MaterialIcons style={iconStyles} name="catching-pokemon" />}
+                        {route.name === 'AbilitiesStack' && <FontAwesome6 style={iconStyles} name="dumbbell" />}
+                        {route.name === 'ItemsStack' && <MaterialCommunityIcons style={iconStyles} name="view-grid" />}
+                        {route.name === 'AboutStack' && <Ionicons style={iconStyles} name="settings" />}
                         <MyText style={styles.label}>{label}</MyText>
                     </Pressable>
                 );
@@ -76,7 +70,7 @@ const styles = StyleSheet.create({
     tabBarContainer: {
         height: 56,
         flexDirection: 'row',
-        backgroundColor: app.darkColor,
+        backgroundColor: colors.background,
     },
     tab: {
         flex: 1,
@@ -85,12 +79,12 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     icon: {
-        color: app.lightColor,
+        color: colors.text,
         fontSize: 20,
         marginBottom: 5,
     },
     label: {
-        color: app.lightColor,
+        color: colors.text,
         fontSize: 12,
     },
 });

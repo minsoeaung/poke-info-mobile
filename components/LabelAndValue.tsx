@@ -2,10 +2,9 @@ import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { app } from '../constants/colors';
 
 type Props = {
-    label: string;
+    label: ReactNode;
     value: ReactNode;
 };
 
@@ -14,7 +13,7 @@ const LabelAndValue = ({ label, value }: Props) => {
         <View style={styles.container}>
             <MyText style={styles.label}>{label}</MyText>
             <View style={styles.value}>
-                <MyText style={{ color: app.lightColor }}>{'-  '}</MyText>
+                <MyText>{'-  '}</MyText>
                 {value}
             </View>
         </View>
@@ -28,15 +27,12 @@ const styles = StyleSheet.create({
     },
     label: {
         flex: 2,
-        color: app.lightColor,
-        textTransform: 'capitalize',
-        fontSize: 13,
+        fontSize: 14,
     },
     value: {
         flex: 3,
         display: 'flex',
         flexDirection: 'row',
-        color: app.lightColor,
     },
 });
 

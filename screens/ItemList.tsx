@@ -10,11 +10,13 @@ import ClearInputButton from '../components/ClearInputButton';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import { ITEMS, ItemType } from '../constants/ITEMS';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import { MaterialIcons } from '@expo/vector-icons';
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 export default function ItemList() {
     const [ready, setReady] = useState(false);
@@ -87,7 +89,7 @@ const Item = memo(({ item }: { item: ItemType }) => {
                         />
                     ) : (
                         <View style={styles.noItemSprite}>
-                            <MyText style={styles.bad}>❗</MyText>
+                            <MaterialIcons name="image-not-supported" size={24} color="grey" />
                         </View>
                     )}
                 </View>
@@ -99,27 +101,29 @@ const Item = memo(({ item }: { item: ItemType }) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        paddingTop: 10,
+        paddingHorizontal: 5,
         paddingBottom: 0,
-        backgroundColor: app.darkColor,
+        backgroundColor: colors.background,
     },
     searchInputWrap: {
-        backgroundColor: app.grey + app.transparency,
-        borderRadius: 10,
+        borderRadius: 5,
+        overflow: 'hidden',
         marginBottom: 10,
+        marginHorizontal: 5,
         paddingRight: 5,
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
         zIndex: -1,
+        backgroundColor: colors.card,
     },
     searchInput: {
         height: 40,
         paddingVertical: 10,
         paddingLeft: 20,
-        fontFamily: fonts.audioWide,
+        fontFamily: fonts.fontDotGothic,
         width: '90%',
-        color: app.lightColor,
     },
     itemListWrap: {
         flex: 1,
@@ -128,22 +132,23 @@ const styles = StyleSheet.create({
     pressable: {
         flex: 1,
         aspectRatio: 1,
-        margin: 5,
-        borderRadius: 10,
+        borderRadius: 5,
         overflow: 'hidden',
+        borderWidth: hairlineWidth,
+        borderColor: 'black',
+        margin: 5,
     },
     item: {
         flex: 1,
         borderWidth: 2,
-        borderRadius: 10,
-        backgroundColor: app.grey + app.transparency,
+        padding: 2,
+        borderRadius: 5,
+        backgroundColor: colors.card,
     },
     itemName: {
         fontSize: 13,
         textAlign: 'center',
-        paddingVertical: 4,
-        paddingHorizontal: 2,
-        color: app.lightColor,
+        color: colors.cardText,
     },
     itemSprite: {
         flex: 1,

@@ -1,11 +1,9 @@
 import { useSQLiteContext } from 'expo-sqlite/next';
-import { PokeAPI } from 'pokeapi-types';
 import { useEffect, useState } from 'react';
 
 import pokemonDetails from '../constants/pokemonDetails';
 import { PokemonDetailType } from '../types';
-import { buildPokemonDetail } from '../utils/buildPokemonDetail';
-import { fetchData } from '../utils/fetchData';
+import { fetchPokemonDetail } from '../utils/fetchPokemonDetail';
 
 interface ResData<T> {
     isLoading: boolean;
@@ -22,33 +20,17 @@ export const useFetchPokemonDetail = (name: string | null): ResData<PokemonDetai
 
     useEffect(() => {
         let isMounted: boolean = true;
-
         (async () => {
             try {
                 if (typeof name === 'string') {
                     if (pokemonDetails[name]) {
-                        if (isMounted) setData(pokemonDetails[name]);
+                        if (isMounted) {
+                            setData(pokemonDetails[name]);
+                        }
                     } else {
-                        const pokemon = await fetchData<PokeAPI.Pokemon>(
-                            `https://pokeapi.co/api/v2/pokemon/${name}/`,
-                            db,
-                        );
-                        if (pokemon) {
-                            const species = await fetchData<PokeAPI.PokemonSpecies>(
-                                `https://pokeapi.co/api/v2/pokemon-species/${pokemon?.species.name}/`,
-                                db,
-                            );
-                            if (species) {
-                                const evolution = await fetchData<PokeAPI.EvolutionChain>(
-                                    species.evolution_chain.url,
-                                    db,
-                                );
-                                if (evolution) {
-                                    if (isMounted) {
-                                        setData(buildPokemonDetail(pokemon, species, evolution));
-                                    }
-                                }
-                            }
+                        const detail = await fetchPokemonDetail(name, db);
+                        if (detail && isMounted) {
+                            setData(detail);
                         }
                     }
                 }

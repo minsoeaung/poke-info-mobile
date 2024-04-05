@@ -2,7 +2,9 @@ import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
+
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 type Props = {
     children: ReactNode;
@@ -15,9 +17,9 @@ type Props = {
 
 const Card = ({
     title,
-    titleBgColor = app.lightColor,
+    titleBgColor = 'whitesmoke',
     children,
-    titleColor = app.darkColor,
+    titleColor = 'black',
     noElevation = false,
     childrenGap = 10,
 }: Props) => {
@@ -27,7 +29,6 @@ const Card = ({
                 styles.container,
                 {
                     borderColor: titleBgColor,
-                    elevation: noElevation ? 0 : 10,
                 },
             ]}
         >
@@ -36,7 +37,7 @@ const Card = ({
                     style={StyleSheet.flatten([
                         styles.title,
                         {
-                            backgroundColor: titleBgColor + app.transparency,
+                            backgroundColor: titleBgColor,
                             color: titleColor,
                         },
                     ])}
@@ -51,26 +52,24 @@ const Card = ({
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: app.grey + app.transparency,
         overflow: 'hidden',
-        borderRadius: 10,
+        borderWidth: hairlineWidth,
+        borderColor: 'black',
+        borderRadius: 5,
+        backgroundColor: colors.card,
     },
     title: {
-        fontSize: 18,
+        fontSize: 20,
         paddingHorizontal: 20,
-        paddingVertical: 3,
-        elevation: 5,
-        letterSpacing: 1,
-        textTransform: 'capitalize',
-
-        textShadowColor: 'rgba(255, 255, 255, 1)',
-        textShadowOffset: { width: 0.5, height: 0.5 },
-        textShadowRadius: 1,
+        paddingVertical: 5,
+        borderBottomWidth: hairlineWidth,
+        borderBottomColor: 'whitesmoke',
     },
     children: {
         paddingVertical: 15,
         paddingHorizontal: 20,
         gap: 10,
+        color: colors.cardText,
     },
 });
 

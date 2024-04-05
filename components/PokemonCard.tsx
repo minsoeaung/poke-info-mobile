@@ -5,14 +5,16 @@ import React, { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { app, cardColor, typeColor } from '../constants/colors';
+import { cardColor, colors, typeColor } from '../constants/colors';
 import { PokemonSmDetailType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import { MaterialIcons } from '@expo/vector-icons';
+import hairlineWidth = StyleSheet.hairlineWidth;
+
 
 const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
     const { name, sprite, types } = pokemon;
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
-    const backgroundColor = cardColor[types[0]];
 
     const goToPokemonDetailScreen = () => {
         navigation.push('PokemonDetail', { name });
@@ -25,20 +27,16 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
                     style={[
                         styles.pokemonCard,
                         {
-                            borderColor: pressed ? 'tomato' : app.darkColor,
-                            backgroundColor,
+                            borderColor: pressed ? 'tomato' : 'transparent',
+                            backgroundColor: cardColor[types[0]],
                         },
                     ]}
                 >
-                    <MyText style={styles.name} numberOfLines={1}>
-                        {getFormattedName(name)}
-                    </MyText>
                     <View style={styles.spriteContainer}>
                         {sprite ? (
                             <Image
                                 style={styles.sprite}
                                 source={{
-                                    // uri: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`,
                                     uri: sprite,
                                 }}
                                 contentFit="cover"
@@ -47,27 +45,28 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
                                 transition={200}
                             />
                         ) : (
-                            <MyText style={styles.bad}>❗</MyText>
+                            <MaterialIcons name="image-not-supported" size={24} color="grey" />
                         )}
                     </View>
-                    <View style={styles.types}>
-                        {types.map((type, index) => (
-                            <MyText
-                                key={index}
-                                style={StyleSheet.flatten([
-                                    styles.type,
-                                    {
-                                        backgroundColor: typeColor[type],
-                                        borderBottomLeftRadius: index === 0 ? 5 : 0,
-                                        borderTopLeftRadius: index === 0 ? 5 : 0,
-                                        borderTopRightRadius: index === types.length - 1 ? 5 : 0,
-                                        borderBottomRightRadius: index === types.length - 1 ? 5 : 0,
-                                    },
-                                ])}
-                            >
-                                {type}
-                            </MyText>
-                        ))}
+                    <View style={styles.nameContainer}>
+                        <MyText style={styles.name} numberOfLines={1}>
+                            {getFormattedName(name)}
+                        </MyText>
+                        <View style={styles.types}>
+                            {types.map((type, index) => (
+                                <MyText
+                                    key={index}
+                                    style={StyleSheet.flatten([
+                                        styles.type,
+                                        {
+                                            backgroundColor: typeColor[type],
+                                        },
+                                    ])}
+                                >
+                                    {type}
+                                </MyText>
+                            ))}
+                        </View>
                     </View>
                 </View>
             )}
@@ -80,61 +79,71 @@ export default memo(PokemonCard);
 const styles = StyleSheet.create({
     pressable: {
         flex: 1,
-        aspectRatio: 9 / 13,
+        aspectRatio: 2,
         margin: 5,
     },
     pokemonCard: {
         flex: 1,
         borderRadius: 10,
-        paddingTop: 5,
-        paddingBottom: 7,
-        flexDirection: 'column',
+        flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         borderWidth: 2,
-    },
-    name: {
-        width: '100%',
-        textAlign: 'center',
-        paddingHorizontal: 3,
-        paddingVertical: 3,
-        color: app.darkColor,
-
-        textShadowColor: 'rgba(255, 255, 255, 1)',
-        textShadowOffset: { width: 1, height: 1 },
-        textShadowRadius: 1,
+        overflow: 'hidden',
+        padding: 5,
+        gap: 5,
     },
     spriteContainer: {
-        width: '80%',
-        height: '50%',
+        flex: 1,
+        width: '100%',
+        height: '100%',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-
-        backgroundColor: app.lightColor + app.transparency,
-        borderRadius: 10,
+        backgroundColor: 'white',
+        borderRadius: 5,
+        borderWidth: hairlineWidth,
+        borderColor: 'black',
+    },
+    nameContainer: {
+        flex: 1,
+        width: '100%',
+        height: '100%',
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        gap: 5,
+    },
+    name: {
+        color: 'black',
+        textShadowColor: 'rgba(0, 0, 0, 0.7)',
+        textShadowOffset: { width: 0.2, height: 0.2 },
+        textShadowRadius: 1,
     },
     sprite: {
-        width: '115%',
-        height: '115%',
+        width: '110%',
+        height: '110%',
         aspectRatio: 1,
     },
     bad: {
         fontSize: 14,
     },
     types: {
+        flex: 1,
         flexDirection: 'row',
-        justifyContent: 'center',
+        alignItems: 'flex-start',
+        flexWrap: 'wrap',
+        gap: 5,
     },
     type: {
         paddingHorizontal: 3,
         paddingVertical: 2,
-        color: app.lightColor,
-        fontSize: 7,
+        color: colors.typeText,
+        fontSize: 10,
+        borderRadius: 2,
 
-        textShadowColor: 'rgba(0, 0, 0, 0.75)',
-        textShadowOffset: { width: 1.5, height: 1 },
-        textShadowRadius: 1,
+        textShadowColor: 'rgba(0, 0, 0, 0.9)',
+        textShadowOffset: { width: 0.5, height: 0.5 },
+        textShadowRadius: 3,
         textTransform: 'capitalize',
     },
 });

@@ -1,7 +1,7 @@
 import { ReactNode } from 'react';
 import { Text, TextStyle } from 'react-native';
 
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 
 type Props = {
@@ -16,7 +16,7 @@ export default function MyText(props: Props) {
     return (
         <Text
             {...props}
-            style={{ color: app.darkColor, fontFamily: fonts.audioWide, ...style }}
+            style={{ color: colors.background, fontFamily: fonts.fontDotGothic, ...style }}
             numberOfLines={numberOfLines ? numberOfLines : 0}
         >
             {children}

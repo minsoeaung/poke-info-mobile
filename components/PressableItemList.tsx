@@ -5,8 +5,9 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 import getFormattedName from '../utils/getFormattedName';
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 type Props<T> = {
     data: T[];
@@ -18,13 +19,13 @@ type Props<T> = {
 };
 
 export default function PressableItemList<T extends { name: string }>({
-    data,
-    onPressItem,
-    size = 'medium',
-    spriteExtractor,
-    extraExtractor,
-    listRef,
-}: Props<T>) {
+                                                                          data,
+                                                                          onPressItem,
+                                                                          size = 'medium',
+                                                                          spriteExtractor,
+                                                                          extraExtractor,
+                                                                          listRef,
+                                                                      }: Props<T>) {
     return (
         <View style={styles.listContainer}>
             <FlashList
@@ -71,8 +72,8 @@ export default function PressableItemList<T extends { name: string }>({
                                             style={StyleSheet.flatten([
                                                 styles.name,
                                                 {
-                                                    color: pressed ? 'tomato' : app.lightColor,
-                                                    marginLeft: sprite ? 50 : 0,
+                                                    color: pressed ? 'tomato' : colors.cardText,
+                                                    marginLeft: sprite ? 50 : 5,
                                                 },
                                             ])}
                                         >
@@ -86,7 +87,7 @@ export default function PressableItemList<T extends { name: string }>({
                                     </View>
                                     <MyText
                                         style={{
-                                            color: pressed ? 'tomato' : app.lightColor,
+                                            color: pressed ? 'tomato' : colors.cardText,
                                         }}
                                     >
                                         {'>'}
@@ -119,15 +120,17 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     listItem: {
-        paddingHorizontal: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
+        borderBottomWidth: hairlineWidth,
+        borderBottomColor: 'black',
+        paddingHorizontal: 15,
     },
     emptyText: {
         paddingVertical: 50,
         textAlign: 'center',
-        color: app.lightColor,
+        color: colors.cardText,
     },
     spriteNameExtra: {
         flexDirection: 'row',
@@ -137,9 +140,7 @@ const styles = StyleSheet.create({
     sprite: {
         position: 'absolute',
     },
-    name: {
-        letterSpacing: 1,
-    },
+    name: {},
     extra: {
         marginLeft: 10,
     },

@@ -1,4 +1,5 @@
 import { PokeAPI } from 'pokeapi-types';
+import { typeColor } from './constants/colors';
 
 type PokemonFormType = {
     slot: number;
@@ -75,7 +76,7 @@ export type AbilityType = {
 export type PokemonSmDetailType = {
     name: string;
     sprite: string | null;
-    types: string[];
+    types: (keyof typeof typeColor)[];
     id: number;
 };
 
@@ -85,7 +86,7 @@ export type PokemonDetailType = {
     profile: {
         sprite: string | null;
         species: string;
-        types: string[];
+        types: (keyof typeof typeColor)[];
         height: string;
         weight: string;
         abilities: AbilityType[];

@@ -1,7 +1,7 @@
 import { Image } from 'expo-image';
 import { StyleSheet, View } from 'react-native';
 
-import { app } from '../constants/colors';
+import { colors } from '../constants/colors';
 
 export default function PikachuRunning() {
     return (
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: app.darkColor,
+        backgroundColor: colors.background,
     },
     sprite: {
         flex: 1,
