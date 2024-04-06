@@ -9,7 +9,6 @@ import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import OpenURLTextButton from '../components/OpenURLTextButton';
 import { colors } from '../constants/colors';
-import { fonts } from '../constants/fonts';
 
 const PokeAPIURL = 'https://pokeapi.co/';
 const SourceCodeURL = 'https://github.com/minsoeaung/poke-info-mobile';
@@ -97,7 +96,7 @@ const About = () => {
             <Card title="App">
                 <LabelAndValue
                     label="Version"
-                    value={<MyText style={styles.version}>v{Constants.expoConfig?.version || '1.5.1'}</MyText>}
+                    value={<MyText style={styles.version}>v{Constants.expoConfig?.version || '1.6.0'}</MyText>}
                 />
                 <LabelAndValue
                     label="Source Code"
