@@ -1,5 +1,5 @@
 import { PokeAPI } from 'pokeapi-types';
-import { typeColor } from './constants/colors';
+import { cardColor, typeColor } from './constants/colors';
 
 type PokemonFormType = {
     slot: number;
@@ -42,7 +42,9 @@ export type StackParamList = {
     About: undefined;
 
     PokemonDetail: Name;
-    TypeDetail: Name;
+    TypeDetail: {
+        name: keyof typeof cardColor;
+    };
     AbilityDetail: Name;
     ItemDetail: Name;
 };

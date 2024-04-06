@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import { PokemonDetailType } from '../types';
+import { colors } from '../constants/colors';
 
 type Props = {
     stats: PokemonDetailType['stats'];
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
     },
     statName: {
         flex: 1,
-        color: 'white',
+        color: colors.text,
     },
     statBar: {
         flex: 2,
@@ -60,7 +61,6 @@ const styles = StyleSheet.create({
         display: 'flex',
         flexDirection: 'row',
         borderRadius: 10,
-        elevation: 10,
         overflow: 'hidden',
     },
     statNumberContainer: {

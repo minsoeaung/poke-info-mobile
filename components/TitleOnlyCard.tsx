@@ -2,6 +2,7 @@ import { StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import { colors } from '../constants/colors';
+import getFormattedName from '../utils/getFormattedName';
 
 type Props = {
     borderColor: string;
@@ -11,17 +12,16 @@ type Props = {
 
 const TitleOnlyCard = ({ borderColor, title, titleBgColor }: Props) => {
     return (
-        <View style={[styles.container, { borderColor }]}>
+        <View style={[styles.container, { borderColor, backgroundColor: titleBgColor }]}>
             <MyText
                 style={StyleSheet.flatten([
                     styles.title,
                     {
-                        backgroundColor: titleBgColor + colors.transparency,
-                        color: colors.background,
+                        color: colors.cardText,
                     },
                 ])}
             >
-                {title}
+                {getFormattedName(title)}
             </MyText>
         </View>
     );

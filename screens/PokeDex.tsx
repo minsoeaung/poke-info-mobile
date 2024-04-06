@@ -99,7 +99,9 @@ export default function PokeDex() {
                     contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
                     onScrollBeginDrag={() => isVisible && toggle()}
-                    onLoad={() => setReady(true)}
+                    onLoad={() => {
+                        setReady(true);
+                    }}
                 />
             </View>
         </View>
@@ -120,11 +122,11 @@ const styles = StyleSheet.create({
         elevation: 10,
     },
     searchBox: {
-        backgroundColor: colors.text,
+        backgroundColor: colors.card,
         borderWidth: 1,
         borderRadius: 10,
         elevation: 5,
-        borderColor: colors.background,
+        borderColor: 'black',
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -135,7 +137,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         fontFamily: fonts.fontDotGothic,
         width: '90%',
-        color: colors.background,
+        color: colors.cardText,
         letterSpacing: 1,
     },
     searchBtn: {

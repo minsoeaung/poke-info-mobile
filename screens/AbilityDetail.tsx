@@ -77,7 +77,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
         <View style={styles.container}>
             <FlashList
                 data={pokemonsWithThisAbility}
-                keyExtractor={item => item.name}
+                keyExtractor={(item, index) => `${index}-${item.name}`}
                 estimatedItemSize={60}
                 contentContainerStyle={styles.contentContainer}
                 ListHeaderComponentStyle={styles.listHeaderContainer}
@@ -93,7 +93,7 @@ export default function AbilityDetail({ navigation, route }: Props) {
                         <TitleOnlyCard
                             borderColor={colors.text}
                             title="Pokémon with this ability"
-                            titleBgColor={colors.text}
+                            titleBgColor="whitesmoke"
                         />
                     </>
                 }
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     },
     description: {
         paddingVertical: 10,
+        color: colors.cardText,
     },
     emptyText: {
         paddingVertical: 50,

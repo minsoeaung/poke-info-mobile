@@ -16,13 +16,13 @@ type Props = {
 };
 
 const Card = ({
-    title,
-    titleBgColor = 'whitesmoke',
-    children,
-    titleColor = 'black',
-    noElevation = false,
-    childrenGap = 10,
-}: Props) => {
+                  title,
+                  titleBgColor = 'whitesmoke',
+                  children,
+                  titleColor = 'black',
+                  noElevation = false,
+                  childrenGap = 10,
+              }: Props) => {
     return (
         <View
             style={[
@@ -53,8 +53,6 @@ const Card = ({
 const styles = StyleSheet.create({
     container: {
         overflow: 'hidden',
-        borderWidth: hairlineWidth,
-        borderColor: 'black',
         borderRadius: 5,
         backgroundColor: colors.card,
     },
@@ -62,8 +60,6 @@ const styles = StyleSheet.create({
         fontSize: 20,
         paddingHorizontal: 20,
         paddingVertical: 5,
-        borderBottomWidth: hairlineWidth,
-        borderBottomColor: 'whitesmoke',
     },
     children: {
         paddingVertical: 15,

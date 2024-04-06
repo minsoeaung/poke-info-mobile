@@ -7,6 +7,7 @@ import { memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
+import { colors } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { useFetchPokemonDetail } from '../hooks/useFetchPokemonDetail';
 import { StackParamList } from '../types';
@@ -64,9 +65,9 @@ const Evolutions = ({ evolutions }: Props) => {
                 return (
                     <Evolution
                         key={evo}
-                        fromSpecies={evo}
+                        fromSpeciesName={evo}
                         reason={evolutions[index + 1]}
-                        toSpecies={evolutions[index + 2]}
+                        toSpeciesName={evolutions[index + 2]}
                     />
                 );
             })}
@@ -75,28 +76,40 @@ const Evolutions = ({ evolutions }: Props) => {
 };
 
 const Evolution = memo(
-    ({ fromSpecies, reason, toSpecies }: { fromSpecies: string; reason: string; toSpecies: string }) => {
+    ({
+         fromSpeciesName,
+         reason,
+         toSpeciesName,
+     }: {
+        fromSpeciesName: string;
+        reason: string;
+        toSpeciesName: string;
+    }) => {
         const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokemonDetail'>>();
 
-        const { data: from } = useFetchData<PokeAPI.PokemonSpecies>(
-            `https://pokeapi.co/api/v2/pokemon-species/${fromSpecies}/`,
-        );
+        const {
+            data: fromSpecies,
+            isLoading: fromSpeciesLoading,
+            error: fromSpeciesError,
+        } = useFetchData<PokeAPI.PokemonSpecies>(`https://pokeapi.co/api/v2/pokemon-species/${fromSpeciesName}/`);
 
-        const { data: to } = useFetchData<PokeAPI.PokemonSpecies>(
-            `https://pokeapi.co/api/v2/pokemon-species/${toSpecies}/`,
-        );
+        const {
+            data: toSpecies,
+            isLoading: toSpeciesLoading,
+            error: toSpeciesError,
+        } = useFetchData<PokeAPI.PokemonSpecies>(`https://pokeapi.co/api/v2/pokemon-species/${toSpeciesName}/`);
 
         const {
             data: fromPokemon,
             isLoading: fromPokemonIsLoading,
             error: fromPokemonError,
-        } = useFetchPokemonDetail(from?.varieties.find(v => v.is_default)?.pokemon.name || null);
+        } = useFetchPokemonDetail(fromSpecies?.varieties.find(v => v.is_default)?.pokemon.name || null);
 
         const {
             data: toPokemon,
             isLoading: toPokemonLoading,
             error: toPokemonError,
-        } = useFetchPokemonDetail(to?.varieties.find(v => v.is_default)?.pokemon.name || null);
+        } = useFetchPokemonDetail(toSpecies?.varieties.find(v => v.is_default)?.pokemon.name || null);
 
         const goToPokemonDetailScreen = (name: string) => {
             if (name) {
@@ -131,11 +144,13 @@ const Evolution = memo(
                                 color: 'grey',
                             }}
                         >
-                            {fromPokemonIsLoading ? 'Loading...' : fromPokemonError}
+                            {fromPokemonIsLoading || fromSpeciesLoading
+                                ? '...'
+                                : fromPokemonError || fromSpeciesError}
                         </MyText>
                     )}
                     <View style={styles.arrow}>
-                        <AntDesign name="arrowright" size={25} />
+                        <AntDesign name="arrowright" size={25} color={colors.cardText} />
                     </View>
                     {toPokemon ? (
                         <Pressable onPress={() => goToPokemonDetailScreen(toPokemon.name)} style={styles.to}>
@@ -161,7 +176,7 @@ const Evolution = memo(
                                 color: 'grey',
                             }}
                         >
-                            {toPokemonLoading ? 'Loading...' : toPokemonError}
+                            {toPokemonLoading || toSpeciesLoading ? '...' : toPokemonError || toSpeciesError}
                         </MyText>
                     )}
                 </View>
@@ -209,6 +224,7 @@ const styles = StyleSheet.create({
         flex: 2,
     },
     trigger: {
+        color: colors.cardText,
         // textTransform: 'capitalize',
     },
 });

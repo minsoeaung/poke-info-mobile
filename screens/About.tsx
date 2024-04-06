@@ -9,6 +9,7 @@ import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import OpenURLTextButton from '../components/OpenURLTextButton';
 import { colors } from '../constants/colors';
+import { fonts } from '../constants/fonts';
 
 const PokeAPIURL = 'https://pokeapi.co/';
 const SourceCodeURL = 'https://github.com/minsoeaung/poke-info-mobile';
@@ -53,13 +54,16 @@ const About = () => {
                 <LabelAndValue
                     label="Status"
                     value={
-                        <MyText>
+                        <MyText style={{ color: colors.cardText }}>
                             <Octicons name="dot-fill" color={notWork ? 'red' : 'green'} />{' '}
                             {notWork ? 'Unavailable' : 'Working'}
                         </MyText>
                     }
                 />
-                <LabelAndValue label="Cache count" value={<MyText>{count}</MyText>} />
+                <LabelAndValue
+                    label="Cache count"
+                    value={<MyText style={{ color: colors.cardText }}>{count}</MyText>}
+                />
                 <View style={styles.buttons}>
                     {notWork ? (
                         <Pressable onPress={fix}>
@@ -125,11 +129,14 @@ const styles = StyleSheet.create({
     description: {
         paddingVertical: 10,
         letterSpacing: 0.5,
+        color: colors.cardText,
     },
     footer: {
         marginBottom: 10,
     },
-    version: {},
+    version: {
+        color: colors.cardText,
+    },
     buttons: {
         flexDirection: 'row',
         gap: 15,
@@ -143,9 +150,6 @@ const styles = StyleSheet.create({
     },
     text: {
         color: colors.text,
-        textShadowColor: 'rgba(0, 0, 0, 0.5)',
-        textShadowOffset: { width: 0.5, height: 0.5 },
-        textShadowRadius: 1,
     },
 });
 

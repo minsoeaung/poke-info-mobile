@@ -8,11 +8,11 @@
     ],
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "backgroundColor": "#000000",
+    "backgroundColor": "#0D2F41",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#0D2F41"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -28,7 +28,7 @@
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFF0E5"
+        "backgroundColor": "#0D2F41"
       },
       "package": "com.minsoeaung.pokeinfo",
       "versionCode": 10,

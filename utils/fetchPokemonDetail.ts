@@ -17,5 +17,6 @@ export const fetchPokemonDetail = async (name: string, db: SQLiteDatabase): Prom
         }
     }
 
+    console.warn('fetchPokemonDetail returned null');
     return null;
 };

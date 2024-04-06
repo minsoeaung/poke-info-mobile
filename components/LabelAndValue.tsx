@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import { StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
+import { colors } from '../constants/colors';
 
 type Props = {
     label: ReactNode;
@@ -13,7 +14,7 @@ const LabelAndValue = ({ label, value }: Props) => {
         <View style={styles.container}>
             <MyText style={styles.label}>{label}</MyText>
             <View style={styles.value}>
-                <MyText>{'-  '}</MyText>
+                <MyText style={{ color: colors.cardText }}>{'-  '}</MyText>
                 {value}
             </View>
         </View>
@@ -28,6 +29,7 @@ const styles = StyleSheet.create({
     label: {
         flex: 2,
         fontSize: 14,
+        color: colors.cardText,
     },
     value: {
         flex: 3,

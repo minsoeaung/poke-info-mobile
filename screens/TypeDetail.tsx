@@ -2,7 +2,7 @@ import { useScrollToTop } from '@react-navigation/native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
 import { PokeAPI } from 'pokeapi-types';
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
+import React, { useCallback, useLayoutEffect, useMemo, useRef } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
 
@@ -62,7 +62,7 @@ export default function TypeDetail({ route, navigation }: Props) {
         <View style={styles.container}>
             <FlashList
                 data={pokemonsWithThisType}
-                keyExtractor={item => item.name}
+                keyExtractor={(item, index) => `${index}-${item.name}`}
                 estimatedItemSize={60}
                 contentContainerStyle={styles.contentContainer}
                 ListHeaderComponentStyle={styles.listHeaderContainer}
@@ -153,8 +153,7 @@ type TypesProps = {
     }[];
 };
 
-// Nice TS
-const extractTypeName = (type: TypesProps['types'][number]) => type.name;
+const extractTypeName = (type: TypesProps['types'][number]) => type.name as keyof typeof cardColor;
 
 const styles = StyleSheet.create({
     container: {
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     listHeaderContainer: {
-        gap: 25,
+        gap: 15,
     },
     emptyText: {
         paddingVertical: 50,

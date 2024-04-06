@@ -20,7 +20,9 @@ export const useFetchPokemonDetail = (name: string | null): ResData<PokemonDetai
 
     useEffect(() => {
         let isMounted: boolean = true;
+
         (async () => {
+            setIsLoading(true);
             try {
                 if (typeof name === 'string') {
                     if (pokemonDetails[name]) {
@@ -36,7 +38,7 @@ export const useFetchPokemonDetail = (name: string | null): ResData<PokemonDetai
                 }
             } catch (e) {
                 if (e instanceof Error) {
-                    setError(e?.message);
+                    setError(e.message === 'Network request failed' ? 'No internet connection.' : e.message);
                 } else {
                     setError('Unknown error');
                 }

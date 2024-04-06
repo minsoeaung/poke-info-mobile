@@ -16,7 +16,7 @@ const PokeDexStack: React.FC = () => {
             initialRouteName="PokeDex"
             screenOptions={{
                 header: props => <MyHeader headerProps={props} />,
-                animation: 'fade_from_bottom',
+                animation: 'fade',
             }}
         >
             <Stack.Screen name="PokeDex" component={PokeDex} />

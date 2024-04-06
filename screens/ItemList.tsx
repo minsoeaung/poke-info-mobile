@@ -16,7 +16,6 @@ import useSearchableList from '../hooks/useSearchableList';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import { MaterialIcons } from '@expo/vector-icons';
-import hairlineWidth = StyleSheet.hairlineWidth;
 
 export default function ItemList() {
     const [ready, setReady] = useState(false);
@@ -134,8 +133,6 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
         borderRadius: 5,
         overflow: 'hidden',
-        borderWidth: hairlineWidth,
-        borderColor: 'black',
         margin: 5,
     },
     item: {

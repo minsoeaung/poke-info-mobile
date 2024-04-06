@@ -2,6 +2,7 @@ import { PokeAPI } from 'pokeapi-types';
 
 import getHeightString from './getHeightString';
 import getWeightString from './getWeightString';
+import { cardColor } from '../constants/colors';
 import { PokemonDetailType } from '../types';
 
 export const buildPokemonDetail = (
@@ -15,7 +16,7 @@ export const buildPokemonDetail = (
         profile: {
             sprite: pokemon.sprites.front_default,
             species: species.genera.find(generaInfo => generaInfo.language.name === 'en')?.genus || '',
-            types: pokemon.types.map(type => type.type.name),
+            types: pokemon.types.map(type => type.type.name) as (keyof typeof cardColor)[],
             height: getHeightString(pokemon.height),
             weight: getWeightString(pokemon.weight),
             abilities: pokemon.abilities.map(ability => {

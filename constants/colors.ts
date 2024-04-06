@@ -4,9 +4,8 @@ export const colors = {
 
     background: '#0D2F41',
     text: 'white',
-
-    transparency: 'ff', // 80%
-    abilityButton: '#2f4f4f',
+    // background: 'white',
+    // text: 'black',
 
     card: 'white',
     cardText: 'black',

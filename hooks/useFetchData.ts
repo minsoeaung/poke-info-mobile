@@ -20,6 +20,7 @@ const useFetchData = <T>(url: string): ResData<T> => {
         let isMounted: boolean = true;
 
         (async () => {
+            setIsLoading(true);
             try {
                 const data = await fetchData<T>(url, db);
                 if (data && isMounted) {
@@ -27,7 +28,7 @@ const useFetchData = <T>(url: string): ResData<T> => {
                 }
             } catch (e) {
                 if (e instanceof Error) {
-                    setError(e?.message);
+                    setError(e.message === 'Network request failed' ? 'No internet connection.' : e.message);
                 } else {
                     setError('Unknown error');
                 }

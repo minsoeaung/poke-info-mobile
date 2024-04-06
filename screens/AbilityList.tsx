@@ -74,7 +74,5 @@ const styles = StyleSheet.create({
         color: colors.cardText,
         borderRadius: 5,
         overflow: 'hidden',
-        borderWidth: hairlineWidth,
-        borderColor: 'black',
     },
 });

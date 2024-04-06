@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
@@ -8,9 +9,8 @@ import MyText from './MyText';
 import { cardColor, colors, typeColor } from '../constants/colors';
 import { PokemonSmDetailType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import { MaterialIcons } from '@expo/vector-icons';
-import hairlineWidth = StyleSheet.hairlineWidth;
 
+import hairlineWidth = StyleSheet.hairlineWidth;
 
 const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
     const { name, sprite, types } = pokemon;

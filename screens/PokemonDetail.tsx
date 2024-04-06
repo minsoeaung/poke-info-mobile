@@ -19,6 +19,7 @@ import { cardColor, colors } from '../constants/colors';
 import { useFetchPokemonDetail } from '../hooks/useFetchPokemonDetail';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+
 import hairlineWidth = StyleSheet.hairlineWidth;
 
 export default function PokemonDetail() {
@@ -86,7 +87,7 @@ export default function PokemonDetail() {
                     </View>
                 </View>
                 <View style={styles.intro}>
-                    <MyText style={styles.speciesName}>{profile.species}</MyText>
+                    {profile.species && <MyText style={styles.speciesName}>{profile.species}</MyText>}
                     {!!profile.flavorTextEntry.diamond && (
                         <MyText style={styles.flavorTextEntry}>{profile.flavorTextEntry.diamond}</MyText>
                     )}
@@ -94,23 +95,23 @@ export default function PokemonDetail() {
                 <Card title="Profile" titleBgColor={color}>
                     <LabelAndValue
                         label={
-                            <MyText>
+                            <MyText style={{ color: colors.cardText }}>
                                 <Entypo name="ruler" color="tomato" /> Height
                             </MyText>
                         }
-                        value={<MyText>{profile.height}</MyText>}
+                        value={<MyText style={{ color: colors.cardText }}>{profile.height}</MyText>}
                     />
                     <LabelAndValue
                         label={
-                            <MyText>
+                            <MyText style={{ color: colors.cardText }}>
                                 <FontAwesome5 name="weight-hanging" color="tomato" /> Weight
                             </MyText>
                         }
-                        value={<MyText>{profile.weight}</MyText>}
+                        value={<MyText style={{ color: colors.cardText }}>{profile.weight}</MyText>}
                     />
                     <LabelAndValue
                         label={
-                            <MyText>
+                            <MyText style={{ color: colors.cardText }}>
                                 <FontAwesome6 name="dumbbell" color="tomato" /> Abilities
                             </MyText>
                         }
@@ -120,12 +121,12 @@ export default function PokemonDetail() {
                 <Card title="Breeding" titleBgColor={color}>
                     <LabelAndValue
                         label={
-                            <MyText>
+                            <MyText style={{ color: colors.cardText }}>
                                 <FontAwesome name="circle" color="tomato" /> Gender
                             </MyText>
                         }
                         value={
-                            <MyText>
+                            <MyText style={{ color: colors.cardText }}>
                                 {profile.gender
                                     ? `♂️ ${profile.gender.male} %, ♀️ ${profile.gender.female} %`
                                     : 'Genderless'}
@@ -134,7 +135,7 @@ export default function PokemonDetail() {
                     />
                     <LabelAndValue
                         label={
-                            <MyText>
+                            <MyText style={{ color: colors.cardText }}>
                                 <FontAwesome6 name="egg" color="tomato" /> Egg Groups
                             </MyText>
                         }
@@ -142,6 +143,7 @@ export default function PokemonDetail() {
                             <MyText
                                 style={{
                                     textTransform: 'capitalize',
+                                    color: colors.cardText,
                                 }}
                             >
                                 {getFormattedName(breeding.eggGroups.join(', '))}
@@ -150,28 +152,41 @@ export default function PokemonDetail() {
                     />
                     <LabelAndValue
                         label={
-                            <MyText>
+                            <MyText style={{ color: colors.cardText }}>
                                 <FontAwesome name="rotate-right" color="tomato" /> Egg cycles
                             </MyText>
                         }
-                        value={<MyText>{breeding.eggCycles}</MyText>}
+                        value={<MyText style={{ color: colors.cardText }}>{breeding.eggCycles}</MyText>}
                     />
                 </Card>
                 <Card title="Training" titleBgColor={color}>
-                    <LabelAndValue label="EV Yield" value={<MyText>{training.evYield}</MyText>} />
-                    <LabelAndValue label="Catch Rate" value={<MyText>{training.catchRate}</MyText>} />
-                    <LabelAndValue label="Base Friendship" value={<MyText>{training.baseHappiness}</MyText>} />
-                    <LabelAndValue label="Base Exp." value={<MyText>{training.baseExp}</MyText>} />
-                    <LabelAndValue label="Growth Rate" value={<MyText>{training.growthRate}</MyText>} />
+                    <LabelAndValue
+                        label="EV Yield"
+                        value={<MyText style={{ color: colors.cardText }}>{training.evYield}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="Catch Rate"
+                        value={<MyText style={{ color: colors.cardText }}>{training.catchRate}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="Base Friendship"
+                        value={<MyText style={{ color: colors.cardText }}>{training.baseHappiness}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="Base Exp."
+                        value={<MyText style={{ color: colors.cardText }}>{training.baseExp}</MyText>}
+                    />
+                    <LabelAndValue
+                        label="Growth Rate"
+                        value={<MyText style={{ color: colors.cardText }}>{training.growthRate}</MyText>}
+                    />
                 </Card>
                 <Card title="Evolutions" titleBgColor={color}>
                     {evolutions.length > 0 ? (
                         <Evolutions evolutions={evolutions} />
                     ) : (
                         <MyText style={styles.nope}>
-                            <MyText style={{ color: 'tomato' }}>{getFormattedName(name)}</MyText>
-                            {' '}
-                            does not evolve.
+                            <MyText style={{ color: 'tomato' }}>{getFormattedName(name)}</MyText> does not evolve.
                         </MyText>
                     )}
                 </Card>

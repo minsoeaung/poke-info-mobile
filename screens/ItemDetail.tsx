@@ -6,6 +6,7 @@ import { PokeAPI } from 'pokeapi-types';
 import React, { useLayoutEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
+
 import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LabelAndValue from '../components/LabelAndValue';
@@ -17,6 +18,7 @@ import { colors } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+
 import hairlineWidth = StyleSheet.hairlineWidth;
 
 type HeldByPokemonsType = { name: string };
@@ -76,6 +78,7 @@ export default function ItemDetail() {
             <FlashList
                 data={heldByPokemons}
                 estimatedItemSize={60}
+                keyExtractor={(item, index) => `${index}-${item.name}`}
                 renderItem={({ item, index }) => {
                     return (
                         <PokemonCellItem item={item} color={colors.text} isLast={index === heldByPokemons.length - 1} />
@@ -130,7 +133,7 @@ export default function ItemDetail() {
                         <TitleOnlyCard
                             borderColor={colors.text}
                             title="Pokémon that might be found holding this item"
-                            titleBgColor={colors.text}
+                            titleBgColor="whitesmoke"
                         />
                     </>
                 }
@@ -165,14 +168,18 @@ const styles = StyleSheet.create({
     },
     description: {
         paddingVertical: 10,
+        color: colors.cardText,
     },
-    description2: {},
+    description2: {
+        color: colors.cardText,
+    },
     listEmpty: {
         backgroundColor: colors.card,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
     },
     emptyText: {
+        color: colors.cardText,
         height: 150,
         textAlignVertical: 'center',
         textAlign: 'center',
