@@ -138,7 +138,8 @@ const styles = StyleSheet.create({
         paddingHorizontal: 3,
         paddingVertical: 2,
         color: colors.typeText,
-        fontSize: 10,
+        fontSize: 9,
+        lineHeight: 12,
         borderRadius: 2,
 
         textShadowColor: 'rgba(0, 0, 0, 0.9)',

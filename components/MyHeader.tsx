@@ -1,11 +1,10 @@
+import { AntDesign } from '@expo/vector-icons';
 import { getHeaderTitle } from '@react-navigation/elements';
 import { NativeStackHeaderProps } from '@react-navigation/native-stack';
 import { StyleSheet, TouchableHighlight, View } from 'react-native';
 
 import MyText from './MyText';
 import { colors } from '../constants/colors';
-
-import { AntDesign } from '@expo/vector-icons';
 
 type Props = {
     headerProps: NativeStackHeaderProps;
@@ -22,9 +21,7 @@ const MyHeader = ({ headerProps }: Props) => {
             <TouchableHighlight onPress={goBack}>
                 <View style={[styles.headerLeft, options.headerStyle]}>
                     <MyText style={styles.titleText} numberOfLines={1}>
-                        {back && <AntDesign name="back" size={24} color="white" />}
-                        {' '}
-                        {title}
+                        {back && <AntDesign name="back" size={24} color="white" />} {title}
                     </MyText>
                 </View>
             </TouchableHighlight>
@@ -54,6 +51,7 @@ const styles = StyleSheet.create({
     },
     titleText: {
         fontSize: 24,
+        lineHeight: 28,
         paddingVertical: 5,
         letterSpacing: 1,
         textTransform: 'capitalize',

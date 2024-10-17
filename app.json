@@ -2,7 +2,7 @@
   "expo": {
     "name": "Poke Info",
     "slug": "poke_info",
-    "version": "1.6.0",
+    "version": "1.6.1",
     "platforms": [
       "android"
     ],
@@ -23,7 +23,7 @@
     "ios": {
       "supportsTablet": false,
       "bundleIdentifier": "com.minsoeaung.pokeinfo",
-      "buildNumber": "1.6.0"
+      "buildNumber": "1.6.1"
     },
     "android": {
       "adaptiveIcon": {
@@ -31,7 +31,7 @@
         "backgroundColor": "#0D2F41"
       },
       "package": "com.minsoeaung.pokeinfo",
-      "versionCode": 11,
+      "versionCode": 12,
       "permissions": []
     },
     "web": {

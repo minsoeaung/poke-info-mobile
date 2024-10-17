@@ -1,8 +1,8 @@
 import { StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { PokemonDetailType } from '../types';
 import { colors } from '../constants/colors';
+import { PokemonDetailType } from '../types';
 
 type Props = {
     stats: PokemonDetailType['stats'];
@@ -71,6 +71,7 @@ const styles = StyleSheet.create({
     statNumber: {
         color: 'black',
         fontSize: 12,
+        lineHeight: 16,
         textShadowColor: 'rgba(255, 255, 255, 0.5)',
         textShadowOffset: { width: 0.5, height: 0.5 },
         textShadowRadius: 0.5,

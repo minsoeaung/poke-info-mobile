@@ -37,8 +37,10 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
+        lineHeight: 24,
         paddingHorizontal: 20,
-        paddingVertical: 10,
+        paddingVertical: 5,
+
         textShadowColor: 'rgba(255, 255, 255, 1)',
         textShadowOffset: { width: 0.5, height: 0.5 },
         textShadowRadius: 1,

@@ -28,8 +28,6 @@ const OpenURLTextButton = ({ url, children }: Props) => {
 
 const styles = StyleSheet.create({
     text: {
-        // borderBottomWidth: 1,
-        // borderBottomColor: 'tomato',
         color: 'tomato',
         textDecorationLine: 'underline',
     },

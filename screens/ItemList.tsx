@@ -1,3 +1,4 @@
+import { MaterialIcons } from '@expo/vector-icons';
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
@@ -15,7 +16,6 @@ import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import { MaterialIcons } from '@expo/vector-icons';
 
 export default function ItemList() {
     const [ready, setReady] = useState(false);
@@ -143,7 +143,9 @@ const styles = StyleSheet.create({
         backgroundColor: colors.card,
     },
     itemName: {
-        fontSize: 13,
+        fontSize: 12,
+        lineHeight: 16,
+        paddingLeft: 3,
         textAlign: 'center',
         color: colors.cardText,
     },

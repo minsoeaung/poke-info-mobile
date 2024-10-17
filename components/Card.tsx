@@ -4,8 +4,6 @@ import { StyleSheet, View } from 'react-native';
 import MyText from './MyText';
 import { colors } from '../constants/colors';
 
-import hairlineWidth = StyleSheet.hairlineWidth;
-
 type Props = {
     children: ReactNode;
     title?: string;
@@ -16,13 +14,13 @@ type Props = {
 };
 
 const Card = ({
-                  title,
-                  titleBgColor = 'whitesmoke',
-                  children,
-                  titleColor = 'black',
-                  noElevation = false,
-                  childrenGap = 10,
-              }: Props) => {
+    title,
+    titleBgColor = 'whitesmoke',
+    children,
+    titleColor = 'black',
+    noElevation = false,
+    childrenGap = 10,
+}: Props) => {
     return (
         <View
             style={[
@@ -58,6 +56,7 @@ const styles = StyleSheet.create({
     },
     title: {
         fontSize: 20,
+        lineHeight: 24,
         paddingHorizontal: 20,
         paddingVertical: 5,
     },

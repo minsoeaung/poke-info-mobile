@@ -24,7 +24,6 @@ export default function PokemonTypes({ types }: Props) {
                         });
                     }}
                 >
-
                     {({ pressed }) => (
                         <MyText
                             style={StyleSheet.flatten([
@@ -52,11 +51,13 @@ const styles = StyleSheet.create({
     },
     typeText: {
         paddingHorizontal: 10,
-        paddingVertical: 5,
+        paddingVertical: 1,
         borderRadius: 5,
         textTransform: 'capitalize',
         borderWidth: 2,
         color: colors.typeText,
+        fontSize: 14,
+        lineHeight: 20,
 
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: { width: 0.5, height: 0.5 },

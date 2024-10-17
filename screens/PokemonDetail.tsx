@@ -240,6 +240,7 @@ const styles = StyleSheet.create({
     speciesName: {
         color: colors.text,
         fontSize: 24,
+        lineHeight: 28,
         letterSpacing: 1,
     },
     flavorTextEntry: {
