@@ -55,7 +55,7 @@ export default function PokemonDetail() {
     const color = profile ? cardColor[profile.types[0]] : '';
 
     return (
-        <ScrollView>
+        <ScrollView style={styles.scrollContainer}>
             <View style={StyleSheet.flatten([styles.container])}>
                 <View style={styles.header}>
                     <View
@@ -198,6 +198,10 @@ export default function PokemonDetail() {
 const containerVerticalSize = 15;
 
 const styles = StyleSheet.create({
+    scrollContainer: {
+        // To prevent, white space showing when over scroll
+        backgroundColor: colors.background,
+    },
     container: {
         paddingHorizontal: 10,
         paddingVertical: containerVerticalSize,

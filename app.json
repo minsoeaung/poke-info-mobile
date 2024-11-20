@@ -3,6 +3,7 @@
     "name": "Poke Info",
     "slug": "poke_info",
     "version": "1.6.1",
+    "newArchEnabled": true,
     "platforms": [
       "android"
     ],

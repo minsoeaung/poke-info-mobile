@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
-        zIndex: -1,
+        // zIndex: -1,
         backgroundColor: colors.card,
     },
     searchInput: {
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     },
     itemListWrap: {
         flex: 1,
-        zIndex: -1, // To eliminate flash while PikachuRunning doing exiting animation
+        // zIndex: -1, // To eliminate flash while PikachuRunning doing exiting animation
     },
     pressable: {
         flex: 1,

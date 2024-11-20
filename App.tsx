@@ -1,7 +1,7 @@
 import { DotGothic16_400Regular, useFonts } from '@expo-google-fonts/dotgothic16';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
-import { type SQLiteDatabase, SQLiteProvider } from 'expo-sqlite/next';
+import { type SQLiteDatabase, SQLiteProvider } from 'expo-sqlite';
 import { StatusBar } from 'expo-status-bar';
 import React, { Suspense, useCallback } from 'react';
 
@@ -9,8 +9,8 @@ import MyText from './components/MyText';
 import { colors } from './constants/colors';
 import { BottomTabsNavigator } from './screens/BottomTabsNavigator';
 
-SplashScreen.preventAutoHideAsync().catch(() => {
-});
+// Keep the splash screen visible while we fetch resources
+SplashScreen.preventAutoHideAsync();
 
 export default function App() {
     const [fontsLoaded] = useFonts({ DotGothic16_400Regular });

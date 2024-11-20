@@ -1,6 +1,6 @@
 import { Octicons } from '@expo/vector-icons';
 import Constants from 'expo-constants';
-import { useSQLiteContext } from 'expo-sqlite/next';
+import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 

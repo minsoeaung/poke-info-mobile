@@ -1,4 +1,4 @@
-import { useSQLiteContext } from 'expo-sqlite/next';
+import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
 import { fetchData } from '../utils/fetchData';

@@ -7,6 +7,7 @@ import { Dimensions, Pressable, StyleSheet, TextInput, View } from 'react-native
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
 import ClearInputButton from '../components/ClearInputButton';
+import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonCard from '../components/PokemonCard';
 import PokemonCellItem from '../components/PokemonCellItem';
@@ -120,6 +121,7 @@ const styles = StyleSheet.create({
         left: 20,
         right: 20,
         elevation: 10,
+        zIndex: 1,
     },
     searchBox: {
         backgroundColor: colors.card,
@@ -157,10 +159,11 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: 'tomato',
         elevation: 10,
+        zIndex: 1,
     },
     pokedex: {
         flex: 1,
         // height: Dimensions.get('screen').height,
-        zIndex: -1,
+        // zIndex: -1,
     },
 });

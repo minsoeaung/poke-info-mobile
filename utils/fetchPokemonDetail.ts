@@ -1,4 +1,4 @@
-import { SQLiteDatabase } from 'expo-sqlite/next';
+import { SQLiteDatabase } from 'expo-sqlite';
 import { PokeAPI } from 'pokeapi-types';
 
 import { buildPokemonDetail } from './buildPokemonDetail';

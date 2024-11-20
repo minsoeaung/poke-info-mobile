@@ -13,7 +13,7 @@ const Stats = ({ stats, barColor }: Props) => {
     return (
         <View style={styles.container}>
             {(Object.keys(stats) as (keyof typeof stats)[]).map(statName => {
-                if (statName === 'total') return null;
+                if (statName === 'total') return null; // Because we do not need bar for total
                 const value = stats[statName][0];
                 const ratio = getStatRatio(value);
 
@@ -36,6 +36,13 @@ const Stats = ({ stats, barColor }: Props) => {
                     </View>
                 );
             })}
+            {/* For Total, just a number */}
+            <View style={styles.row}>
+                <MyText style={styles.statName} numberOfLines={1}>
+                    Total
+                </MyText>
+                <MyText style={styles.totalStatNumber}>{stats['total'][0]}</MyText>
+            </View>
         </View>
     );
 };
@@ -69,12 +76,18 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     statNumber: {
-        color: 'black',
+        color: colors.cardText,
         fontSize: 12,
         lineHeight: 16,
         textShadowColor: 'rgba(255, 255, 255, 0.5)',
         textShadowOffset: { width: 0.5, height: 0.5 },
         textShadowRadius: 0.5,
+        letterSpacing: 1,
+    },
+    totalStatNumber: {
+        flex: 2,
+        color: colors.text,
+        letterSpacing: 1.5,
     },
 });
 
