@@ -10,6 +10,12 @@ export const buildPokemonDetail = (
     species: PokeAPI.PokemonSpecies,
     evolutions: PokeAPI.EvolutionChain,
 ): PokemonDetailType => {
+    const allMoves = pokemon.moves.map(m => ({
+        name: m.move.name,
+        move_learn_method: m.version_group_details[m.version_group_details.length - 1].move_learn_method.name,
+        level: m.version_group_details[m.version_group_details.length - 1].level_learned_at || null,
+    }));
+
     return {
         id: pokemon.id,
         name: pokemon.name,
@@ -59,6 +65,12 @@ export const buildPokemonDetail = (
             total: [getStatTotal(pokemon.stats)],
         },
         evolutions: getEvolution(evolutions),
+        moves: {
+            levelUp: allMoves.filter(m => m.move_learn_method === 'level-up').map(m => [m.name, m.level]),
+            egg: allMoves.filter(m => m.move_learn_method === 'egg').map(m => m.name),
+            tutor: allMoves.filter(m => m.move_learn_method === 'tutor').map(m => m.name),
+            machine: allMoves.filter(m => m.move_learn_method === 'machine').map(m => m.name),
+        },
     };
 };
 

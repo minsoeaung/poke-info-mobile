@@ -2,27 +2,25 @@ import { FontAwesome } from '@expo/vector-icons';
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
-import React, { useLayoutEffect, useMemo, useRef, useState } from 'react';
+import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { Dimensions, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
+import pokemonDetailsJson from '../assets/data/pokemonDetails.json';
 import ClearInputButton from '../components/ClearInputButton';
-import MyText from '../components/MyText';
-import PikachuRunning from '../components/PikachuRunning';
 import PokemonCard from '../components/PokemonCard';
 import PokemonCellItem from '../components/PokemonCellItem';
 import { colors } from '../constants/colors';
 import { fonts } from '../constants/fonts';
-import pokemonDetails from '../constants/pokemonDetails';
 import useIsSearchVisible from '../hooks/useIsSearchVisible';
 import useSearchableList from '../hooks/useSearchableList';
-import { PokemonSmDetailType, StackParamList } from '../types';
+import { PokemonDetailType, PokemonSmDetailType, StackParamList } from '../types';
 
 const { height } = Dimensions.get('window');
 
-export default function PokeDex() {
-    const [ready, setReady] = useState(false);
+const pokemonDetails = pokemonDetailsJson as unknown as { [key: string]: PokemonDetailType };
 
+export default function PokeDex() {
     const pokemons: PokemonSmDetailType[] = useMemo(
         () =>
             Object.values(pokemonDetails).map(details => ({
@@ -55,11 +53,6 @@ export default function PokeDex() {
 
     return (
         <View style={styles.container}>
-            {!ready && (
-                <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut}>
-                    <PikachuRunning />
-                </Animated.View>
-            )}
             <Animated.View style={[StyleSheet.absoluteFill, styles.searchBoxContainer, animatedStyles]}>
                 <View style={styles.searchBox}>
                     <TextInput
@@ -100,9 +93,6 @@ export default function PokeDex() {
                     contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
                     onScrollBeginDrag={() => isVisible && toggle()}
-                    onLoad={() => {
-                        setReady(true);
-                    }}
                 />
             </View>
         </View>

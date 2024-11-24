@@ -7,12 +7,15 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
+import pokemonDetailsJson from '../assets/data/pokemonDetails.json';
 import { colors } from '../constants/colors';
-import pokemonDetails from '../constants/pokemonDetails';
-import { StackParamList } from '../types';
+import { MoveLearnMethod, PokemonDetailType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import getTypeSlotString from '../utils/getTypeSlotString';
+
 import hairlineWidth = StyleSheet.hairlineWidth;
+
+const pokemonDetails = pokemonDetailsJson as unknown as { [key: string]: PokemonDetailType };
 
 type Props<T> = {
     item: T;
@@ -26,14 +29,22 @@ const sizeToPaddingVertical = {
     small: 0,
 };
 
-const PokemonCellItem = <T extends { name: string; typeSlot?: number, isHidden?: boolean }>({
-                                                                                                item,
-                                                                                                color,
-                                                                                                isLast = false,
-                                                                                                size = 'default',
-                                                                                            }: Props<T>) => {
+const PokemonCellItem = <
+    T extends {
+        name: string;
+        typeSlot?: number;
+        isHidden?: boolean;
+        learnMethod?: MoveLearnMethod | '';
+        learnedAtLevel?: number | null;
+    },
+>({
+    item,
+    color,
+    isLast = false,
+    size = 'default',
+}: Props<T>) => {
     const typeSlotStr = typeof item?.typeSlot === 'number' ? getTypeSlotString(item.typeSlot) : '';
-    const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'TypeDetail'>>();
+    const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
     return (
         <Pressable
@@ -70,7 +81,10 @@ const PokemonCellItem = <T extends { name: string; typeSlot?: number, isHidden?:
                         </View>
                         <View>
                             <MyText
-                                style={StyleSheet.flatten([styles.name, { color: pressed ? 'tomato' : colors.cardText }])}
+                                style={StyleSheet.flatten([
+                                    styles.name,
+                                    { color: pressed ? 'tomato' : colors.cardText },
+                                ])}
                             >
                                 {getFormattedName(item.name)}
                             </MyText>
@@ -81,6 +95,15 @@ const PokemonCellItem = <T extends { name: string; typeSlot?: number, isHidden?:
                                     {item.isHidden && <SmallGreyText text="(hidden ability)" />}
                                 </MyText>
                             )}
+                            {item.learnMethod === 'levelUp' &&
+                                (item.learnedAtLevel ? (
+                                    <SmallGreyText text={`Learned at level ${item.learnedAtLevel}.`} />
+                                ) : (
+                                    <SmallGreyText text="Learnt by level up." />
+                                ))}
+                            {item.learnMethod === 'egg' && <SmallGreyText text="Learned through breeding." />}
+                            {item.learnMethod === 'machine' && <SmallGreyText text="Learned via TM/HM." />}
+                            {item.learnMethod === 'tutor' && <SmallGreyText text="Learned from a Tutor." />}
                         </View>
                     </View>
                     <MyText style={StyleSheet.flatten([styles.arrow, { color: pressed ? 'tomato' : colors.cardText }])}>

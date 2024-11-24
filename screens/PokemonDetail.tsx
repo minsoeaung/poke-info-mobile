@@ -2,30 +2,35 @@ import { Entypo, FontAwesome, FontAwesome5, FontAwesome6, MaterialIcons } from '
 import { RouteProp, useNavigation, useRoute } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
-import React, { useLayoutEffect } from 'react';
-import { ScrollView, StyleSheet, View } from 'react-native';
+import React, { useLayoutEffect, useState } from 'react';
+import { Pressable, ScrollView, StyleSheet, View } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
 
-import Card from '../components/Card';
+import { CardBody, CardTitle } from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import Evolutions from '../components/Evolutions';
 import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonAbilities from '../components/PokemonAbilities';
+import { PokemonMoves } from '../components/PokemonMoves';
 import PokemonTypes from '../components/PokemonTypes';
 import Stats from '../components/Stats';
 import { cardColor, colors } from '../constants/colors';
 import { useFetchPokemonDetail } from '../hooks/useFetchPokemonDetail';
-import { StackParamList } from '../types';
+import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 import hairlineWidth = StyleSheet.hairlineWidth;
+
+const cardGap = 24;
 
 export default function PokemonDetail() {
     const route = useRoute<RouteProp<StackParamList, 'PokemonDetail'>>();
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokemonDetail'>>();
     const { name } = route.params;
+
+    const [selectedMoveLearnMethod, setSelectedMoveLearnMethod] = useState<MoveLearnMethod>('levelUp');
 
     const { data, error, isLoading } = useFetchPokemonDetail(name);
 
@@ -54,9 +59,13 @@ export default function PokemonDetail() {
     const { profile, evolutions, id, breeding, training, stats } = data;
     const color = profile ? cardColor[profile.types[0]] : '';
 
+    const handleMoveTabPress = (method: MoveLearnMethod) => () => {
+        setSelectedMoveLearnMethod(method);
+    };
+
     return (
-        <ScrollView style={styles.scrollContainer}>
-            <View style={StyleSheet.flatten([styles.container])}>
+        <View style={styles.container}>
+            <ScrollView contentContainerStyle={styles.contentContainer} stickyHeaderIndices={[2, 5, 8, 11, 14]}>
                 <View style={styles.header}>
                     <View
                         style={StyleSheet.flatten([
@@ -92,7 +101,9 @@ export default function PokemonDetail() {
                         <MyText style={styles.flavorTextEntry}>{profile.flavorTextEntry.diamond}</MyText>
                     )}
                 </View>
-                <Card title="Profile" titleBgColor={color}>
+                {/*2*/}
+                <CardTitle titleBgColor={color} title="Profile" />
+                <CardBody>
                     <LabelAndValue
                         label={
                             <MyText style={{ color: colors.cardText }}>
@@ -117,8 +128,11 @@ export default function PokemonDetail() {
                         }
                         value={<PokemonAbilities abilities={profile.abilities} />}
                     />
-                </Card>
-                <Card title="Breeding" titleBgColor={color}>
+                </CardBody>
+                <View style={{ marginTop: cardGap }} />
+                {/*5*/}
+                <CardTitle titleBgColor={color} title="Breeding" />
+                <CardBody>
                     <LabelAndValue
                         label={
                             <MyText style={{ color: colors.cardText }}>
@@ -158,8 +172,11 @@ export default function PokemonDetail() {
                         }
                         value={<MyText style={{ color: colors.cardText }}>{breeding.eggCycles}</MyText>}
                     />
-                </Card>
-                <Card title="Training" titleBgColor={color}>
+                </CardBody>
+                <View style={{ marginTop: cardGap }} />
+                {/*8*/}
+                <CardTitle titleBgColor={color} title="Training" />
+                <CardBody>
                     <LabelAndValue
                         label="EV Yield"
                         value={<MyText style={{ color: colors.cardText }}>{training.evYield}</MyText>}
@@ -180,8 +197,11 @@ export default function PokemonDetail() {
                         label="Growth Rate"
                         value={<MyText style={{ color: colors.cardText }}>{training.growthRate}</MyText>}
                     />
-                </Card>
-                <Card title="Evolutions" titleBgColor={color}>
+                </CardBody>
+                <View style={{ marginTop: cardGap }} />
+                {/*11*/}
+                <CardTitle titleBgColor={color} title="Evolutions" />
+                <CardBody>
                     {evolutions.length > 0 ? (
                         <Evolutions evolutions={evolutions} />
                     ) : (
@@ -189,26 +209,154 @@ export default function PokemonDetail() {
                             <MyText style={{ color: 'tomato' }}>{getFormattedName(name)}</MyText> does not evolve.
                         </MyText>
                     )}
-                </Card>
-            </View>
-        </ScrollView>
+                </CardBody>
+                <View style={{ marginTop: cardGap }} />
+                {/* sticky 14 */}
+                <View style={styles.movesHeader}>
+                    <CardTitle titleBgColor={color} title="Moves" />
+                    <View style={{ backgroundColor: colors.card }}>
+                        <View style={styles.movesTabContainer}>
+                            <Pressable
+                                style={
+                                    selectedMoveLearnMethod === 'levelUp'
+                                        ? styles.selectedMoveTabItem
+                                        : styles.moveTabItem
+                                }
+                                onPress={handleMoveTabPress('levelUp')}
+                            >
+                                {({ pressed }) => (
+                                    <MyText
+                                        style={StyleSheet.flatten([
+                                            styles.moveTabItemText,
+                                            {
+                                                color:
+                                                    pressed || selectedMoveLearnMethod === 'levelUp'
+                                                        ? 'tomato'
+                                                        : 'black',
+                                            },
+                                        ])}
+                                    >
+                                        Natural
+                                    </MyText>
+                                )}
+                            </Pressable>
+                            <Pressable
+                                style={
+                                    selectedMoveLearnMethod === 'machine'
+                                        ? styles.selectedMoveTabItem
+                                        : styles.moveTabItem
+                                }
+                                onPress={handleMoveTabPress('machine')}
+                            >
+                                {({ pressed }) => (
+                                    <MyText
+                                        style={StyleSheet.flatten([
+                                            styles.moveTabItemText,
+                                            {
+                                                color:
+                                                    pressed || selectedMoveLearnMethod === 'machine'
+                                                        ? 'tomato'
+                                                        : 'black',
+                                            },
+                                        ])}
+                                    >
+                                        Machine
+                                    </MyText>
+                                )}
+                            </Pressable>
+                            <Pressable
+                                style={
+                                    selectedMoveLearnMethod === 'tutor'
+                                        ? styles.selectedMoveTabItem
+                                        : styles.moveTabItem
+                                }
+                                onPress={handleMoveTabPress('tutor')}
+                            >
+                                {({ pressed }) => (
+                                    <MyText
+                                        style={StyleSheet.flatten([
+                                            styles.moveTabItemText,
+                                            {
+                                                color:
+                                                    pressed || selectedMoveLearnMethod === 'tutor' ? 'tomato' : 'black',
+                                            },
+                                        ])}
+                                    >
+                                        Tutor
+                                    </MyText>
+                                )}
+                            </Pressable>
+                            <Pressable
+                                style={
+                                    selectedMoveLearnMethod === 'egg' ? styles.selectedMoveTabItem : styles.moveTabItem
+                                }
+                                onPress={handleMoveTabPress('egg')}
+                            >
+                                {({ pressed }) => (
+                                    <MyText
+                                        style={StyleSheet.flatten([
+                                            styles.moveTabItemText,
+                                            {
+                                                color:
+                                                    pressed || selectedMoveLearnMethod === 'egg' ? 'tomato' : 'black',
+                                            },
+                                        ])}
+                                    >
+                                        Egg
+                                    </MyText>
+                                )}
+                            </Pressable>
+                        </View>
+                        <View
+                            style={{
+                                borderLeftWidth: hairlineWidth,
+                                borderRightWidth: hairlineWidth,
+                                borderColor: 'black',
+                                marginHorizontal: moveCardSpace,
+                                flexDirection: 'row',
+                                paddingVertical: 10,
+                            }}
+                        >
+                            {selectedMoveLearnMethod === 'levelUp' && (
+                                <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>Lvl</MyText>
+                            )}
+                            <MyText style={{ flex: 2, textAlign: 'center', fontSize: 10 }}>Name</MyText>
+                            <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>Power</MyText>
+                            <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>Acc.%</MyText>
+                            <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>PP</MyText>
+                            <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>&nbsp;</MyText>
+                        </View>
+                    </View>
+                </View>
+                <View style={{ backgroundColor: colors.card }}>
+                    <View style={styles.moveListContainer}>
+                        {/* @ts-ignore */}
+                        <PokemonMoves
+                            moves={data.moves[selectedMoveLearnMethod]}
+                            learnMethod={selectedMoveLearnMethod}
+                        />
+                    </View>
+                </View>
+            </ScrollView>
+        </View>
     );
 }
 
 const containerVerticalSize = 15;
 
+const moveCardSpace = 10;
+
 const styles = StyleSheet.create({
-    scrollContainer: {
-        // To prevent, white space showing when over scroll
+    container: {
+        flex: 1,
         backgroundColor: colors.background,
     },
-    container: {
+    contentContainer: {
         paddingHorizontal: 10,
         paddingVertical: containerVerticalSize,
+        // gap: 16,
         display: 'flex',
-        flexDirection: 'column',
-        gap: 15,
-        backgroundColor: colors.background,
+        alignContent: 'center',
     },
     header: {
         display: 'flex',
@@ -221,7 +369,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderRadius: 5,
-        overflow: 'hidden',
+        // overflow: 'hidden',
         borderWidth: hairlineWidth,
         borderColor: 'black',
     },
@@ -239,7 +387,7 @@ const styles = StyleSheet.create({
         gap: containerVerticalSize,
     },
     intro: {
-        marginVertical: 10,
+        marginVertical: 22,
     },
     speciesName: {
         color: colors.text,
@@ -255,5 +403,41 @@ const styles = StyleSheet.create({
         color: colors.cardText,
         textAlign: 'center',
         paddingVertical: 10,
+    },
+    movesHeader: {
+        flex: 1,
+    },
+    movesTabContainer: {
+        backgroundColor: colors.card,
+        flex: 1,
+        flexDirection: 'row',
+
+        marginHorizontal: moveCardSpace,
+        marginTop: moveCardSpace,
+    },
+    selectedMoveTabItem: {
+        flex: 1,
+        borderWidth: hairlineWidth,
+        borderColor: 'black',
+        borderBottomWidth: 0,
+        paddingVertical: 10,
+    },
+    moveTabItem: {
+        flex: 1,
+        borderBottomWidth: hairlineWidth,
+        borderBottomColor: 'black',
+        paddingVertical: 10,
+    },
+    moveTabItemText: {
+        textAlign: 'center',
+    },
+    moveListContainer: {
+        backgroundColor: colors.card,
+        borderWidth: hairlineWidth,
+        borderColor: 'black',
+        borderBottomWidth: 0,
+        borderTopWidth: 0,
+        marginHorizontal: moveCardSpace,
+        marginBottom: moveCardSpace,
     },
 });

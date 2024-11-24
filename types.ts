@@ -1,35 +1,6 @@
 import { PokeAPI } from 'pokeapi-types';
+
 import { cardColor, typeColor } from './constants/colors';
-
-type PokemonFormType = {
-    slot: number;
-    type: PokeAPI.NamedAPIResource;
-};
-
-export type PokemonForm = PokeAPI.PokemonForm & {
-    types: PokemonFormType[];
-};
-
-export type PokemonType = Omit<PokeAPI.Pokemon, 'sprites'> & {
-    sprites: {
-        front_default?: string;
-        other: {
-            'official-artwork': {
-                front_default: string;
-            };
-        };
-    };
-};
-
-export type ScreenType =
-    | 'PokeDex'
-    | 'AbilityList'
-    | 'ItemList'
-    | 'ItemDetail'
-    | 'PokemonDetail'
-    | 'TypeDetail'
-    | 'AbilityDetail'
-    | 'About';
 
 type Name = {
     name: string;
@@ -42,6 +13,7 @@ export type StackParamList = {
     About: undefined;
 
     PokemonDetail: Name;
+    MoveDetail: Name;
     TypeDetail: {
         name: keyof typeof cardColor;
     };
@@ -118,4 +90,21 @@ export type PokemonDetailType = {
         total: number[];
     };
     evolutions: string[];
+    moves: {
+        levelUp: [string, number | null][];
+        egg: string[];
+        tutor: string[];
+        machine: string[];
+    };
 };
+
+export type PokemonMoveDetailType = {
+    name: string;
+    type: string;
+    damageClass: string;
+    power: number | null;
+    accuracy: number | null;
+    pp: number | null;
+};
+
+export type MoveLearnMethod = 'levelUp' | 'machine' | 'tutor' | 'egg';

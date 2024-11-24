@@ -7,6 +7,7 @@ import PokemonDetail from './PokemonDetail';
 import TypeDetail from './TypeDetail';
 import MyHeader from '../components/MyHeader';
 import { StackParamList } from '../types';
+import MoveDetail from './MoveDetail';
 
 const Stack = createNativeStackNavigator<StackParamList>();
 
@@ -23,6 +24,7 @@ export const AbilitiesStack: React.FC = () => {
             <Stack.Screen name="AbilityDetail" component={AbilityDetail} />
             <Stack.Screen name="PokemonDetail" component={PokemonDetail} />
             <Stack.Screen name="TypeDetail" component={TypeDetail} />
+            <Stack.Screen name="MoveDetail" component={MoveDetail} />
         </Stack.Navigator>
     );
 };

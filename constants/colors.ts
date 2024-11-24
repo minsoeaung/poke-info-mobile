@@ -1,14 +1,14 @@
 export const colors = {
-    headerText: 'white',
-    typeText: 'white',
+    headerText: '#FFFFFF',
+    typeText: '#FFFFFF',
 
     background: '#0D2F41',
-    text: 'white',
-    // background: 'white',
-    // text: 'black',
+    text: '#FFFFFF',
 
-    card: 'white',
-    cardText: 'black',
+    card: '#FFFFFF',
+    cardText: '#0D2F41',
+
+    tomato: 'tomato',
 } as const;
 
 export const cardColor = {

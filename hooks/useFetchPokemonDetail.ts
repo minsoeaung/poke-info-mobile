@@ -1,7 +1,7 @@
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
 
-import pokemonDetails from '../constants/pokemonDetails';
+import pokemonDetailsJson from '../assets/data/pokemonDetails.json';
 import { PokemonDetailType } from '../types';
 import { fetchPokemonDetail } from '../utils/fetchPokemonDetail';
 
@@ -10,6 +10,8 @@ interface ResData<T> {
     error: string;
     data: T | null;
 }
+
+const pokemonDetails = pokemonDetailsJson as unknown as { [key: string]: PokemonDetailType };
 
 export const useFetchPokemonDetail = (name: string | null): ResData<PokemonDetailType> => {
     const [isLoading, setIsLoading] = useState(true);
