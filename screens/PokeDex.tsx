@@ -33,7 +33,7 @@ export default function PokeDex() {
     );
 
     const { list, value, handleChangeText, clearInput } = useSearchableList(pokemons);
-    const { animatedStyles, isVisible, toggle } = useIsSearchVisible();
+    const { animatedStyles, isVisible, toggle, ref } = useIsSearchVisible();
     const listRef = useRef(null);
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokeDex'>>();
     useScrollToTop(listRef);
@@ -56,6 +56,7 @@ export default function PokeDex() {
             <Animated.View style={[StyleSheet.absoluteFill, styles.searchBoxContainer, animatedStyles]}>
                 <View style={styles.searchBox}>
                     <TextInput
+                        ref={ref}
                         style={styles.searchInput}
                         value={value}
                         onChangeText={handleChangeText}
@@ -79,6 +80,7 @@ export default function PokeDex() {
                         renderItem={({ item }) => {
                             return <PokemonCellItem item={item} color={colors.background} size="small" />;
                         }}
+                        keyboardShouldPersistTaps="always"
                     />
                 </Animated.View>
             )}
@@ -111,7 +113,7 @@ const styles = StyleSheet.create({
         left: 20,
         right: 20,
         elevation: 10,
-        zIndex: 1,
+        zIndex: 2,
     },
     searchBox: {
         backgroundColor: colors.card,
@@ -122,6 +124,7 @@ const styles = StyleSheet.create({
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        zIndex: 2,
     },
     searchInput: {
         height: 40,
@@ -131,6 +134,7 @@ const styles = StyleSheet.create({
         width: '90%',
         color: colors.cardText,
         letterSpacing: 1,
+        zIndex: 2,
     },
     searchBtn: {
         paddingVertical: 10,

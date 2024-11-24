@@ -174,7 +174,7 @@ export default function MoveDetail({ navigation, route }: Props) {
                         </Card>
                         <TitleOnlyCard
                             borderColor={colors.text}
-                            title="Pokémon with this ability"
+                            title="Pokémon with this move"
                             titleBgColor="whitesmoke"
                         />
                     </>

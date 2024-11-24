@@ -2,7 +2,7 @@
   "expo": {
     "name": "Poke Info",
     "slug": "poke_info",
-    "version": "1.6.1",
+    "version": "1.7.1",
     "newArchEnabled": true,
     "platforms": [
       "android"
@@ -10,14 +10,6 @@
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "backgroundColor": "#0D2F41",
-    "splash": {
-      "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0D2F41"
-    },
-    "updates": {
-      "fallbackToCacheTimeout": 0
-    },
     "assetBundlePatterns": [
       "**/*"
     ],
@@ -32,7 +24,7 @@
         "backgroundColor": "#0D2F41"
       },
       "package": "com.minsoeaung.pokeinfo",
-      "versionCode": 12,
+      "versionCode": 13,
       "permissions": []
     },
     "web": {
@@ -40,14 +32,13 @@
     },
     "plugins": [
       [
-        "./withAndroidRemovedPermissions",
-        [
-          "android.permission.READ_PHONE_STATE",
-          "android.permission.READ_EXTERNAL_STORAGE",
-          "android.permission.WRITE_EXTERNAL_STORAGE"
-        ]
-      ],
-      "expo-font"
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#0D2F41",
+          "image": "./assets/splash.png",
+          "imageWidth": 200
+        }
+      ]
     ],
     "extra": {
       "eas": {

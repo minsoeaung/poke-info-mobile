@@ -12,6 +12,11 @@ import { BottomTabsNavigator } from './screens/BottomTabsNavigator';
 // Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
+SplashScreen.setOptions({
+    duration: 500,
+    fade: true,
+});
+
 export default function App() {
     const [fontsLoaded] = useFonts({ DotGothic16_400Regular });
 
