@@ -134,5 +134,6 @@ const styles = StyleSheet.create({
         borderColor: colors.text,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
+        backgroundColor: colors.card,
     },
 });

@@ -13,8 +13,8 @@ import MyText from '../components/MyText';
 import PikachuRunning from '../components/PikachuRunning';
 import PokemonCellItem from '../components/PokemonCellItem';
 import TitleOnlyCard from '../components/TitleOnlyCard';
-import { colors, typeColor } from '../constants/colors';
 import pokemonDetails from '../constants/POKEMON_DETAILS';
+import { colors, typeColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
         borderColor: colors.text,
         borderBottomLeftRadius: 5,
         borderBottomRightRadius: 5,
+        backgroundColor: colors.card,
     },
     type: {
         paddingHorizontal: 3,

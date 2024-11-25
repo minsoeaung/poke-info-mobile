@@ -10,6 +10,7 @@ export type StackParamList = {
     PokeDex: undefined;
     AbilityList: undefined;
     ItemList: undefined;
+    MoveList: undefined;
     About: undefined;
 
     PokemonDetail: Name;
@@ -105,6 +106,7 @@ export type PokemonMoveDetailType = {
     power: number | null;
     accuracy: number | null;
     pp: number | null;
+    description: string | null;
 };
 
 export type MoveLearnMethod = 'levelUp' | 'machine' | 'tutor' | 'egg';

@@ -6,6 +6,7 @@ import { StyleSheet, View } from 'react-native';
 import { AbilitiesStack } from './AbilitiesStack';
 import AboutStack from './AboutStack';
 import { ItemsStack } from './ItemsStack';
+import { MovesStack } from './MovesStack';
 import PokeDexStack from './PokeDexStack';
 import MyTabBar from '../components/MyTabBar';
 import { colors } from '../constants/colors';
@@ -21,6 +22,7 @@ export const BottomTabsNavigator: React.FC = () => {
                 sceneContainerStyle={{ backgroundColor: colors.background }}
             >
                 <BottomTabs.Screen name="PokeDexStack" component={PokeDexStack} options={{ title: 'PokeDex' }} />
+                <BottomTabs.Screen name="MovesStack" component={MovesStack} options={{ title: 'Moves' }} />
                 <BottomTabs.Screen name="AbilitiesStack" component={AbilitiesStack} options={{ title: 'Abilities' }} />
                 <BottomTabs.Screen name="ItemsStack" component={ItemsStack} options={{ title: 'Items' }} />
                 <BottomTabs.Screen name="AboutStack" component={AboutStack} options={{ title: 'Settings' }} />

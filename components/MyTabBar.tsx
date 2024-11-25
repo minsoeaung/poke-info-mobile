@@ -1,4 +1,4 @@
-import { FontAwesome6, Ionicons, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { FontAwesome6, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import { Pressable, StyleSheet, View } from 'react-native';
 
@@ -55,8 +55,11 @@ const MyTabBar = ({ state, descriptors, navigation }: BottomTabBarProps) => {
                         style={styles.tab}
                     >
                         {route.name === 'PokeDexStack' && <MaterialIcons style={iconStyles} name="catching-pokemon" />}
+                        {route.name === 'MovesStack' && (
+                            <MaterialCommunityIcons style={iconStyles} name="lightning-bolt" />
+                        )}
                         {route.name === 'AbilitiesStack' && <FontAwesome6 style={iconStyles} name="dumbbell" />}
-                        {route.name === 'ItemsStack' && <MaterialCommunityIcons style={iconStyles} name="view-grid" />}
+                        {route.name === 'ItemsStack' && <Octicons style={iconStyles} name="tools" />}
                         {route.name === 'AboutStack' && <Ionicons style={iconStyles} name="settings" />}
                         <MyText style={styles.label}>{label}</MyText>
                     </Pressable>
