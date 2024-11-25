@@ -7,15 +7,12 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
-import pokemonDetailsJson from '../assets/data/pokemonDetails.json';
 import { colors } from '../constants/colors';
-import { MoveLearnMethod, PokemonDetailType, StackParamList } from '../types';
+import pokemonDetails from '../constants/POKEMON_DETAILS';
+import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import getTypeSlotString from '../utils/getTypeSlotString';
-
 import hairlineWidth = StyleSheet.hairlineWidth;
-
-const pokemonDetails = pokemonDetailsJson as unknown as { [key: string]: PokemonDetailType };
 
 type Props<T> = {
     item: T;
@@ -38,11 +35,11 @@ const PokemonCellItem = <
         learnedAtLevel?: number | null;
     },
 >({
-    item,
-    color,
-    isLast = false,
-    size = 'default',
-}: Props<T>) => {
+      item,
+      color,
+      isLast = false,
+      size = 'default',
+  }: Props<T>) => {
     const typeSlotStr = typeof item?.typeSlot === 'number' ? getTypeSlotString(item.typeSlot) : '';
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 

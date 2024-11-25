@@ -1,20 +1,17 @@
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
-import { Image } from 'expo-image';
-import React, { memo } from 'react';
+import React, { Fragment, memo } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
-import { MoveLearnMethod, PokemonMoveDetailType, StackParamList } from '../types';
+import { MoveLearnMethod, StackParamList } from '../types';
 import { MoveDamageClass } from './MoveDamageClass';
 import MyText from './MyText';
-import movesJson from '../assets/data/moves.json';
+import moves from '../constants/MOVES';
 import { colors, typeColor } from '../constants/colors';
 import getFormattedName from '../utils/getFormattedName';
 
 import hairlineWidth = StyleSheet.hairlineWidth;
-
-const moves = movesJson as unknown as { [key: string]: PokemonMoveDetailType };
 
 type Props =
     | {
@@ -29,28 +26,41 @@ type Props =
 export const PokemonMoves = ({ moves, learnMethod }: Props) => {
     if (learnMethod === 'levelUp') {
         return (
-            <FlashList
-                data={moves}
-                estimatedItemSize={60}
-                keyExtractor={item => item[0]}
-                renderItem={({ item }) => <Move item={item} learnMethod="levelUp" />}
-                ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
-            />
+            <View style={{ flex: 1 }}>
+                {moves.map(move => (
+                    <Move key={move[0]} item={move} learnMethod="levelUp" />
+                ))}
+            </View>
+
+            // <FlashList
+            //     data={moves}
+            //     estimatedItemSize={60}
+            //     keyExtractor={(item) => item[0]}
+            //     renderItem={({ item }) => <Move item={item} learnMethod="levelUp" />}
+            //     ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
+            //     extraData={learnMethod}
+            // />;
         );
     } else {
         return (
-            <FlashList
-                data={moves}
-                estimatedItemSize={60}
-                keyExtractor={item => item}
-                renderItem={({ item }) => <Move item={item} learnMethod="other" />}
-                ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
-            />
+            <View style={{ flex: 1 }}>
+                {moves.map(move => (
+                    <Move key={move} item={move} learnMethod="other" />
+                ))}
+            </View>
+            // <FlashList
+            //     data={moves}
+            //     estimatedItemSize={60}
+            //     keyExtractor={(item) => item}
+            //     renderItem={({ item }) => <Move item={item} learnMethod="other" />}
+            //     ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
+            //     extraData={learnMethod}
+            // />;
         );
     }
 };
 
-const Move = memo(
+export const Move = memo(
     ({
         item,
         learnMethod,
@@ -67,11 +77,17 @@ const Move = memo(
         return (
             <Pressable
                 style={{
-                    backgroundColor: colors.card,
+                    flex: 1,
                     flexDirection: 'row',
+                    alignItems: 'center',
+
                     borderBottomWidth: hairlineWidth,
-                    borderBottomColor: 'black',
+                    borderLeftWidth: hairlineWidth,
+                    borderRightWidth: hairlineWidth,
+                    borderColor: 'black',
+
                     paddingVertical: 10,
+                    marginHorizontal: 10,
                 }}
                 onPress={() => {
                     navigation.push('MoveDetail', move);

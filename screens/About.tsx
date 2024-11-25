@@ -11,7 +11,7 @@ import OpenURLTextButton from '../components/OpenURLTextButton';
 import { colors } from '../constants/colors';
 
 const PokeAPIURL = 'https://pokeapi.co/';
-const SourceCodeURL = 'https://github.com/minsoeaung/poke-info-mobile';
+const SourceCodeURL = 'https://github.com/minsoeaung/poke-info-mobile/';
 
 const About = () => {
     const db = useSQLiteContext();
@@ -100,7 +100,11 @@ const About = () => {
                 />
                 <LabelAndValue
                     label="Source Code"
-                    value={<OpenURLTextButton url={SourceCodeURL}>GitHub</OpenURLTextButton>}
+                    value={
+                        <View>
+                            <OpenURLTextButton url={SourceCodeURL}>GitHub</OpenURLTextButton>
+                        </View>
+                    }
                 />
             </Card>
             <Card>

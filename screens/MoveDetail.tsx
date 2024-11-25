@@ -5,7 +5,6 @@ import React, { useLayoutEffect, useMemo } from 'react';
 import { StyleSheet, View } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
 
-import pokemonDetailsJson from '../assets/data/pokemonDetails.json';
 import Card from '../components/Card';
 import ErrorDisplay from '../components/ErrorDisplay';
 import LabelAndValue from '../components/LabelAndValue';
@@ -15,11 +14,10 @@ import PikachuRunning from '../components/PikachuRunning';
 import PokemonCellItem from '../components/PokemonCellItem';
 import TitleOnlyCard from '../components/TitleOnlyCard';
 import { colors, typeColor } from '../constants/colors';
+import pokemonDetails from '../constants/POKEMON_DETAILS';
 import useFetchData from '../hooks/useFetchData';
-import { MoveLearnMethod, PokemonDetailType, StackParamList } from '../types';
+import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-
-const pokemonDetails = pokemonDetailsJson as unknown as { [key: string]: PokemonDetailType };
 
 type Props = NativeStackScreenProps<StackParamList, 'MoveDetail'>;
 

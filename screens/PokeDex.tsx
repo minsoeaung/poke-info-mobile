@@ -6,19 +6,17 @@ import React, { useLayoutEffect, useMemo, useRef } from 'react';
 import { Dimensions, Pressable, StyleSheet, TextInput, View } from 'react-native';
 import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
 
-import pokemonDetailsJson from '../assets/data/pokemonDetails.json';
 import ClearInputButton from '../components/ClearInputButton';
 import PokemonCard from '../components/PokemonCard';
 import PokemonCellItem from '../components/PokemonCellItem';
 import { colors } from '../constants/colors';
 import { fonts } from '../constants/fonts';
+import pokemonDetails from '../constants/POKEMON_DETAILS';
 import useIsSearchVisible from '../hooks/useIsSearchVisible';
 import useSearchableList from '../hooks/useSearchableList';
-import { PokemonDetailType, PokemonSmDetailType, StackParamList } from '../types';
+import { PokemonSmDetailType, StackParamList } from '../types';
 
 const { height } = Dimensions.get('window');
-
-const pokemonDetails = pokemonDetailsJson as unknown as { [key: string]: PokemonDetailType };
 
 export default function PokeDex() {
     const pokemons: PokemonSmDetailType[] = useMemo(
