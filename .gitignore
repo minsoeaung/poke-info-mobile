@@ -13,3 +13,7 @@ yarn.lock
 
 # macOS
 .DS_Store
+
+android
+ios
+.idea

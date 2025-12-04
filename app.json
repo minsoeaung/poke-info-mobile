@@ -24,8 +24,7 @@
         "backgroundColor": "#0D2F41"
       },
       "package": "com.minsoeaung.pokeinfo",
-      "versionCode": 14,
-      "permissions": []
+      "edgeToEdgeEnabled": true
     },
     "web": {
       "favicon": "./assets/icon.png"

@@ -37,7 +37,7 @@ export default function App() {
                     <BottomTabsNavigator />
                 </SQLiteProvider>
             </Suspense>
-            <StatusBar style="light" backgroundColor={colors.background} />
+            <StatusBar style="light" />
         </NavigationContainer>
     );
 }
