@@ -50,17 +50,18 @@ const Stats = ({ stats, barColor }: Props) => {
 const styles = StyleSheet.create({
     container: {
         display: 'flex',
-        gap: 7,
+        gap: 5,
     },
     row: {
         display: 'flex',
         flexDirection: 'row',
-        height: 15,
-        gap: 7,
+        gap: 5,
     },
     statName: {
         flex: 1,
         color: colors.text,
+        fontSize: 14,
+        lineHeight: 20,
     },
     statBar: {
         flex: 2,
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     statNumber: {
-        color: colors.cardText,
+        color: 'black',
         fontSize: 12,
         lineHeight: 16,
         textShadowColor: 'rgba(255, 255, 255, 0.5)',
@@ -88,6 +89,7 @@ const styles = StyleSheet.create({
         flex: 2,
         color: colors.text,
         letterSpacing: 1.5,
+        fontWeight: '600',
     },
 });
 

@@ -23,6 +23,8 @@ import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 import hairlineWidth = StyleSheet.hairlineWidth;
+import { GradientBackground } from '../components/GradientBackground';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 type SectionItem =
     | {
@@ -60,6 +62,8 @@ export default function PokemonDetail() {
     const [selectedMoveLearnMethod, setSelectedMoveLearnMethod] = useState<MoveLearnMethod>('levelUp');
 
     const { data, error, isLoading } = useFetchPokemonDetail(name);
+
+    const bTabBarHeight = useBottomTabBarHeight();
 
     const sectionData = useMemo(() => {
         if (!data) return [];
@@ -128,6 +132,7 @@ export default function PokemonDetail() {
 
     return (
         <View style={styles.container}>
+            <GradientBackground />
             <FlashList
                 showsVerticalScrollIndicator={false}
                 data={sectionData}
@@ -148,14 +153,7 @@ export default function PokemonDetail() {
                         return (
                             <View style={{ marginTop: 5, flex: 1 }}>
                                 <View style={styles.header}>
-                                    <View
-                                        style={StyleSheet.flatten([
-                                            styles.spriteContainer,
-                                            {
-                                                backgroundColor: colors.card,
-                                            },
-                                        ])}
-                                    >
+                                    <View style={styles.spriteContainer}>
                                         {profile?.sprite ? (
                                             <Image
                                                 style={styles.sprite}
@@ -163,7 +161,7 @@ export default function PokemonDetail() {
                                                     uri: profile.sprite,
                                                 }}
                                                 contentFit="cover"
-                                                accessibilityLabel={`Official artwork of ${name}`}
+                                                accessibilityLabel={name}
                                                 recyclingKey={`official_artwork_${name}`}
                                                 transition={200}
                                             />
@@ -343,28 +341,19 @@ export default function PokemonDetail() {
                 }}
                 stickyHeaderIndices={[1, 3, 5, 7, 9]}
                 getItemType={item => item.type}
-                estimatedItemSize={60}
                 ListFooterComponent={
-                    data.moves[selectedMoveLearnMethod].length > 0 ? (
-                        <View style={{ height: 10, backgroundColor: colors.card }} />
-                    ) : (
-                        <View style={{ backgroundColor: colors.card }}>
-                            <View
-                                style={{
-                                    marginHorizontal: 10,
-                                    borderWidth: hairlineWidth,
-                                    borderColor: 'black',
-                                    borderTopWidth: 0,
-                                    marginBottom: 10,
-                                    height: 200,
-                                    justifyContent: 'center',
-                                    alignItems: 'center',
-                                }}
-                            >
-                                <MyText style={{ textAlign: 'center' }}>None!</MyText>
+                    <View>
+                        {data.moves[selectedMoveLearnMethod].length > 0 ? (
+                            <View style={{ height: 10, backgroundColor: colors.card }} />
+                        ) : (
+                            <View style={{ backgroundColor: colors.card }}>
+                                <View style={styles.moveEmptyTextContainer}>
+                                    <MyText style={{ textAlign: 'center', color: 'white' }}>None!</MyText>
+                                </View>
                             </View>
-                        </View>
-                    )
+                        )}
+                        <View style={{ height: bTabBarHeight }} />
+                    </View>
                 }
             />
         </View>
@@ -392,7 +381,7 @@ const MovesHeader = ({
     return (
         <View style={styles.movesHeader}>
             <CardTitle titleBgColor={titleBgColor} title="Moves" />
-            <View style={{ backgroundColor: colors.card }}>
+            <View style={{ backgroundColor: colors.background }}>
                 <View style={styles.movesTabContainer}>
                     <Pressable
                         style={localSelected === 'levelUp' ? styles.selectedMoveTabItem : styles.moveTabItem}
@@ -406,7 +395,7 @@ const MovesHeader = ({
                                 style={StyleSheet.flatten([
                                     styles.moveTabItemText,
                                     {
-                                        color: pressed || localSelected === 'levelUp' ? 'tomato' : 'black',
+                                        color: pressed || localSelected === 'levelUp' ? 'tomato' : 'white',
                                     },
                                 ])}
                             >
@@ -426,7 +415,7 @@ const MovesHeader = ({
                                 style={StyleSheet.flatten([
                                     styles.moveTabItemText,
                                     {
-                                        color: pressed || localSelected === 'machine' ? 'tomato' : 'black',
+                                        color: pressed || localSelected === 'machine' ? 'tomato' : 'white',
                                     },
                                 ])}
                             >
@@ -446,7 +435,7 @@ const MovesHeader = ({
                                 style={StyleSheet.flatten([
                                     styles.moveTabItemText,
                                     {
-                                        color: pressed || localSelected === 'tutor' ? 'tomato' : 'black',
+                                        color: pressed || localSelected === 'tutor' ? 'tomato' : 'white',
                                     },
                                 ])}
                             >
@@ -466,7 +455,7 @@ const MovesHeader = ({
                                 style={StyleSheet.flatten([
                                     styles.moveTabItemText,
                                     {
-                                        color: pressed || localSelected === 'egg' ? 'tomato' : 'black',
+                                        color: pressed || localSelected === 'egg' ? 'tomato' : 'white',
                                     },
                                 ])}
                             >
@@ -475,24 +464,15 @@ const MovesHeader = ({
                         )}
                     </Pressable>
                 </View>
-                <View
-                    style={{
-                        borderLeftWidth: hairlineWidth,
-                        borderRightWidth: hairlineWidth,
-                        borderColor: 'black',
-                        marginHorizontal: moveCardSpace,
-                        flexDirection: 'row',
-                        paddingVertical: 10,
-                    }}
-                >
+                <View style={styles.moveListTableHeader}>
                     {selected === 'levelUp' && (
-                        <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>Lvl</MyText>
+                        <MyText style={StyleSheet.flatten([styles.moveListTableHeaderText, { flex: 1 }])}>Lvl</MyText>
                     )}
-                    <MyText style={{ flex: 2, textAlign: 'center', fontSize: 10 }}>Name</MyText>
-                    <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>Power</MyText>
-                    <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>Acc.%</MyText>
-                    <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>PP</MyText>
-                    <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>&nbsp;</MyText>
+                    <MyText style={StyleSheet.flatten([styles.moveListTableHeaderText, { flex: 2 }])}>Name</MyText>
+                    <MyText style={StyleSheet.flatten([styles.moveListTableHeaderText, { flex: 1 }])}>Power</MyText>
+                    <MyText style={StyleSheet.flatten([styles.moveListTableHeaderText, { flex: 1 }])}>Acc.%</MyText>
+                    <MyText style={StyleSheet.flatten([styles.moveListTableHeaderText, { flex: 1 }])}>PP</MyText>
+                    <MyText style={StyleSheet.flatten([styles.moveListTableHeaderText, { flex: 1 }])}>&nbsp;</MyText>
                 </View>
             </View>
         </View>
@@ -506,7 +486,6 @@ const moveCardSpace = 10;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.background,
         paddingHorizontal: 10,
     },
     contentContainer: {
@@ -527,13 +506,9 @@ const styles = StyleSheet.create({
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        borderRadius: 5,
-        // overflow: 'hidden',
-        borderWidth: hairlineWidth,
-        borderColor: 'black',
     },
     sprite: {
-        width: '120%',
+        width: '100%',
         aspectRatio: 1,
     },
     bad: {
@@ -567,7 +542,7 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     movesTabContainer: {
-        backgroundColor: colors.card,
+        backgroundColor: colors.background,
         flex: 1,
         flexDirection: 'row',
 
@@ -577,26 +552,40 @@ const styles = StyleSheet.create({
     selectedMoveTabItem: {
         flex: 1,
         borderWidth: hairlineWidth,
-        borderColor: 'black',
+        borderColor: 'white',
         borderBottomWidth: 0,
         paddingVertical: 10,
     },
     moveTabItem: {
         flex: 1,
         borderBottomWidth: hairlineWidth,
-        borderBottomColor: 'black',
+        borderBottomColor: 'white',
         paddingVertical: 10,
     },
     moveTabItemText: {
         textAlign: 'center',
     },
-    moveListContainer: {
-        backgroundColor: colors.card,
-        borderWidth: hairlineWidth,
-        borderColor: 'black',
-        borderBottomWidth: 0,
-        borderTopWidth: 0,
+    moveListTableHeader: {
+        borderLeftWidth: hairlineWidth,
+        borderRightWidth: hairlineWidth,
+        borderColor: 'white',
         marginHorizontal: moveCardSpace,
-        marginBottom: moveCardSpace,
+        flexDirection: 'row',
+        paddingVertical: 10,
+    },
+    moveListTableHeaderText: {
+        textAlign: 'center',
+        fontSize: 10,
+        color: 'white',
+    },
+    moveEmptyTextContainer: {
+        marginHorizontal: 10,
+        borderWidth: hairlineWidth,
+        borderColor: 'white',
+        borderTopWidth: 0,
+        marginBottom: 10,
+        height: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
 });

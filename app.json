@@ -1,50 +1,46 @@
 {
-  "expo": {
-    "name": "Poke Info",
-    "slug": "poke_info",
-    "version": "1.7.2",
-    "newArchEnabled": true,
-    "platforms": [
-      "android"
-    ],
-    "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "backgroundColor": "#0D2F41",
-    "assetBundlePatterns": [
-      "**/*"
-    ],
-    "ios": {
-      "supportsTablet": false,
-      "bundleIdentifier": "com.minsoeaung.pokeinfo",
-      "buildNumber": "1.7.2"
-    },
-    "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#0D2F41"
-      },
-      "package": "com.minsoeaung.pokeinfo",
-      "edgeToEdgeEnabled": true
-    },
-    "web": {
-      "favicon": "./assets/icon.png"
-    },
-    "plugins": [
-      [
-        "expo-splash-screen",
-        {
-          "backgroundColor": "#0D2F41",
-          "image": "./assets/splash.png",
-          "imageWidth": 200
+    "expo": {
+        "name": "Poke Info",
+        "slug": "poke_info",
+        "version": "1.7.2",
+        "newArchEnabled": true,
+        "platforms": ["android"],
+        "orientation": "portrait",
+        "icon": "./assets/icon.png",
+        "backgroundColor": "#0D2F41",
+        "assetBundlePatterns": ["**/*"],
+        "ios": {
+            "supportsTablet": false,
+            "bundleIdentifier": "com.minsoeaung.pokeinfo",
+            "buildNumber": "1.7.2"
+        },
+        "android": {
+            "adaptiveIcon": {
+                "foregroundImage": "./assets/adaptive-icon.png",
+                "backgroundColor": "#0D2F41"
+            },
+            "package": "com.minsoeaung.pokeinfo",
+            "edgeToEdgeEnabled": true
+        },
+        "web": {
+            "favicon": "./assets/icon.png"
+        },
+        "plugins": [
+            [
+                "expo-splash-screen",
+                {
+                    "backgroundColor": "#0D2F41",
+                    "image": "./assets/splash.png",
+                    "imageWidth": 200
+                }
+            ],
+            "expo-font",
+            "expo-sqlite"
+        ],
+        "extra": {
+            "eas": {
+                "projectId": "5e6e6725-869f-4d3b-bb11-72fd0f8c90bc"
+            }
         }
-      ],
-      "expo-font",
-      "expo-sqlite"
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "5e6e6725-869f-4d3b-bb11-72fd0f8c90bc"
-      }
     }
-  }
 }

@@ -18,6 +18,8 @@ import { colors, cardColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import { GradientBackground } from '../components/GradientBackground';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 type Props = NativeStackScreenProps<StackParamList, 'TypeDetail'>;
 
@@ -25,6 +27,7 @@ export default function TypeDetail({ route, navigation }: Props) {
     const { name } = route.params;
     const color = cardColor[name];
     const { isLoading, error, data } = useFetchData<PokeAPI.Type>(`https://pokeapi.co/api/v2/type/${name}`);
+    const bottom = useBottomTabBarHeight();
 
     const pokemonsWithThisType = useMemo(() => {
         if (data) {
@@ -43,9 +46,6 @@ export default function TypeDetail({ route, navigation }: Props) {
         });
     }, []);
 
-    const listRef = useRef(null);
-    useScrollToTop(listRef);
-
     if (isLoading) {
         return (
             <Animated.View style={StyleSheet.absoluteFill} exiting={FadeOut}>
@@ -60,10 +60,10 @@ export default function TypeDetail({ route, navigation }: Props) {
 
     return (
         <View style={styles.container}>
+            <GradientBackground />
             <FlashList
                 data={pokemonsWithThisType}
                 keyExtractor={(item, index) => `${index}-${item.name}`}
-                estimatedItemSize={60}
                 contentContainerStyle={styles.contentContainer}
                 ListHeaderComponentStyle={styles.listHeaderContainer}
                 ListHeaderComponent={
@@ -137,10 +137,17 @@ export default function TypeDetail({ route, navigation }: Props) {
                 }
                 renderItem={({ item, index }) => {
                     return (
-                        <PokemonCellItem item={item} color={color} isLast={index === pokemonsWithThisType.length - 1} />
+                        <View style={{ backgroundColor: colors.card }}>
+                            <PokemonCellItem
+                                item={item}
+                                color={color}
+                                isLast={index === pokemonsWithThisType.length - 1}
+                            />
+                        </View>
                     );
                 }}
                 ListEmptyComponent={<MyText style={styles.emptyText}>None!</MyText>}
+                ListFooterComponent={() => <View style={{ height: bottom }} />}
             />
         </View>
     );
@@ -158,7 +165,6 @@ const extractTypeName = (type: TypesProps['types'][number]) => type.name as keyo
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.background,
     },
     contentContainer: {
         padding: 10,
@@ -170,9 +176,6 @@ const styles = StyleSheet.create({
         paddingVertical: 50,
         textAlign: 'center',
         color: colors.text,
-        borderWidth: StyleSheet.hairlineWidth,
-        borderColor: colors.text,
-        borderBottomLeftRadius: 10,
-        borderBottomRightRadius: 10,
+        backgroundColor: colors.card,
     },
 });

@@ -9,6 +9,7 @@ import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import OpenURLTextButton from '../components/OpenURLTextButton';
 import { colors } from '../constants/colors';
+import { GradientBackground } from '../components/GradientBackground';
 
 const PokeAPIURL = 'https://pokeapi.co/';
 const SourceCodeURL = 'https://github.com/minsoeaung/poke-info-mobile/';
@@ -49,7 +50,8 @@ const About = () => {
 
     return (
         <View style={styles.container}>
-            <Card title="Caching">
+            <GradientBackground />
+            {/* <Card title="Caching">
                 <LabelAndValue
                     label="Status"
                     value={
@@ -92,7 +94,7 @@ const About = () => {
                         </Pressable>
                     )}
                 </View>
-            </Card>
+            </Card> */}
             <Card title="App">
                 <LabelAndValue
                     label="Version"

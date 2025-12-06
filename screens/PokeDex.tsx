@@ -15,10 +15,16 @@ import pokemonDetails from '../constants/POKEMON_DETAILS';
 import useIsSearchVisible from '../hooks/useIsSearchVisible';
 import useSearchableList from '../hooks/useSearchableList';
 import { PokemonSmDetailType, StackParamList } from '../types';
+import { LinearGradient } from 'expo-linear-gradient';
+import { GradientBackground } from '../components/GradientBackground';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { BlurView } from 'expo-blur';
 
 const { height } = Dimensions.get('window');
 
 export default function PokeDex() {
+    const bTabBarHeight = useBottomTabBarHeight();
+
     const pokemons: PokemonSmDetailType[] = useMemo(
         () =>
             Object.values(pokemonDetails).map(details => ({
@@ -34,6 +40,7 @@ export default function PokeDex() {
     const { animatedStyles, isVisible, toggle, ref } = useIsSearchVisible();
     const listRef = useRef(null);
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokeDex'>>();
+    // @ts-ignore
     useScrollToTop(listRef);
 
     useLayoutEffect(() => {
@@ -51,8 +58,15 @@ export default function PokeDex() {
 
     return (
         <View style={styles.container}>
+            <GradientBackground />
             <Animated.View style={[StyleSheet.absoluteFill, styles.searchBoxContainer, animatedStyles]}>
                 <View style={styles.searchBox}>
+                    <BlurView
+                        tint="dark"
+                        experimentalBlurMethod="dimezisBlurView"
+                        intensity={80}
+                        style={StyleSheet.absoluteFill}
+                    />
                     <TextInput
                         ref={ref}
                         style={styles.searchInput}
@@ -71,10 +85,15 @@ export default function PokeDex() {
                     exiting={FadeOut.duration(275)}
                     style={[StyleSheet.absoluteFill, styles.suggestionListView]}
                 >
+                    <BlurView
+                        tint="dark"
+                        experimentalBlurMethod="dimezisBlurView"
+                        intensity={80}
+                        style={StyleSheet.absoluteFill}
+                    />
                     <FlashList
                         data={list}
                         keyExtractor={item => item.name}
-                        estimatedItemSize={60}
                         renderItem={({ item }) => {
                             return <PokemonCellItem item={item} color={colors.background} size="small" />;
                         }}
@@ -84,15 +103,17 @@ export default function PokeDex() {
             )}
             <View style={styles.pokedex}>
                 <FlashList
+                    masonry
                     ref={listRef}
                     data={pokemons}
+                    ItemSeparatorComponent={() => <View style={{ height: 12 }} />}
                     renderItem={({ item }: { item: PokemonSmDetailType }) => <PokemonCard pokemon={item} />}
                     keyExtractor={item => item.name}
-                    numColumns={2}
-                    estimatedItemSize={82}
+                    numColumns={3}
                     contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
                     onScrollBeginDrag={() => isVisible && toggle()}
+                    ListFooterComponent={() => <View style={{ height: bTabBarHeight }} />}
                 />
             </View>
         </View>
@@ -102,23 +123,20 @@ export default function PokeDex() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.background,
-        paddingHorizontal: 5,
+        paddingHorizontal: 6,
     },
     searchBoxContainer: {
         height: 40,
         top: 0,
         left: 20,
         right: 20,
-        elevation: 10,
         zIndex: 2,
     },
     searchBox: {
-        backgroundColor: colors.card,
+        overflow: 'hidden',
+        borderColor: colors.tomato,
         borderWidth: 1,
         borderRadius: 10,
-        elevation: 5,
-        borderColor: 'black',
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -128,10 +146,12 @@ const styles = StyleSheet.create({
         height: 40,
         paddingVertical: 10,
         paddingLeft: 20,
-        fontFamily: fonts.fontDotGothic,
+        fontFamily: fonts.NotoSans_400Regular,
         width: '90%',
         color: colors.cardText,
         letterSpacing: 1,
+        lineHeight: 25,
+        fontSize: 14,
         zIndex: 2,
     },
     searchBtn: {
@@ -144,14 +164,12 @@ const styles = StyleSheet.create({
         left: 20,
         right: 20,
         borderRadius: 10,
-        paddingLeft: 10,
-        paddingRight: 10,
         height: height / 3,
-        backgroundColor: colors.card,
         borderWidth: 1,
-        borderColor: 'tomato',
+        borderColor: colors.tomato,
         elevation: 10,
         zIndex: 1,
+        overflow: 'hidden',
     },
     pokedex: {
         flex: 1,

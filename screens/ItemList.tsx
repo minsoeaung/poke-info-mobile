@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
         height: 40,
         paddingVertical: 10,
         paddingLeft: 20,
-        fontFamily: fonts.fontDotGothic,
+        fontFamily: fonts.NotoSans_400Regular,
         width: '90%',
     },
     itemListWrap: {

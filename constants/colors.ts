@@ -2,11 +2,12 @@ export const colors = {
     headerText: '#FFFFFF',
     typeText: '#FFFFFF',
 
-    background: '#0D2F41',
+    background: 'rgba(20, 40, 80, 1)',
     text: '#FFFFFF',
 
-    card: '#FFFFFF',
-    cardText: '#0D2F41',
+    // card: 'rgba(0,0,0,0.3)',
+    card: 'rgba(255,255,255,0.08)',
+    cardText: '#ffffff',
 
     tomato: 'tomato',
 } as const;

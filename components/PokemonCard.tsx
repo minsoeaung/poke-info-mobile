@@ -3,7 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import React, { memo } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import MyText from './MyText';
 import { cardColor, colors, typeColor } from '../constants/colors';
@@ -21,111 +21,86 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
     };
 
     return (
-        <Pressable onPress={goToPokemonDetailScreen} style={styles.pressable}>
-            {({ pressed }) => (
-                <View
-                    style={[
-                        styles.pokemonCard,
-                        {
-                            borderColor: pressed ? 'tomato' : 'transparent',
-                            backgroundColor: cardColor[types[0]],
-                        },
-                    ]}
-                >
-                    <View style={styles.spriteContainer}>
-                        {sprite ? (
-                            <Image
-                                style={styles.sprite}
-                                source={{
-                                    uri: sprite,
-                                }}
-                                contentFit="cover"
-                                accessibilityLabel={`Sprite of ${name}`}
-                                recyclingKey={`front_default_${name}`}
-                                transition={200}
-                            />
-                        ) : (
-                            <MaterialIcons name="image-not-supported" size={24} color="grey" />
-                        )}
-                    </View>
-                    <View style={styles.nameContainer}>
-                        <MyText style={styles.name} numberOfLines={1}>
-                            {getFormattedName(name)}
-                        </MyText>
-                        <View style={styles.types}>
-                            {types.map((type, index) => (
-                                <MyText
-                                    key={index}
-                                    style={StyleSheet.flatten([
-                                        styles.type,
-                                        {
-                                            backgroundColor: typeColor[type],
-                                        },
-                                    ])}
-                                >
-                                    {type}
-                                </MyText>
-                            ))}
-                        </View>
-                    </View>
-                </View>
-            )}
-        </Pressable>
+        <TouchableOpacity onPress={goToPokemonDetailScreen} style={styles.container}>
+            {/* <View
+                style={[
+                    styles.pokemonCard,
+                    {
+                        backgroundColor: cardColor[types[0]],
+                    },
+                ]}
+            > */}
+            <View style={styles.spriteContainer}>
+                {sprite ? (
+                    <Image
+                        style={styles.sprite}
+                        source={{
+                            uri: sprite,
+                        }}
+                        contentFit="cover"
+                        accessibilityLabel={name}
+                        recyclingKey={`official_artwork_${name}`}
+                        transition={200}
+                    />
+                ) : (
+                    <MaterialIcons name="image-not-supported" size={24} color="grey" />
+                )}
+            </View>
+            <MyText style={styles.name}>{getFormattedName(name)}</MyText>
+            <View style={styles.types}>
+                {types.map((type, index) => (
+                    <MyText
+                        key={index}
+                        style={StyleSheet.flatten([
+                            styles.type,
+                            {
+                                backgroundColor: typeColor[type],
+                            },
+                        ])}
+                    >
+                        {type}
+                    </MyText>
+                ))}
+            </View>
+        </TouchableOpacity>
     );
 };
 
 export default memo(PokemonCard);
 
+const IMAGE_BORDER = 20;
+
 const styles = StyleSheet.create({
-    pressable: {
-        flex: 1,
-        aspectRatio: 2,
-        margin: 5,
-    },
-    pokemonCard: {
-        flex: 1,
-        borderRadius: 10,
-        flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        borderWidth: 2,
+    container: {
+        padding: 8,
+        paddingBottom: 12,
+        borderRadius: 5,
         overflow: 'hidden',
-        padding: 5,
-        gap: 5,
+        backgroundColor: 'rgba(255,255,255,0.2)',
+        marginHorizontal: 6,
     },
     spriteContainer: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        display: 'flex',
+        backgroundColor: 'rgba(0,0,0,0.3)',
+        aspectRatio: 1,
+        borderTopRightRadius: IMAGE_BORDER,
+        borderBottomLeftRadius: IMAGE_BORDER,
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        backgroundColor: 'white',
-        borderRadius: 5,
-        borderWidth: hairlineWidth,
-        borderColor: 'black',
-    },
-    nameContainer: {
-        flex: 1,
-        width: '100%',
-        height: '100%',
-        flexDirection: 'column',
-        alignItems: 'flex-start',
-        gap: 5,
-    },
-    name: {
-        color: 'black',
-        textShadowColor: 'rgba(0, 0, 0, 0.7)',
-        textShadowOffset: { width: 0.2, height: 0.2 },
-        textShadowRadius: 1,
+        overflow: 'hidden',
     },
     sprite: {
-        width: '110%',
-        height: '110%',
-        aspectRatio: 1,
+        width: '100%',
+        height: '100%',
+        flex: 1,
     },
-    bad: {
-        fontSize: 14,
+    name: {
+        color: '#fff',
+        fontWeight: '600',
+        fontSize: 17,
+        lineHeight: 25,
+        marginTop: 5,
+        fontFamily: 'NotoSans_600SemiBold',
     },
     types: {
         flex: 1,
@@ -133,6 +108,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         flexWrap: 'wrap',
         gap: 5,
+        marginTop: 7,
     },
     type: {
         paddingHorizontal: 3,

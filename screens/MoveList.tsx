@@ -196,7 +196,7 @@ const styles = StyleSheet.create({
         paddingLeft: 20,
         color: colors.cardText,
         width: '90%',
-        fontFamily: fonts.fontDotGothic,
+        fontFamily: fonts.NotoSans_400Regular,
     },
     moveListWrap: {
         flex: 1,

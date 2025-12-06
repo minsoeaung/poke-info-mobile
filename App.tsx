@@ -1,4 +1,4 @@
-import { DotGothic16_400Regular, useFonts } from '@expo-google-fonts/dotgothic16';
+import { NotoSans_400Regular, NotoSans_600SemiBold, NotoSans_700Bold, useFonts } from '@expo-google-fonts/noto-sans';
 import { NavigationContainer } from '@react-navigation/native';
 import * as SplashScreen from 'expo-splash-screen';
 import { type SQLiteDatabase, SQLiteProvider } from 'expo-sqlite';
@@ -6,10 +6,9 @@ import { StatusBar } from 'expo-status-bar';
 import React, { Suspense, useCallback } from 'react';
 
 import MyText from './components/MyText';
-import { colors } from './constants/colors';
 import { BottomTabsNavigator } from './screens/BottomTabsNavigator';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 
-// Keep the splash screen visible while we fetch resources
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
@@ -18,7 +17,11 @@ SplashScreen.setOptions({
 });
 
 export default function App() {
-    const [fontsLoaded] = useFonts({ DotGothic16_400Regular });
+    const [fontsLoaded] = useFonts({
+        NotoSans_400Regular,
+        NotoSans_600SemiBold,
+        NotoSans_700Bold,
+    });
 
     const onLayoutRootView = useCallback(async () => {
         if (fontsLoaded) {
@@ -34,7 +37,9 @@ export default function App() {
         <NavigationContainer onReady={onLayoutRootView}>
             <Suspense fallback={<MyText>Loading...</MyText>}>
                 <SQLiteProvider databaseName="PokeInfo.db" onInit={migrateDbIfNeeded} useSuspense>
-                    <BottomTabsNavigator />
+                    <SafeAreaProvider>
+                        <BottomTabsNavigator />
+                    </SafeAreaProvider>
                 </SQLiteProvider>
             </Suspense>
             <StatusBar style="light" />

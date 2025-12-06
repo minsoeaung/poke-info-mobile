@@ -12,7 +12,7 @@ type Props = {
     childrenGap?: number;
 };
 
-const cardBorderRadius = 5;
+const cardBorderRadius = 0;
 
 const Card = ({ title, titleBgColor = 'whitesmoke', children, titleColor = 'black', childrenGap = 10 }: Props) => {
     return (
@@ -44,6 +44,7 @@ export const CardTitle = ({
                     marginTop,
                 },
             ])}
+            fontWeight="medium"
         >
             {title}
         </MyText>
@@ -65,8 +66,8 @@ const styles = StyleSheet.create({
         lineHeight: 24,
         paddingHorizontal: 15,
         paddingVertical: 5,
-        // borderTopLeftRadius: cardBorderRadius,
-        // borderTopRightRadius: cardBorderRadius,
+        borderTopLeftRadius: cardBorderRadius,
+        borderTopRightRadius: cardBorderRadius,
         overflow: 'hidden',
     },
     children: {
@@ -76,8 +77,8 @@ const styles = StyleSheet.create({
         color: colors.cardText,
         backgroundColor: colors.card,
 
-        // borderBottomLeftRadius: cardBorderRadius,
-        // borderBottomRightRadius: cardBorderRadius,
+        borderBottomLeftRadius: cardBorderRadius,
+        borderBottomRightRadius: cardBorderRadius,
         overflow: 'hidden',
     },
 });

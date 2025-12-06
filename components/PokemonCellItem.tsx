@@ -1,4 +1,4 @@
-import { MaterialIcons } from '@expo/vector-icons';
+import { AntDesign, MaterialIcons } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
@@ -7,11 +7,12 @@ import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
 import SmallGreyText from './SmallGreyText';
-import { colors } from '../constants/colors';
 import pokemonDetails from '../constants/POKEMON_DETAILS';
+import { colors } from '../constants/colors';
 import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import getTypeSlotString from '../utils/getTypeSlotString';
+
 import hairlineWidth = StyleSheet.hairlineWidth;
 
 type Props<T> = {
@@ -35,11 +36,11 @@ const PokemonCellItem = <
         learnedAtLevel?: number | null;
     },
 >({
-      item,
-      color,
-      isLast = false,
-      size = 'default',
-  }: Props<T>) => {
+    item,
+    color,
+    isLast = false,
+    size = 'default',
+}: Props<T>) => {
     const typeSlotStr = typeof item?.typeSlot === 'number' ? getTypeSlotString(item.typeSlot) : '';
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList>>();
 
@@ -48,8 +49,7 @@ const PokemonCellItem = <
             style={[
                 styles.pokemonCell,
                 {
-                    borderBottomLeftRadius: isLast ? 5 : 0,
-                    borderBottomRightRadius: isLast ? 5 : 0,
+                    borderBottomWidth: isLast ? 0 : StyleSheet.hairlineWidth,
                     paddingVertical: sizeToPaddingVertical[size],
                 },
             ]}
@@ -103,9 +103,9 @@ const PokemonCellItem = <
                             {item.learnMethod === 'tutor' && <SmallGreyText text="Learned from a Tutor." />}
                         </View>
                     </View>
-                    <MyText style={StyleSheet.flatten([styles.arrow, { color: pressed ? 'tomato' : colors.cardText }])}>
-                        {'> '}
-                    </MyText>
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <AntDesign name="arrow-right" size={16} color={pressed ? colors.tomato : 'white'} />
+                    </View>
                 </>
             )}
         </Pressable>
@@ -118,9 +118,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: 15,
-        backgroundColor: colors.card,
         borderBottomWidth: hairlineWidth,
-        borderBottomColor: 'black',
+        borderBottomColor: 'white',
     },
     spriteAndName: {
         flexDirection: 'row',
@@ -129,8 +128,8 @@ const styles = StyleSheet.create({
         flex: 15,
     },
     spriteContainer: {
-        width: 50,
-        height: 50,
+        width: 70,
+        height: 70,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

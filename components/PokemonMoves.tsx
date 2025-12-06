@@ -13,6 +13,8 @@ import getFormattedName from '../utils/getFormattedName';
 
 import hairlineWidth = StyleSheet.hairlineWidth;
 
+import { AntDesign } from '@expo/vector-icons';
+
 type Props =
     | {
           learnMethod: 'levelUp';
@@ -84,7 +86,7 @@ export const Move = memo(
                     borderBottomWidth: hairlineWidth,
                     borderLeftWidth: hairlineWidth,
                     borderRightWidth: hairlineWidth,
-                    borderColor: 'black',
+                    borderColor: 'white',
 
                     paddingVertical: 10,
                     marginHorizontal: 10,
@@ -100,14 +102,14 @@ export const Move = memo(
                                 style={{
                                     flex: 1,
                                     textAlign: 'center',
-                                    color: pressed ? colors.tomato : 'black',
+                                    color: pressed ? colors.tomato : 'white',
                                 }}
                             >
                                 {learnMethod === 'levelUp' ? item[1] || '-' : ''}
                             </MyText>
                         )}
                         <View style={{ flex: 2, paddingLeft: learnMethod === 'levelUp' ? 0 : 15 }}>
-                            <MyText numberOfLines={1} style={{ color: pressed ? colors.tomato : 'black' }}>
+                            <MyText numberOfLines={1} style={{ color: pressed ? colors.tomato : 'white' }}>
                                 {getFormattedName(move.name)}
                             </MyText>
                             <View style={{ flex: 1, flexDirection: 'row', gap: 5, alignItems: 'center' }}>
@@ -128,20 +130,20 @@ export const Move = memo(
                             style={{
                                 flex: 1,
                                 textAlign: 'center',
-                                color: pressed ? colors.tomato : 'black',
+                                color: pressed ? colors.tomato : 'white',
                             }}
                         >
                             {move.power || '-'}
                         </MyText>
-                        <MyText style={{ flex: 1, textAlign: 'center', color: pressed ? colors.tomato : 'black' }}>
+                        <MyText style={{ flex: 1, textAlign: 'center', color: pressed ? colors.tomato : 'white' }}>
                             {move.accuracy || '-'}
                         </MyText>
-                        <MyText style={{ flex: 1, textAlign: 'center', color: pressed ? colors.tomato : 'black' }}>
+                        <MyText style={{ flex: 1, textAlign: 'center', color: pressed ? colors.tomato : 'white' }}>
                             {move.pp || '-'}
                         </MyText>
-                        <MyText style={{ flex: 1, textAlign: 'center', color: pressed ? colors.tomato : 'black' }}>
-                            {'>'}
-                        </MyText>
+                        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                            <AntDesign name="arrow-right" size={12} color={pressed ? colors.tomato : 'white'} />
+                        </View>
                     </>
                 )}
             </Pressable>

@@ -77,10 +77,10 @@ const Evolutions = ({ evolutions }: Props) => {
 
 const Evolution = memo(
     ({
-         fromSpeciesName,
-         reason,
-         toSpeciesName,
-     }: {
+        fromSpeciesName,
+        reason,
+        toSpeciesName,
+    }: {
         fromSpeciesName: string;
         reason: string;
         toSpeciesName: string;
@@ -144,13 +144,11 @@ const Evolution = memo(
                                 color: 'grey',
                             }}
                         >
-                            {fromPokemonIsLoading || fromSpeciesLoading
-                                ? '...'
-                                : fromPokemonError || fromSpeciesError}
+                            {fromPokemonIsLoading || fromSpeciesLoading ? '...' : fromPokemonError || fromSpeciesError}
                         </MyText>
                     )}
                     <View style={styles.arrow}>
-                        <AntDesign name="arrowright" size={25} color={colors.cardText} />
+                        <AntDesign name="arrow-right" size={25} color={colors.cardText} />
                     </View>
                     {toPokemon ? (
                         <Pressable onPress={() => goToPokemonDetailScreen(toPokemon.name)} style={styles.to}>
@@ -225,6 +223,7 @@ const styles = StyleSheet.create({
     },
     trigger: {
         color: colors.cardText,
+        marginTop: 8,
         // textTransform: 'capitalize',
     },
 });

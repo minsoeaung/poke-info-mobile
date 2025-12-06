@@ -1,7 +1,6 @@
 import { StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
-import { colors } from '../constants/colors';
 import getFormattedName from '../utils/getFormattedName';
 
 type Props = {
@@ -17,9 +16,10 @@ const TitleOnlyCard = ({ borderColor, title, titleBgColor }: Props) => {
                 style={StyleSheet.flatten([
                     styles.title,
                     {
-                        color: colors.cardText,
+                        color: 'black',
                     },
                 ])}
+                fontWeight="medium"
             >
                 {getFormattedName(title)}
             </MyText>
@@ -31,8 +31,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: 'whitesmoke',
-        borderTopLeftRadius: 5,
-        borderTopRightRadius: 5,
         overflow: 'hidden',
     },
     title: {
