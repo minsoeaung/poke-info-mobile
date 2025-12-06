@@ -14,7 +14,7 @@ const AboutStack: React.FC = () => {
                 header: props => <MyHeader headerProps={props} />,
             }}
         >
-            <Stack.Screen name="About" component={About} options={{ title: 'Settings' }} />
+            <Stack.Screen name="About" component={About} options={{ title: 'About' }} />
         </Stack.Navigator>
     );
 };

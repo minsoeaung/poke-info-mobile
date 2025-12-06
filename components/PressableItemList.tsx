@@ -10,6 +10,7 @@ import getFormattedName from '../utils/getFormattedName';
 import hairlineWidth = StyleSheet.hairlineWidth;
 import { AntDesign } from '@expo/vector-icons';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { EmptyView } from './EmptyView';
 
 type Props<T> = {
     data: T[];
@@ -33,11 +34,12 @@ export default function PressableItemList<T extends { name: string }>({
     return (
         <View style={styles.listContainer}>
             <FlashList
+                masonry
                 ref={listRef}
                 numColumns={2}
                 data={data}
                 keyExtractor={key => key.name}
-                ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
+                ListEmptyComponent={() => <EmptyView text="No results found" />}
                 renderItem={({ item, index }) => (
                     <Pressable onPress={() => onPressItem(item)}>
                         {({ pressed }) => {

@@ -1,4 +1,4 @@
-import { FontAwesome6, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
+import { AntDesign, FontAwesome6, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
 import { createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
 import React from 'react';
@@ -31,7 +31,7 @@ export const BottomTabsNavigator: React.FC = () => {
                             } else if (route.name === 'ItemsStack') {
                                 return <Octicons size={size} color={color} name="tools" />;
                             } else if (route.name === 'AboutStack') {
-                                return <Ionicons size={size} color={color} name="settings" />;
+                                return <AntDesign size={size} color={color} name="info-circle" />;
                             }
                         },
                         headerShown: false,
@@ -54,7 +54,7 @@ export const BottomTabsNavigator: React.FC = () => {
                 <BottomTabs.Screen name="MovesStack" component={MovesStack} options={{ title: 'Moves' }} />
                 <BottomTabs.Screen name="AbilitiesStack" component={AbilitiesStack} options={{ title: 'Abilities' }} />
                 <BottomTabs.Screen name="ItemsStack" component={ItemsStack} options={{ title: 'Items' }} />
-                <BottomTabs.Screen name="AboutStack" component={AboutStack} options={{ title: 'Settings' }} />
+                <BottomTabs.Screen name="AboutStack" component={AboutStack} options={{ title: 'About' }} />
             </BottomTabs.Navigator>
         </View>
     );

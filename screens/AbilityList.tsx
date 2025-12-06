@@ -12,18 +12,12 @@ import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
 import { StackParamList } from '../types';
 
-import hairlineWidth = StyleSheet.hairlineWidth;
-
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-
 export default function AbilityList() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(ABILITIES);
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'AbilityList'>>();
     const listRef = useRef(null);
     // @ts-ignore
     useScrollToTop(listRef);
-
-    const bTabBarHeight = useBottomTabBarHeight();
 
     return (
         <View style={styles.container}>
@@ -56,27 +50,30 @@ export default function AbilityList() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        padding: 10,
+        padding: 12,
+        paddingTop: 0,
     },
     searchInputWrap: {
-        backgroundColor: colors.card,
+        overflow: 'hidden',
         borderRadius: 5,
         marginBottom: 10,
         paddingRight: 5,
         position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
+        backgroundColor: colors.card,
     },
     searchInput: {
-        height: 40,
-        paddingVertical: 10,
+        fontSize: 16,
         paddingLeft: 20,
-        color: colors.cardText,
-        width: '90%',
         fontFamily: fonts.NotoSans_400Regular,
+        width: '90%',
+        color: 'white',
     },
     abilityListWrap: {
         flex: 1,
         color: colors.cardText,
+        borderRadius: 5,
+        overflow: 'hidden',
     },
 });

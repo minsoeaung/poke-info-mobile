@@ -1,15 +1,14 @@
-import { Octicons } from '@expo/vector-icons';
-import Constants from 'expo-constants';
 import { useSQLiteContext } from 'expo-sqlite';
 import { useEffect, useState } from 'react';
-import { Pressable, StyleSheet, View } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 
 import Card from '../components/Card';
+import { GradientBackground } from '../components/GradientBackground';
 import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import OpenURLTextButton from '../components/OpenURLTextButton';
 import { colors } from '../constants/colors';
-import { GradientBackground } from '../components/GradientBackground';
+import * as Application from 'expo-application';
 
 const PokeAPIURL = 'https://pokeapi.co/';
 const SourceCodeURL = 'https://github.com/minsoeaung/poke-info-mobile/';
@@ -95,31 +94,33 @@ const About = () => {
                     )}
                 </View>
             </Card> */}
-            <Card title="App">
-                <LabelAndValue
-                    label="Version"
-                    value={<MyText style={styles.version}>v{Constants.expoConfig?.version || '1.6.0'}</MyText>}
-                />
-                <LabelAndValue
-                    label="Source Code"
-                    value={
-                        <View>
-                            <OpenURLTextButton url={SourceCodeURL}>GitHub</OpenURLTextButton>
-                        </View>
-                    }
-                />
-            </Card>
             <Card>
                 <MyText style={styles.description}>
-                    PokeInfo is a free, simple, and unofficial app that consumes REST API from{' '}
-                    <OpenURLTextButton url={PokeAPIURL}>{PokeAPIURL}</OpenURLTextButton>. The app provides some useful
-                    information for all pokemon, abilities, and items.
+                    PokeInfo is a free, simple, and unofficial app that consumes REST API from {PokeAPIURL}. The app
+                    provides some useful information for all pokemon, abilities, and items.
                 </MyText>
                 <MyText style={styles.description}>
                     Pokémon and Pokémon character names are trademarks of Nintendo. All image contents within are
                     Copyright The Pokémon Company.
                 </MyText>
             </Card>
+            <MyText fontWeight="medium" style={{ fontSize: 20, marginTop: 10 }}>
+                {Application.applicationName}
+            </MyText>
+            <View style={{ gap: 5 }}>
+                <LabelAndValue
+                    label="Version"
+                    value={<MyText style={styles.valueText}>{Application.nativeApplicationVersion}</MyText>}
+                />
+                <LabelAndValue
+                    label="Build"
+                    value={<MyText style={styles.valueText}>{Application.nativeBuildVersion}</MyText>}
+                />
+                <LabelAndValue
+                    label="Source"
+                    value={<OpenURLTextButton url={SourceCodeURL}>GitHub</OpenURLTextButton>}
+                />
+            </View>
         </View>
     );
 };
@@ -133,14 +134,14 @@ const styles = StyleSheet.create({
     },
     description: {
         paddingVertical: 10,
-        letterSpacing: 0.5,
         color: colors.cardText,
     },
     footer: {
         marginBottom: 10,
     },
-    version: {
+    valueText: {
         color: colors.cardText,
+        fontSize: 16,
     },
     buttons: {
         flexDirection: 'row',

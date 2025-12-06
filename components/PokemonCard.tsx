@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     name: {
         color: '#fff',
         fontWeight: '600',
-        fontSize: 17,
+        fontSize: 16,
         lineHeight: 25,
         marginTop: 5,
         fontFamily: 'NotoSans_600SemiBold',
