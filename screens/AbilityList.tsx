@@ -4,22 +4,30 @@ import React, { useRef } from 'react';
 import { StyleSheet, TextInput, View } from 'react-native';
 
 import ClearInputButton from '../components/ClearInputButton';
+import { GradientBackground } from '../components/GradientBackground';
 import PressableItemList from '../components/PressableItemList';
 import ABILITIES from '../constants/ABILITIES';
 import { colors } from '../constants/colors';
 import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
 import { StackParamList } from '../types';
+
 import hairlineWidth = StyleSheet.hairlineWidth;
+
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 export default function AbilityList() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(ABILITIES);
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'AbilityList'>>();
     const listRef = useRef(null);
+    // @ts-ignore
     useScrollToTop(listRef);
+
+    const bTabBarHeight = useBottomTabBarHeight();
 
     return (
         <View style={styles.container}>
+            <GradientBackground />
             <View style={styles.searchInputWrap}>
                 <TextInput
                     style={styles.searchInput}
@@ -33,6 +41,7 @@ export default function AbilityList() {
             </View>
             <View style={styles.abilityListWrap}>
                 <PressableItemList
+                    // @ts-ignore
                     listRef={listRef}
                     data={list}
                     onPressItem={item => {
@@ -48,8 +57,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        paddingBottom: 0,
-        backgroundColor: colors.background,
     },
     searchInputWrap: {
         backgroundColor: colors.card,
@@ -70,9 +77,6 @@ const styles = StyleSheet.create({
     },
     abilityListWrap: {
         flex: 1,
-        backgroundColor: colors.card,
         color: colors.cardText,
-        borderRadius: 5,
-        overflow: 'hidden',
     },
 });

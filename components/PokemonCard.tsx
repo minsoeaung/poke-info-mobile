@@ -76,7 +76,8 @@ const styles = StyleSheet.create({
         paddingBottom: 12,
         borderRadius: 5,
         overflow: 'hidden',
-        backgroundColor: 'rgba(255,255,255,0.2)',
+        backgroundColor: 'rgba(255,255,255,0.15)',
+        // backgroundColor: colors.card,
         marginHorizontal: 6,
     },
     spriteContainer: {

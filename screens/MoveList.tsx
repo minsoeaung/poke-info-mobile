@@ -5,6 +5,7 @@ import React, { useRef } from 'react';
 import { Pressable, StyleSheet, TextInput, View } from 'react-native';
 
 import ClearInputButton from '../components/ClearInputButton';
+import { GradientBackground } from '../components/GradientBackground';
 import { MoveDamageClass } from '../components/MoveDamageClass';
 import MyText from '../components/MyText';
 import SmallGreyText from '../components/SmallGreyText';
@@ -16,13 +17,15 @@ import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 import hairlineWidth = StyleSheet.hairlineWidth;
-import { GradientBackground } from '../components/GradientBackground';
+
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 const moveNames = Object.keys(MOVES).map(moveName => ({ name: moveName }));
 
 export default function MoveList() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(moveNames);
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'MoveList'>>();
+    const bTabBarHeight = useBottomTabBarHeight();
     const listRef = useRef(null);
     // @ts-ignore
     useScrollToTop(listRef);
@@ -42,133 +45,133 @@ export default function MoveList() {
                 <ClearInputButton onPress={clearInput} />
             </View>
             <View style={styles.moveListWrap}>
-                <FlashList
-                    data={['StickyHeader', ...list]}
-                    keyExtractor={item => {
-                        if (typeof item === 'string') {
-                            return item;
-                        } else {
-                            return item.name;
-                        }
-                    }}
-                    stickyHeaderIndices={[0]}
-                    renderItem={({ item }) => {
-                        if (typeof item === 'string') {
-                            return (
-                                <View style={styles.header}>
-                                    <MyText style={{ flex: 3, ...styles.headerText }}>Name</MyText>
-                                    <MyText style={{ flex: 2, ...styles.headerText }}>Type,Cat.</MyText>
-                                    <MyText style={{ flex: 1, ...styles.headerText }}>Power</MyText>
-                                    <MyText style={{ flex: 1, ...styles.headerText }}>Acc.%</MyText>
-                                    <MyText style={{ flex: 1, ...styles.headerText }}>PP</MyText>
-                                    <MyText style={{ flex: 1, ...styles.headerText }}>&nbsp;</MyText>
-                                </View>
-                            );
-                        } else {
-                            const move = MOVES[item.name];
+                {list.length === 0 ? (
+                    <MyText style={styles.emptyText}>None!</MyText>
+                ) : (
+                    <FlashList
+                        data={['StickyHeader', ...list]}
+                        keyExtractor={item => {
+                            if (typeof item === 'string') {
+                                return item;
+                            } else {
+                                return item.name;
+                            }
+                        }}
+                        stickyHeaderIndices={[0]}
+                        renderItem={({ item, index }) => {
+                            const isLast = list.length === index;
 
-                            return (
-                                <Pressable
-                                    style={{
-                                        flex: 1,
-                                        borderBottomWidth: hairlineWidth,
-                                        borderColor: 'white',
-                                        paddingVertical: 10,
-                                        // marginHorizontal: 10,
-                                    }}
-                                    onPress={() => {
-                                        navigation.push('MoveDetail', move);
-                                    }}
-                                >
-                                    {({ pressed }) => (
-                                        <>
-                                            <View
-                                                style={{
-                                                    flex: 1,
-                                                    flexDirection: 'row',
-                                                    alignItems: 'center',
-                                                }}
-                                            >
-                                                <View style={{ flex: 3, paddingLeft: 15 }}>
-                                                    <MyText
-                                                        numberOfLines={1}
-                                                        style={{ color: pressed ? colors.tomato : 'white' }}
-                                                    >
-                                                        {getFormattedName(move.name)}
-                                                    </MyText>
-                                                </View>
+                            if (typeof item === 'string') {
+                                return (
+                                    <View style={styles.header}>
+                                        <MyText style={{ flex: 3, ...styles.headerText }}>Name</MyText>
+                                        <MyText style={{ flex: 2, ...styles.headerText }}>Type,Cat.</MyText>
+                                        <MyText style={{ flex: 1, ...styles.headerText }}>Power</MyText>
+                                        <MyText style={{ flex: 1, ...styles.headerText }}>Acc.%</MyText>
+                                        <MyText style={{ flex: 1, ...styles.headerText }}>PP</MyText>
+                                        <MyText style={{ flex: 1, ...styles.headerText }}>&nbsp;</MyText>
+                                    </View>
+                                );
+                            } else {
+                                const move = MOVES[item.name];
+
+                                return (
+                                    <Pressable
+                                        style={{
+                                            flex: 1,
+                                            borderBottomWidth: isLast ? 0 : hairlineWidth,
+                                            // borderLeftWidth: hairlineWidth,
+                                            // borderRightColor: hairlineWidth,
+                                            borderColor: 'black',
+                                            paddingVertical: 10,
+                                            backgroundColor: colors.card,
+                                        }}
+                                        onPress={() => {
+                                            navigation.push('MoveDetail', move);
+                                        }}
+                                    >
+                                        {({ pressed }) => (
+                                            <>
                                                 <View
                                                     style={{
-                                                        flex: 2,
+                                                        flex: 1,
                                                         flexDirection: 'row',
-                                                        gap: 5,
                                                         alignItems: 'center',
                                                     }}
                                                 >
-                                                    <MyText
-                                                        style={StyleSheet.flatten([
-                                                            styles.type,
-                                                            {
-                                                                backgroundColor:
-                                                                    typeColor[move.type as keyof typeof typeColor],
-                                                            },
-                                                        ])}
+                                                    <View style={{ flex: 3, paddingLeft: 15 }}>
+                                                        <MyText
+                                                            numberOfLines={1}
+                                                            style={{
+                                                                color: pressed ? colors.tomato : 'white',
+                                                                fontSize: 16,
+                                                            }}
+                                                        >
+                                                            {getFormattedName(move.name)}
+                                                        </MyText>
+                                                    </View>
+                                                    <View
+                                                        style={{
+                                                            flex: 2,
+                                                            flexDirection: 'row',
+                                                            gap: 5,
+                                                            alignItems: 'center',
+                                                        }}
                                                     >
-                                                        {move.type}
+                                                        <MyText
+                                                            style={StyleSheet.flatten([
+                                                                styles.type,
+                                                                {
+                                                                    backgroundColor:
+                                                                        typeColor[move.type as keyof typeof typeColor],
+                                                                },
+                                                            ])}
+                                                        >
+                                                            {move.type}
+                                                        </MyText>
+                                                        <MoveDamageClass damageClass={move.damageClass} />
+                                                    </View>
+                                                    <MyText
+                                                        style={{
+                                                            ...styles.moveNumberText,
+                                                            color: pressed ? colors.tomato : 'white',
+                                                        }}
+                                                    >
+                                                        {move.power || '-'}
                                                     </MyText>
-                                                    <MoveDamageClass damageClass={move.damageClass} />
+                                                    <MyText
+                                                        style={{
+                                                            ...styles.moveNumberText,
+                                                            color: pressed ? colors.tomato : 'white',
+                                                        }}
+                                                    >
+                                                        {move.accuracy || '-'}
+                                                    </MyText>
+                                                    <MyText
+                                                        style={{
+                                                            ...styles.moveNumberText,
+                                                            color: pressed ? colors.tomato : 'white',
+                                                        }}
+                                                    >
+                                                        {move.pp || '-'}
+                                                    </MyText>
                                                 </View>
-                                                <MyText
-                                                    style={{
-                                                        flex: 1,
-                                                        textAlign: 'center',
-                                                        color: pressed ? colors.tomato : 'white',
-                                                    }}
-                                                >
-                                                    {move.power || '-'}
-                                                </MyText>
-                                                <MyText
-                                                    style={{
-                                                        flex: 1,
-                                                        textAlign: 'center',
-                                                        color: pressed ? colors.tomato : 'white',
-                                                    }}
-                                                >
-                                                    {move.accuracy || '-'}
-                                                </MyText>
-                                                <MyText
-                                                    style={{
-                                                        flex: 1,
-                                                        textAlign: 'center',
-                                                        color: pressed ? colors.tomato : 'white',
-                                                    }}
-                                                >
-                                                    {move.pp || '-'}
-                                                </MyText>
-                                                <MyText
-                                                    style={{
-                                                        flex: 1,
-                                                        textAlign: 'center',
-                                                        color: pressed ? colors.tomato : 'black',
-                                                    }}
-                                                >
-                                                    {'>'}
-                                                </MyText>
-                                            </View>
-                                            {move.description && (
-                                                <View style={{ marginLeft: 10 }}>
-                                                    <SmallGreyText text={move.description} />
-                                                </View>
-                                            )}
-                                        </>
-                                    )}
-                                </Pressable>
-                            );
+                                                {move.description && (
+                                                    <View style={{ marginLeft: 10 }}>
+                                                        <SmallGreyText text={move.description} />
+                                                    </View>
+                                                )}
+                                            </>
+                                        )}
+                                    </Pressable>
+                                );
 
-                            // return <Move item={item.name} learnMethod="other" />;
-                        }
-                    }}
-                />
+                                // return <Move item={item.name} learnMethod="other" />;
+                            }
+                        }}
+                        ListFooterComponent={() => <View style={{ height: bTabBarHeight }} />}
+                    />
+                )}
             </View>
         </View>
     );
@@ -198,11 +201,11 @@ const styles = StyleSheet.create({
     },
     moveListWrap: {
         flex: 1,
-        backgroundColor: colors.card,
         color: colors.cardText,
-        borderRadius: 5,
-        overflow: 'hidden',
-        position: 'relative',
+        borderRadius: 10,
+        // overflow: 'hidden',
+        // borderWidth: StyleSheet.hairlineWidth,
+        // borderColor: 'white',
     },
     header: {
         flexDirection: 'row',
@@ -217,7 +220,7 @@ const styles = StyleSheet.create({
         paddingHorizontal: 3,
         paddingVertical: 2,
         color: colors.typeText,
-        fontSize: 9,
+        fontSize: 10,
         lineHeight: 12,
         borderRadius: 2,
 
@@ -225,5 +228,15 @@ const styles = StyleSheet.create({
         textShadowOffset: { width: 0.5, height: 0.5 },
         textShadowRadius: 3,
         textTransform: 'capitalize',
+    },
+    moveNumberText: {
+        flex: 1,
+        textAlign: 'center',
+        fontSize: 16,
+    },
+    emptyText: {
+        paddingVertical: 100,
+        textAlign: 'center',
+        color: colors.cardText,
     },
 });

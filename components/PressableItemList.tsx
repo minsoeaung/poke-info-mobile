@@ -1,6 +1,6 @@
-import { FlashList } from '@shopify/flash-list';
+import { FlashList, FlashListRef } from '@shopify/flash-list';
 import { Image } from 'expo-image';
-import React from 'react';
+import React, { RefObject } from 'react';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
@@ -8,6 +8,8 @@ import SmallGreyText from './SmallGreyText';
 import { colors } from '../constants/colors';
 import getFormattedName from '../utils/getFormattedName';
 import hairlineWidth = StyleSheet.hairlineWidth;
+import { AntDesign } from '@expo/vector-icons';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 type Props<T> = {
     data: T[];
@@ -15,26 +17,28 @@ type Props<T> = {
     size?: 'small' | 'medium' | 'large';
     spriteExtractor?: (item: T) => string | null;
     extraExtractor?: (item: T) => string | null;
-    listRef?: React.LegacyRef<FlashList<T>> | null;
+    listRef?: RefObject<FlashListRef<T>> | null;
 };
 
 export default function PressableItemList<T extends { name: string }>({
-                                                                          data,
-                                                                          onPressItem,
-                                                                          size = 'medium',
-                                                                          spriteExtractor,
-                                                                          extraExtractor,
-                                                                          listRef,
-                                                                      }: Props<T>) {
+    data,
+    onPressItem,
+    size = 'medium',
+    spriteExtractor,
+    extraExtractor,
+    listRef,
+}: Props<T>) {
+    const bottom = useBottomTabBarHeight();
+
     return (
         <View style={styles.listContainer}>
             <FlashList
                 ref={listRef}
+                numColumns={2}
                 data={data}
                 keyExtractor={key => key.name}
                 ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
-                estimatedItemSize={54}
-                renderItem={({ item }) => (
+                renderItem={({ item, index }) => (
                     <Pressable onPress={() => onPressItem(item)}>
                         {({ pressed }) => {
                             const sprite = spriteExtractor ? spriteExtractor(item) : null;
@@ -44,9 +48,7 @@ export default function PressableItemList<T extends { name: string }>({
                                 <View
                                     style={[
                                         styles.listItem,
-                                        {
-                                            paddingVertical: paddingVerticals[size],
-                                        },
+                                        { borderRightWidth: index % 2 === 0 ? StyleSheet.hairlineWidth : 0 },
                                     ]}
                                 >
                                     <View style={styles.spriteNameExtra}>
@@ -85,19 +87,14 @@ export default function PressableItemList<T extends { name: string }>({
                                             </View>
                                         )}
                                     </View>
-                                    <MyText
-                                        style={{
-                                            color: pressed ? 'tomato' : colors.cardText,
-                                        }}
-                                    >
-                                        {'>'}
-                                    </MyText>
+                                    <AntDesign name="arrow-right" size={14} color={pressed ? colors.tomato : 'white'} />
                                 </View>
                             );
                         }}
                     </Pressable>
                 )}
                 keyboardShouldPersistTaps="handled"
+                ListFooterComponent={() => <View style={{ height: bottom }} />}
             />
         </View>
     );
@@ -126,9 +123,11 @@ const styles = StyleSheet.create({
         borderBottomWidth: hairlineWidth,
         borderBottomColor: 'black',
         paddingHorizontal: 15,
+        paddingVertical: 15,
+        backgroundColor: colors.card,
     },
     emptyText: {
-        paddingVertical: 50,
+        paddingVertical: 100,
         textAlign: 'center',
         color: colors.cardText,
     },
@@ -140,7 +139,9 @@ const styles = StyleSheet.create({
     sprite: {
         position: 'absolute',
     },
-    name: {},
+    name: {
+        fontSize: 16,
+    },
     extra: {
         marginLeft: 10,
     },
