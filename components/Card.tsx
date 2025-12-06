@@ -12,7 +12,7 @@ type Props = {
     childrenGap?: number;
 };
 
-const cardBorderRadius = 0;
+const cardBorderRadius = 10;
 
 const Card = ({ title, titleBgColor = 'whitesmoke', children, titleColor = 'black', childrenGap = 10 }: Props) => {
     return (

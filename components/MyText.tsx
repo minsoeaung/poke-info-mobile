@@ -24,7 +24,7 @@ export default function MyText(props: Props) {
         <Text
             {...props}
             style={{
-                color: colors.background,
+                color: 'white',
                 fontFamily: fontWeightToFamily[fontWeight],
                 fontWeight,
                 fontSize: 14,

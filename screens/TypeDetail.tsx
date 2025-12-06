@@ -136,13 +136,17 @@ export default function TypeDetail({ route, navigation }: Props) {
                     </>
                 }
                 renderItem={({ item, index }) => {
+                    const isLast = index === pokemonsWithThisType.length - 1;
+
                     return (
-                        <View style={{ backgroundColor: colors.card }}>
-                            <PokemonCellItem
-                                item={item}
-                                color={color}
-                                isLast={index === pokemonsWithThisType.length - 1}
-                            />
+                        <View
+                            style={{
+                                backgroundColor: colors.card,
+                                borderBottomLeftRadius: isLast ? 10 : 0,
+                                borderBottomRightRadius: isLast ? 10 : 0,
+                            }}
+                        >
+                            <PokemonCellItem item={item} color={color} isLast={isLast} />
                         </View>
                     );
                 }}

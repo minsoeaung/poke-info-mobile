@@ -103,13 +103,17 @@ export const Move = memo(
                                     flex: 1,
                                     textAlign: 'center',
                                     color: pressed ? colors.tomato : 'white',
+                                    fontSize: 16,
                                 }}
                             >
                                 {learnMethod === 'levelUp' ? item[1] || '-' : ''}
                             </MyText>
                         )}
                         <View style={{ flex: 2, paddingLeft: learnMethod === 'levelUp' ? 0 : 15 }}>
-                            <MyText numberOfLines={1} style={{ color: pressed ? colors.tomato : 'white' }}>
+                            <MyText
+                                // numberOfLines={1}
+                                style={{ color: pressed ? colors.tomato : 'white', fontSize: 16 }}
+                            >
                                 {getFormattedName(move.name)}
                             </MyText>
                             <View style={{ flex: 1, flexDirection: 'row', gap: 5, alignItems: 'center' }}>
@@ -131,18 +135,33 @@ export const Move = memo(
                                 flex: 1,
                                 textAlign: 'center',
                                 color: pressed ? colors.tomato : 'white',
+                                fontSize: 16,
                             }}
                         >
                             {move.power || '-'}
                         </MyText>
-                        <MyText style={{ flex: 1, textAlign: 'center', color: pressed ? colors.tomato : 'white' }}>
+                        <MyText
+                            style={{
+                                flex: 1,
+                                fontSize: 16,
+                                textAlign: 'center',
+                                color: pressed ? colors.tomato : 'white',
+                            }}
+                        >
                             {move.accuracy || '-'}
                         </MyText>
-                        <MyText style={{ flex: 1, textAlign: 'center', color: pressed ? colors.tomato : 'white' }}>
+                        <MyText
+                            style={{
+                                flex: 1,
+                                fontSize: 16,
+                                textAlign: 'center',
+                                color: pressed ? colors.tomato : 'white',
+                            }}
+                        >
                             {move.pp || '-'}
                         </MyText>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                            <AntDesign name="arrow-right" size={12} color={pressed ? colors.tomato : 'white'} />
+                            <AntDesign name="arrow-right" size={16} color={pressed ? colors.tomato : 'white'} />
                         </View>
                     </>
                 )}

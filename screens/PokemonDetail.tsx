@@ -54,6 +54,8 @@ type SectionItem =
 
 const cardGap = 24;
 
+const labelIconSize = 16;
+
 export default function PokemonDetail() {
     const route = useRoute<RouteProp<StackParamList, 'PokemonDetail'>>();
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokemonDetail'>>();
@@ -148,7 +150,8 @@ export default function PokemonDetail() {
                 //
                 //     return item.type;
                 // }}
-                renderItem={({ item }) => {
+                renderItem={({ item, index }) => {
+                    const isLast = sectionData.length - 1 === index;
                     if (item.type === 'MainHeader') {
                         return (
                             <View style={{ marginTop: 5, flex: 1 }}>
@@ -175,7 +178,11 @@ export default function PokemonDetail() {
                                     </View>
                                 </View>
                                 <View style={styles.intro}>
-                                    {profile.species && <MyText style={styles.speciesName}>{profile.species}</MyText>}
+                                    {profile.species && (
+                                        <MyText style={styles.speciesName} fontWeight="medium">
+                                            {profile.species}
+                                        </MyText>
+                                    )}
                                     {!!profile.flavorTextEntry.diamond && (
                                         <MyText style={styles.flavorTextEntry}>
                                             {profile.flavorTextEntry.diamond}
@@ -192,24 +199,31 @@ export default function PokemonDetail() {
                                 <CardBody>
                                     <LabelAndValue
                                         label={
-                                            <MyText style={{ color: colors.cardText }}>
-                                                <Entypo name="ruler" color="tomato" /> Height
+                                            <MyText style={styles.labelText}>
+                                                <Entypo name="ruler" size={labelIconSize} color="tomato" />
+                                                &nbsp;&nbsp;Height
                                             </MyText>
                                         }
-                                        value={<MyText style={{ color: colors.cardText }}>{profile.height}</MyText>}
+                                        value={<MyText style={styles.valueText}>{profile.height}</MyText>}
                                     />
                                     <LabelAndValue
                                         label={
-                                            <MyText style={{ color: colors.cardText }}>
-                                                <FontAwesome5 name="weight-hanging" color="tomato" /> Weight
+                                            <MyText style={styles.labelText}>
+                                                <FontAwesome5
+                                                    name="weight-hanging"
+                                                    size={labelIconSize}
+                                                    color="tomato"
+                                                />
+                                                &nbsp;&nbsp;Weight
                                             </MyText>
                                         }
-                                        value={<MyText style={{ color: colors.cardText }}>{profile.weight}</MyText>}
+                                        value={<MyText style={styles.valueText}>{profile.weight}</MyText>}
                                     />
                                     <LabelAndValue
                                         label={
-                                            <MyText style={{ color: colors.cardText }}>
-                                                <FontAwesome6 name="dumbbell" color="tomato" /> Abilities
+                                            <MyText style={styles.labelText}>
+                                                <FontAwesome6 name="dumbbell" size={labelIconSize} color="tomato" />
+                                                &nbsp;&nbsp;Abilities
                                             </MyText>
                                         }
                                         value={<PokemonAbilities abilities={profile.abilities} />}
@@ -223,12 +237,13 @@ export default function PokemonDetail() {
                                 <CardBody>
                                     <LabelAndValue
                                         label={
-                                            <MyText style={{ color: colors.cardText }}>
-                                                <FontAwesome name="circle" color="tomato" /> Gender
+                                            <MyText style={styles.labelText}>
+                                                <FontAwesome name="circle" color="tomato" size={labelIconSize} />
+                                                &nbsp;&nbsp;Gender
                                             </MyText>
                                         }
                                         value={
-                                            <MyText style={{ color: colors.cardText }}>
+                                            <MyText style={styles.valueText}>
                                                 {profile.gender
                                                     ? `♂️ ${profile.gender.male} %, ♀️ ${profile.gender.female} %`
                                                     : 'Genderless'}
@@ -237,16 +252,17 @@ export default function PokemonDetail() {
                                     />
                                     <LabelAndValue
                                         label={
-                                            <MyText style={{ color: colors.cardText }}>
-                                                <FontAwesome6 name="egg" color="tomato" /> Egg Groups
+                                            <MyText style={styles.labelText}>
+                                                <FontAwesome6 name="egg" size={labelIconSize} color="tomato" />
+                                                &nbsp;&nbsp;Egg Groups
                                             </MyText>
                                         }
                                         value={
                                             <MyText
-                                                style={{
-                                                    textTransform: 'capitalize',
-                                                    color: colors.cardText,
-                                                }}
+                                                style={StyleSheet.flatten([
+                                                    styles.valueText,
+                                                    { textTransform: 'capitalize' },
+                                                ])}
                                             >
                                                 {getFormattedName(breeding.eggGroups.join(', '))}
                                             </MyText>
@@ -254,11 +270,12 @@ export default function PokemonDetail() {
                                     />
                                     <LabelAndValue
                                         label={
-                                            <MyText style={{ color: colors.cardText }}>
-                                                <FontAwesome name="rotate-right" color="tomato" /> Egg cycles
+                                            <MyText style={styles.labelText}>
+                                                <FontAwesome name="rotate-right" size={labelIconSize} color="tomato" />
+                                                &nbsp;&nbsp;Egg cycles
                                             </MyText>
                                         }
-                                        value={<MyText style={{ color: colors.cardText }}>{breeding.eggCycles}</MyText>}
+                                        value={<MyText style={styles.valueText}>{breeding.eggCycles}</MyText>}
                                     />
                                 </CardBody>
                             </View>
@@ -269,27 +286,23 @@ export default function PokemonDetail() {
                                 <CardBody>
                                     <LabelAndValue
                                         label="EV Yield"
-                                        value={<MyText style={{ color: colors.cardText }}>{training.evYield}</MyText>}
+                                        value={<MyText style={styles.valueText}>{training.evYield}</MyText>}
                                     />
                                     <LabelAndValue
                                         label="Catch Rate"
-                                        value={<MyText style={{ color: colors.cardText }}>{training.catchRate}</MyText>}
+                                        value={<MyText style={styles.valueText}>{training.catchRate}</MyText>}
                                     />
                                     <LabelAndValue
                                         label="Base Friendship"
-                                        value={
-                                            <MyText style={{ color: colors.cardText }}>{training.baseHappiness}</MyText>
-                                        }
+                                        value={<MyText style={styles.valueText}>{training.baseHappiness}</MyText>}
                                     />
                                     <LabelAndValue
                                         label="Base Exp."
-                                        value={<MyText style={{ color: colors.cardText }}>{training.baseExp}</MyText>}
+                                        value={<MyText style={styles.valueText}>{training.baseExp}</MyText>}
                                     />
                                     <LabelAndValue
                                         label="Growth Rate"
-                                        value={
-                                            <MyText style={{ color: colors.cardText }}>{training.growthRate}</MyText>
-                                        }
+                                        value={<MyText style={styles.valueText}>{training.growthRate}</MyText>}
                                     />
                                 </CardBody>
                             </View>
@@ -301,10 +314,12 @@ export default function PokemonDetail() {
                                     {evolutions.length > 0 ? (
                                         <Evolutions evolutions={evolutions} />
                                     ) : (
-                                        <MyText style={styles.nope}>
-                                            <MyText style={{ color: 'tomato' }}>{getFormattedName(name)}</MyText> does
-                                            not evolve.
-                                        </MyText>
+                                        <View style={styles.nope}>
+                                            <MyText>
+                                                <MyText style={{ color: 'tomato' }}>{getFormattedName(name)}</MyText>{' '}
+                                                does not evolve.
+                                            </MyText>
+                                        </View>
                                     )}
                                 </CardBody>
                             </View>
@@ -322,8 +337,6 @@ export default function PokemonDetail() {
                             <View
                                 style={{
                                     backgroundColor: colors.card,
-                                    borderRightWidth: hairlineWidth,
-                                    borderColor: 'black',
                                 }}
                             >
                                 <Move item={[item.name, item.level]} learnMethod="levelUp" />
@@ -344,15 +357,32 @@ export default function PokemonDetail() {
                 ListFooterComponent={
                     <View>
                         {data.moves[selectedMoveLearnMethod].length > 0 ? (
-                            <View style={{ height: 10, backgroundColor: colors.card }} />
+                            <View
+                                style={{
+                                    height: 10,
+                                    backgroundColor: colors.card,
+                                    borderBottomLeftRadius: 10,
+                                    borderBottomRightRadius: 10,
+                                }}
+                            />
                         ) : (
-                            <View style={{ backgroundColor: colors.card }}>
+                            <View
+                                style={{
+                                    backgroundColor: colors.card,
+                                    borderBottomLeftRadius: 10,
+                                    borderBottomRightRadius: 10,
+                                }}
+                            >
                                 <View style={styles.moveEmptyTextContainer}>
                                     <MyText style={{ textAlign: 'center', color: 'white' }}>None!</MyText>
                                 </View>
                             </View>
                         )}
-                        <View style={{ height: bTabBarHeight }} />
+                        <View
+                            style={{
+                                height: bTabBarHeight + 10,
+                            }}
+                        />
                     </View>
                 }
             />
@@ -381,7 +411,7 @@ const MovesHeader = ({
     return (
         <View style={styles.movesHeader}>
             <CardTitle titleBgColor={titleBgColor} title="Moves" />
-            <View style={{ backgroundColor: colors.background }}>
+            <View style={{ backgroundColor: colors.card }}>
                 <View style={styles.movesTabContainer}>
                     <Pressable
                         style={localSelected === 'levelUp' ? styles.selectedMoveTabItem : styles.moveTabItem}
@@ -532,11 +562,13 @@ const styles = StyleSheet.create({
     flavorTextEntry: {
         color: colors.text,
         marginTop: 15,
+        fontSize: 16,
     },
     nope: {
-        color: colors.cardText,
-        textAlign: 'center',
-        paddingVertical: 10,
+        padding: 10,
+        height: 200,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     movesHeader: {
         flex: 1,
@@ -547,7 +579,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
 
         marginHorizontal: moveCardSpace,
-        marginTop: moveCardSpace,
+        paddingTop: moveCardSpace,
     },
     selectedMoveTabItem: {
         flex: 1,
@@ -563,6 +595,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     moveTabItemText: {
+        fontSize: 16,
         textAlign: 'center',
     },
     moveListTableHeader: {
@@ -572,20 +605,31 @@ const styles = StyleSheet.create({
         marginHorizontal: moveCardSpace,
         flexDirection: 'row',
         paddingVertical: 10,
+        backgroundColor: colors.background,
     },
     moveListTableHeaderText: {
         textAlign: 'center',
-        fontSize: 10,
+        fontSize: 12,
         color: 'white',
     },
     moveEmptyTextContainer: {
         marginHorizontal: 10,
         borderWidth: hairlineWidth,
+        borderBottomLeftRadius: 7,
+        borderBottomRightRadius: 7,
         borderColor: 'white',
         borderTopWidth: 0,
         marginBottom: 10,
         height: 200,
         justifyContent: 'center',
         alignItems: 'center',
+    },
+    labelText: {
+        color: colors.cardText,
+        fontSize: 16,
+    },
+    valueText: {
+        color: colors.cardText,
+        fontSize: 16,
     },
 });

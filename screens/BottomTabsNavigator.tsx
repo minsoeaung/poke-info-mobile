@@ -42,7 +42,7 @@ export const BottomTabsNavigator: React.FC = () => {
                             <BlurView
                                 tint="dark"
                                 experimentalBlurMethod="dimezisBlurView"
-                                intensity={35}
+                                intensity={40}
                                 style={StyleSheet.absoluteFill}
                             />
                         ),

@@ -32,6 +32,8 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: 'whitesmoke',
         overflow: 'hidden',
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
     },
     title: {
         fontSize: 20,

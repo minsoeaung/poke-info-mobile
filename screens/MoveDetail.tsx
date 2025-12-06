@@ -18,6 +18,8 @@ import { colors, typeColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
+import { GradientBackground } from '../components/GradientBackground';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 
 type Props = NativeStackScreenProps<StackParamList, 'MoveDetail'>;
 
@@ -39,6 +41,8 @@ type Results = {
 
 export default function MoveDetail({ navigation, route }: Props) {
     const { name } = route.params;
+
+    const bottom = useBottomTabBarHeight();
 
     const { isLoading, error, data } = useFetchData<PokeAPI.Move>(`https://pokeapi.co/api/v2/move/${name}`);
 
@@ -125,10 +129,10 @@ export default function MoveDetail({ navigation, route }: Props) {
 
     return (
         <View style={styles.container}>
+            <GradientBackground />
             <FlashList
                 data={pokemonsWithThisMove}
                 keyExtractor={(item, index) => `${index}-${item.name}`}
-                estimatedItemSize={60}
                 contentContainerStyle={styles.contentContainer}
                 ListHeaderComponentStyle={styles.listHeaderContainer}
                 ListHeaderComponent={
@@ -178,15 +182,27 @@ export default function MoveDetail({ navigation, route }: Props) {
                     </>
                 }
                 renderItem={({ item, index }) => {
+                    const isLast = index === pokemonsWithThisMove.length - 1;
+
                     return (
-                        <PokemonCellItem
-                            item={item}
-                            color={colors.text}
-                            isLast={index === pokemonsWithThisMove.length - 1}
-                        />
+                        <View
+                            style={{
+                                backgroundColor: colors.card,
+                                borderBottomLeftRadius: isLast ? 10 : 0,
+                                borderBottomRightRadius: isLast ? 10 : 0,
+                                overflow: 'hidden',
+                            }}
+                        >
+                            <PokemonCellItem
+                                item={item}
+                                color={colors.text}
+                                isLast={index === pokemonsWithThisMove.length - 1}
+                            />
+                        </View>
                     );
                 }}
                 ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
+                ListFooterComponent={() => <View style={{ height: bottom }} />}
             />
         </View>
     );

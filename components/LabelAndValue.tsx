@@ -28,7 +28,7 @@ const styles = StyleSheet.create({
     },
     label: {
         flex: 2,
-        fontSize: 14,
+        fontSize: 16,
         color: colors.cardText,
     },
     value: {

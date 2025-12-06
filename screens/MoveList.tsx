@@ -16,6 +16,7 @@ import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 import hairlineWidth = StyleSheet.hairlineWidth;
+import { GradientBackground } from '../components/GradientBackground';
 
 const moveNames = Object.keys(MOVES).map(moveName => ({ name: moveName }));
 
@@ -23,10 +24,12 @@ export default function MoveList() {
     const { list, value, handleChangeText, clearInput } = useSearchableList(moveNames);
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'MoveList'>>();
     const listRef = useRef(null);
+    // @ts-ignore
     useScrollToTop(listRef);
 
     return (
         <View style={styles.container}>
+            <GradientBackground />
             <View style={styles.searchInputWrap}>
                 <TextInput
                     style={styles.searchInput}
@@ -48,18 +51,17 @@ export default function MoveList() {
                             return item.name;
                         }
                     }}
-                    estimatedItemSize={77}
                     stickyHeaderIndices={[0]}
                     renderItem={({ item }) => {
                         if (typeof item === 'string') {
                             return (
                                 <View style={styles.header}>
-                                    <MyText style={{ flex: 3, textAlign: 'center', fontSize: 10 }}>Name</MyText>
-                                    <MyText style={{ flex: 2, textAlign: 'center', fontSize: 10 }}>Type,Cat.</MyText>
-                                    <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>Power</MyText>
-                                    <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>Acc.%</MyText>
-                                    <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>PP</MyText>
-                                    <MyText style={{ flex: 1, textAlign: 'center', fontSize: 10 }}>&nbsp;</MyText>
+                                    <MyText style={{ flex: 3, ...styles.headerText }}>Name</MyText>
+                                    <MyText style={{ flex: 2, ...styles.headerText }}>Type,Cat.</MyText>
+                                    <MyText style={{ flex: 1, ...styles.headerText }}>Power</MyText>
+                                    <MyText style={{ flex: 1, ...styles.headerText }}>Acc.%</MyText>
+                                    <MyText style={{ flex: 1, ...styles.headerText }}>PP</MyText>
+                                    <MyText style={{ flex: 1, ...styles.headerText }}>&nbsp;</MyText>
                                 </View>
                             );
                         } else {
@@ -70,11 +72,9 @@ export default function MoveList() {
                                     style={{
                                         flex: 1,
                                         borderBottomWidth: hairlineWidth,
-                                        borderLeftWidth: hairlineWidth,
-                                        borderRightWidth: hairlineWidth,
-                                        borderColor: 'black',
+                                        borderColor: 'white',
                                         paddingVertical: 10,
-                                        marginHorizontal: 10,
+                                        // marginHorizontal: 10,
                                     }}
                                     onPress={() => {
                                         navigation.push('MoveDetail', move);
@@ -92,7 +92,7 @@ export default function MoveList() {
                                                 <View style={{ flex: 3, paddingLeft: 15 }}>
                                                     <MyText
                                                         numberOfLines={1}
-                                                        style={{ color: pressed ? colors.tomato : 'black' }}
+                                                        style={{ color: pressed ? colors.tomato : 'white' }}
                                                     >
                                                         {getFormattedName(move.name)}
                                                     </MyText>
@@ -122,7 +122,7 @@ export default function MoveList() {
                                                     style={{
                                                         flex: 1,
                                                         textAlign: 'center',
-                                                        color: pressed ? colors.tomato : 'black',
+                                                        color: pressed ? colors.tomato : 'white',
                                                     }}
                                                 >
                                                     {move.power || '-'}
@@ -131,7 +131,7 @@ export default function MoveList() {
                                                     style={{
                                                         flex: 1,
                                                         textAlign: 'center',
-                                                        color: pressed ? colors.tomato : 'black',
+                                                        color: pressed ? colors.tomato : 'white',
                                                     }}
                                                 >
                                                     {move.accuracy || '-'}
@@ -140,7 +140,7 @@ export default function MoveList() {
                                                     style={{
                                                         flex: 1,
                                                         textAlign: 'center',
-                                                        color: pressed ? colors.tomato : 'black',
+                                                        color: pressed ? colors.tomato : 'white',
                                                     }}
                                                 >
                                                     {move.pp || '-'}
@@ -178,8 +178,6 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         padding: 10,
-        paddingBottom: 0,
-        backgroundColor: colors.background,
     },
     searchInputWrap: {
         backgroundColor: colors.card,
@@ -207,11 +205,13 @@ const styles = StyleSheet.create({
         position: 'relative',
     },
     header: {
-        borderWidth: hairlineWidth,
-        borderColor: 'black',
-        marginHorizontal: 10,
         flexDirection: 'row',
-        backgroundColor: colors.card,
+        backgroundColor: colors.background,
+    },
+    headerText: {
+        textAlign: 'center',
+        fontSize: 10,
+        color: 'white',
     },
     type: {
         paddingHorizontal: 3,

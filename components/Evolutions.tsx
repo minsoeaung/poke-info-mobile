@@ -224,6 +224,7 @@ const styles = StyleSheet.create({
     trigger: {
         color: colors.cardText,
         marginTop: 8,
+        fontSize: 16,
         // textTransform: 'capitalize',
     },
 });

@@ -139,7 +139,11 @@ const styles = StyleSheet.create({
         height: '100%',
         aspectRatio: 1,
     },
-    name: {},
+    name: {
+        fontSize: 16,
+        lineHeight: 25,
+        letterSpacing: 0.7,
+    },
     arrow: {
         flex: 1,
     },

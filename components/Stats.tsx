@@ -41,7 +41,9 @@ const Stats = ({ stats, barColor }: Props) => {
                 <MyText style={styles.statName} numberOfLines={1}>
                     Total
                 </MyText>
-                <MyText style={styles.totalStatNumber}>{stats['total'][0]}</MyText>
+                <MyText style={styles.totalStatNumber} fontWeight="medium">
+                    {stats['total'][0]}
+                </MyText>
             </View>
         </View>
     );
@@ -60,8 +62,8 @@ const styles = StyleSheet.create({
     statName: {
         flex: 1,
         color: colors.text,
-        fontSize: 14,
-        lineHeight: 20,
+        fontSize: 16,
+        lineHeight: 18,
     },
     statBar: {
         flex: 2,
@@ -78,8 +80,8 @@ const styles = StyleSheet.create({
     },
     statNumber: {
         color: 'black',
-        fontSize: 12,
-        lineHeight: 16,
+        fontSize: 16,
+        lineHeight: 18,
         textShadowColor: 'rgba(255, 255, 255, 0.5)',
         textShadowOffset: { width: 0.5, height: 0.5 },
         textShadowRadius: 0.5,
@@ -89,7 +91,8 @@ const styles = StyleSheet.create({
         flex: 2,
         color: colors.text,
         letterSpacing: 1.5,
-        fontWeight: '600',
+        fontSize: 18,
+        lineHeight: 25,
     },
 });
 
