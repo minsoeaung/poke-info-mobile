@@ -19,6 +19,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { GradientBackground } from '../components/GradientBackground';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
+import { EmptyView } from '../components/EmptyView';
 
 const { height } = Dimensions.get('window');
 
@@ -98,6 +99,7 @@ export default function PokeDex() {
                             return <PokemonCellItem item={item} color={colors.background} size="small" />;
                         }}
                         keyboardShouldPersistTaps="always"
+                        ListEmptyComponent={<EmptyView text={`No results for “${value}”`} />}
                     />
                 </Animated.View>
             )}

@@ -126,7 +126,6 @@ const styles = StyleSheet.create({
     },
     pressable: {
         padding: 8,
-        paddingBottom: 12,
         borderRadius: 5,
         overflow: 'hidden',
         backgroundColor: 'rgba(255,255,255,0.15)',
@@ -134,7 +133,7 @@ const styles = StyleSheet.create({
     },
     itemName: {
         marginTop: 8,
-        fontSize: 16,
+        fontSize: 14,
         lineHeight: 18,
         textAlign: 'center',
         color: colors.cardText,
@@ -147,8 +146,8 @@ const styles = StyleSheet.create({
         overflow: 'hidden',
     },
     itemSprite: {
-        width: '110%',
-        height: '110%',
+        width: '100%',
+        height: '100%',
         flex: 1,
     },
     noItemSprite: {

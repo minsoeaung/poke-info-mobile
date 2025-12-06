@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
     },
     name: {
-        fontSize: 16,
+        fontSize: 14,
     },
     extra: {
         marginLeft: 10,

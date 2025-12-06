@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     text: {
         color: 'tomato',
         textDecorationLine: 'underline',
-        fontSize: 16,
+        fontSize: 14,
     },
 });
 

@@ -25,6 +25,7 @@ import getFormattedName from '../utils/getFormattedName';
 import hairlineWidth = StyleSheet.hairlineWidth;
 import { GradientBackground } from '../components/GradientBackground';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { EmptyView } from '../components/EmptyView';
 
 type SectionItem =
     | {
@@ -84,14 +85,16 @@ export default function PokemonDetail() {
         ];
 
         if (selectedMoveLearnMethod === 'levelUp') {
-            const moves = data.moves.levelUp.map(
-                x =>
-                    ({
-                        type: 'MoveItem_LevelUp',
-                        name: x[0],
-                        level: x[1],
-                    } as const),
-            );
+            const moves = data.moves.levelUp
+                .sort((a, b) => Number(a[1]) - Number(b[1]))
+                .map(
+                    x =>
+                        ({
+                            type: 'MoveItem_LevelUp',
+                            name: x[0],
+                            level: x[1],
+                        } as const),
+                );
             flashListData.push(...moves);
         } else {
             const moves = data.moves[selectedMoveLearnMethod].map(
@@ -374,7 +377,7 @@ export default function PokemonDetail() {
                                 }}
                             >
                                 <View style={styles.moveEmptyTextContainer}>
-                                    <MyText style={{ textAlign: 'center', color: 'white' }}>None!</MyText>
+                                    <EmptyView />
                                 </View>
                             </View>
                         )}
@@ -562,7 +565,7 @@ const styles = StyleSheet.create({
     flavorTextEntry: {
         color: colors.text,
         marginTop: 15,
-        fontSize: 16,
+        fontSize: 14,
     },
     nope: {
         padding: 10,
@@ -571,10 +574,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
     },
     movesHeader: {
+        backgroundColor: colors.background,
         flex: 1,
     },
     movesTabContainer: {
-        backgroundColor: colors.background,
         flex: 1,
         flexDirection: 'row',
 
@@ -595,7 +598,7 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
     },
     moveTabItemText: {
-        fontSize: 16,
+        fontSize: 14,
         textAlign: 'center',
     },
     moveListTableHeader: {
@@ -605,7 +608,6 @@ const styles = StyleSheet.create({
         marginHorizontal: moveCardSpace,
         flexDirection: 'row',
         paddingVertical: 10,
-        backgroundColor: colors.background,
     },
     moveListTableHeaderText: {
         textAlign: 'center',
@@ -626,10 +628,10 @@ const styles = StyleSheet.create({
     },
     labelText: {
         color: colors.cardText,
-        fontSize: 16,
+        fontSize: 14,
     },
     valueText: {
         color: colors.cardText,
-        fontSize: 16,
+        fontSize: 14,
     },
 });

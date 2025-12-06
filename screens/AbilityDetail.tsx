@@ -17,6 +17,7 @@ import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import { GradientBackground } from '../components/GradientBackground';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { EmptyView } from '../components/EmptyView';
 
 type Props = NativeStackScreenProps<StackParamList, 'AbilityDetail'>;
 
@@ -116,7 +117,17 @@ export default function AbilityDetail({ navigation, route }: Props) {
                         </View>
                     );
                 }}
-                ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
+                ListEmptyComponent={() => (
+                    <View
+                        style={{
+                            backgroundColor: colors.card,
+                            borderBottomLeftRadius: 10,
+                            borderBottomRightRadius: 10,
+                        }}
+                    >
+                        <EmptyView />
+                    </View>
+                )}
                 ListFooterComponent={() => <View style={{ height: bottom }} />}
             />
         </View>

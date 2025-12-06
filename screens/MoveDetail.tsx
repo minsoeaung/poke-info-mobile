@@ -20,6 +20,7 @@ import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 import { GradientBackground } from '../components/GradientBackground';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { EmptyView } from '../components/EmptyView';
 
 type Props = NativeStackScreenProps<StackParamList, 'MoveDetail'>;
 
@@ -161,8 +162,8 @@ export default function MoveDetail({ navigation, route }: Props) {
                             <LabelAndValue
                                 label="Category"
                                 value={
-                                    <View style={{ flexDirection: 'row', gap: 5 }}>
-                                        <MyText>{damageClass}</MyText>
+                                    <View style={{ flexDirection: 'row', gap: 5, alignItems: 'center' }}>
+                                        <MyText style={{ textTransform: 'capitalize' }}>{damageClass}</MyText>
                                         <MoveDamageClass damageClass={damageClass} />
                                     </View>
                                 }
@@ -201,7 +202,17 @@ export default function MoveDetail({ navigation, route }: Props) {
                         </View>
                     );
                 }}
-                ListEmptyComponent={() => <MyText style={styles.emptyText}>None!</MyText>}
+                ListEmptyComponent={() => (
+                    <View
+                        style={{
+                            backgroundColor: colors.card,
+                            borderBottomLeftRadius: 10,
+                            borderBottomRightRadius: 10,
+                        }}
+                    >
+                        <EmptyView />
+                    </View>
+                )}
                 ListFooterComponent={() => <View style={{ height: bottom }} />}
             />
         </View>
@@ -233,12 +244,10 @@ const styles = StyleSheet.create({
         backgroundColor: colors.card,
     },
     type: {
-        paddingHorizontal: 3,
-        paddingVertical: 2,
+        paddingHorizontal: 6,
         color: colors.typeText,
-        fontSize: 9,
-        lineHeight: 12,
-        borderRadius: 2,
+        fontSize: 10,
+        borderRadius: 4,
 
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: { width: 0.5, height: 0.5 },

@@ -46,7 +46,9 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
                     <MaterialIcons name="image-not-supported" size={24} color="grey" />
                 )}
             </View>
-            <MyText style={styles.name}>{getFormattedName(name)}</MyText>
+            <MyText style={styles.name} fontWeight="medium">
+                {getFormattedName(name)}
+            </MyText>
             <View style={styles.types}>
                 {types.map((type, index) => (
                     <MyText
@@ -89,6 +91,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
+        padding: 8,
     },
     sprite: {
         width: '100%',
@@ -97,11 +100,9 @@ const styles = StyleSheet.create({
     },
     name: {
         color: '#fff',
-        fontWeight: '600',
-        fontSize: 16,
+        fontSize: 14,
         lineHeight: 25,
         marginTop: 5,
-        fontFamily: 'NotoSans_600SemiBold',
     },
     types: {
         flex: 1,

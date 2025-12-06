@@ -67,6 +67,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         backgroundColor: colors.background,
         color: colors.text,
-        fontSize: 16,
+        fontSize: 14,
     },
 });

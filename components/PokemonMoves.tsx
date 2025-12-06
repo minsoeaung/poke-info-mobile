@@ -103,7 +103,7 @@ export const Move = memo(
                                     flex: 1,
                                     textAlign: 'center',
                                     color: pressed ? colors.tomato : 'white',
-                                    fontSize: 16,
+                                    fontSize: 14,
                                 }}
                             >
                                 {learnMethod === 'levelUp' ? item[1] || '-' : ''}
@@ -112,7 +112,7 @@ export const Move = memo(
                         <View style={{ flex: 2, paddingLeft: learnMethod === 'levelUp' ? 0 : 15 }}>
                             <MyText
                                 // numberOfLines={1}
-                                style={{ color: pressed ? colors.tomato : 'white', fontSize: 16 }}
+                                style={{ color: pressed ? colors.tomato : 'white', fontSize: 14 }}
                             >
                                 {getFormattedName(move.name)}
                             </MyText>
@@ -135,7 +135,7 @@ export const Move = memo(
                                 flex: 1,
                                 textAlign: 'center',
                                 color: pressed ? colors.tomato : 'white',
-                                fontSize: 16,
+                                fontSize: 14,
                             }}
                         >
                             {move.power || '-'}
@@ -143,7 +143,7 @@ export const Move = memo(
                         <MyText
                             style={{
                                 flex: 1,
-                                fontSize: 16,
+                                fontSize: 14,
                                 textAlign: 'center',
                                 color: pressed ? colors.tomato : 'white',
                             }}
@@ -153,7 +153,7 @@ export const Move = memo(
                         <MyText
                             style={{
                                 flex: 1,
-                                fontSize: 16,
+                                fontSize: 14,
                                 textAlign: 'center',
                                 color: pressed ? colors.tomato : 'white',
                             }}
@@ -161,7 +161,7 @@ export const Move = memo(
                             {move.pp || '-'}
                         </MyText>
                         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                            <AntDesign name="arrow-right" size={16} color={pressed ? colors.tomato : 'white'} />
+                            <AntDesign name="arrow-right" size={14} color={pressed ? colors.tomato : 'white'} />
                         </View>
                     </>
                 )}

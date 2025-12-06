@@ -51,7 +51,6 @@ export default function MoveList() {
                 <MyText style={{ flex: 1, ...styles.headerText }}>Power</MyText>
                 <MyText style={{ flex: 1, ...styles.headerText }}>Acc.%</MyText>
                 <MyText style={{ flex: 1, ...styles.headerText }}>PP</MyText>
-                <MyText style={{ flex: 1, ...styles.headerText }}>&nbsp;</MyText>
             </View>
             <View style={styles.moveListWrap}>
                 <FlashList
@@ -95,7 +94,7 @@ export default function MoveList() {
                                                     numberOfLines={1}
                                                     style={{
                                                         color: pressed ? colors.tomato : 'white',
-                                                        fontSize: 16,
+                                                        fontSize: 14,
                                                     }}
                                                 >
                                                     {getFormattedName(move.name)}
@@ -221,7 +220,7 @@ const styles = StyleSheet.create({
     moveNumberText: {
         flex: 1,
         textAlign: 'center',
-        fontSize: 16,
+        fontSize: 14,
     },
     emptyText: {
         paddingVertical: 100,

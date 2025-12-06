@@ -104,10 +104,10 @@ const About = () => {
                     Copyright The Pokémon Company.
                 </MyText>
             </Card>
-            <MyText fontWeight="medium" style={{ fontSize: 20, marginTop: 10 }}>
+            <MyText fontWeight="medium" style={{ fontSize: 18, marginTop: 10, marginLeft: 10 }}>
                 {Application.applicationName}
             </MyText>
-            <View style={{ gap: 5 }}>
+            <View style={{ gap: 5, marginLeft: 10 }}>
                 <LabelAndValue
                     label="Version"
                     value={<MyText style={styles.valueText}>{Application.nativeApplicationVersion}</MyText>}
@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     },
     valueText: {
         color: colors.cardText,
-        fontSize: 16,
+        fontSize: 14,
     },
     buttons: {
         flexDirection: 'row',

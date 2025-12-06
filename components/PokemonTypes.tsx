@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
         textTransform: 'capitalize',
         borderWidth: 2,
         color: colors.typeText,
-        fontSize: 16,
+        fontSize: 14,
         lineHeight: 20,
 
         textShadowColor: 'rgba(0, 0, 0, 0.9)',

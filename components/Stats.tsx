@@ -62,7 +62,7 @@ const styles = StyleSheet.create({
     statName: {
         flex: 1,
         color: colors.text,
-        fontSize: 16,
+        fontSize: 12,
         lineHeight: 18,
     },
     statBar: {
@@ -70,7 +70,7 @@ const styles = StyleSheet.create({
         borderWidth: StyleSheet.hairlineWidth,
         display: 'flex',
         flexDirection: 'row',
-        borderRadius: 10,
+        borderRadius: 5,
         overflow: 'hidden',
     },
     statNumberContainer: {
@@ -80,19 +80,17 @@ const styles = StyleSheet.create({
     },
     statNumber: {
         color: 'black',
-        fontSize: 16,
+        fontSize: 14,
         lineHeight: 18,
         textShadowColor: 'rgba(255, 255, 255, 0.5)',
         textShadowOffset: { width: 0.5, height: 0.5 },
-        textShadowRadius: 0.5,
         letterSpacing: 1,
     },
     totalStatNumber: {
         flex: 2,
         color: colors.text,
-        letterSpacing: 1.5,
-        fontSize: 18,
-        lineHeight: 25,
+        fontSize: 16,
+        lineHeight: 18,
     },
 });
 

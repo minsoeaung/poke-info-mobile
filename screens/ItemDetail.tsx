@@ -20,6 +20,9 @@ import { StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 import hairlineWidth = StyleSheet.hairlineWidth;
+import { EmptyView } from '../components/EmptyView';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { GradientBackground } from '../components/GradientBackground';
 
 type HeldByPokemonsType = { name: string };
 
@@ -33,6 +36,7 @@ export default function ItemDetail() {
     const route = useRoute<RouteProp<StackParamList, 'ItemDetail'>>();
     const { name } = route.params;
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'ItemDetail'>>();
+    const bottom = useBottomTabBarHeight();
 
     const { isLoading, error, data } = useFetchData<PokeAPI.Item>(`https://pokeapi.co/api/v2/item/${name}`);
 
@@ -75,13 +79,23 @@ export default function ItemDetail() {
 
     return (
         <View style={styles.container}>
+            <GradientBackground />
             <FlashList
                 data={heldByPokemons}
-                estimatedItemSize={60}
                 keyExtractor={(item, index) => `${index}-${item.name}`}
                 renderItem={({ item, index }) => {
+                    const isLast = index === heldByPokemons.length - 1;
+
                     return (
-                        <PokemonCellItem item={item} color={colors.text} isLast={index === heldByPokemons.length - 1} />
+                        <View
+                            style={{
+                                backgroundColor: colors.card,
+                                borderBottomLeftRadius: isLast ? 10 : 0,
+                                borderBottomRightRadius: isLast ? 10 : 0,
+                            }}
+                        >
+                            <PokemonCellItem item={item} color={colors.text} isLast={isLast} />
+                        </View>
                     );
                 }}
                 contentContainerStyle={styles.contentContainer}
@@ -138,10 +152,17 @@ export default function ItemDetail() {
                     </>
                 }
                 ListEmptyComponent={
-                    <View style={styles.listEmpty}>
-                        <MyText style={styles.emptyText}>None!</MyText>
+                    <View
+                        style={{
+                            backgroundColor: colors.card,
+                            borderBottomLeftRadius: 10,
+                            borderBottomRightRadius: 10,
+                        }}
+                    >
+                        <EmptyView />
                     </View>
                 }
+                ListFooterComponent={() => <View style={{ height: bottom }} />}
             />
         </View>
     );
@@ -150,7 +171,6 @@ export default function ItemDetail() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.background,
     },
     contentContainer: {
         padding: 10,
@@ -162,9 +182,9 @@ const styles = StyleSheet.create({
         width: 100,
         height: 100,
         aspectRatio: 1,
-        borderRadius: 5,
-        borderWidth: hairlineWidth,
-        borderColor: 'black',
+        // borderRadius: 5,
+        // borderWidth: hairlineWidth,
+        // borderColor: 'black',
     },
     description: {
         paddingVertical: 10,

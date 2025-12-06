@@ -104,7 +104,7 @@ const PokemonCellItem = <
                         </View>
                     </View>
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <AntDesign name="arrow-right" size={16} color={pressed ? colors.tomato : 'white'} />
+                        <AntDesign name="arrow-right" size={14} color={pressed ? colors.tomato : 'white'} />
                     </View>
                 </>
             )}
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         paddingHorizontal: 15,
         borderBottomWidth: hairlineWidth,
-        borderBottomColor: 'white',
+        borderBottomColor: 'black',
     },
     spriteAndName: {
         flexDirection: 'row',
@@ -128,11 +128,12 @@ const styles = StyleSheet.create({
         flex: 15,
     },
     spriteContainer: {
-        width: 70,
-        height: 70,
+        width: 55,
+        height: 55,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
+        padding: 4,
     },
     sprite: {
         width: '100%',
@@ -140,12 +141,12 @@ const styles = StyleSheet.create({
         aspectRatio: 1,
     },
     name: {
-        fontSize: 16,
+        fontSize: 14,
         lineHeight: 25,
         letterSpacing: 0.7,
     },
     arrow: {
-        flex: 1,
+        // flex: 1,
     },
 });
 
