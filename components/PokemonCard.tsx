@@ -3,14 +3,13 @@ import { useNavigation } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Image } from 'expo-image';
 import React, { memo } from 'react';
-import { Pressable, StyleSheet, TouchableOpacity, View } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 
 import MyText from './MyText';
-import { cardColor, colors, typeColor } from '../constants/colors';
+import { colors, typeColor } from '../constants/colors';
 import { PokemonSmDetailType, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-
-import hairlineWidth = StyleSheet.hairlineWidth;
+import { PokemonTypeIcon } from './PokemonTypeIcon';
 
 const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
     const { name, sprite, types } = pokemon;
@@ -22,14 +21,6 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
 
     return (
         <TouchableOpacity onPress={goToPokemonDetailScreen} style={styles.container}>
-            {/* <View
-                style={[
-                    styles.pokemonCard,
-                    {
-                        backgroundColor: cardColor[types[0]],
-                    },
-                ]}
-            > */}
             <View style={styles.spriteContainer}>
                 {sprite ? (
                     <Image
@@ -51,17 +42,26 @@ const PokemonCard = ({ pokemon }: { pokemon: PokemonSmDetailType }) => {
             </MyText>
             <View style={styles.types}>
                 {types.map((type, index) => (
-                    <MyText
+                    <View
                         key={index}
-                        style={StyleSheet.flatten([
+                        style={[
                             styles.type,
                             {
                                 backgroundColor: typeColor[type],
                             },
-                        ])}
+                        ]}
                     >
-                        {type}
-                    </MyText>
+                        <PokemonTypeIcon
+                            name={type}
+                            size={8}
+                            style={{
+                                shadowColor: 'rgba(0, 0, 0, 0.9)',
+                                shadowOffset: { width: 0.5, height: 0.5 },
+                                shadowRadius: 3,
+                            }}
+                        />
+                        <MyText style={styles.typeText}>{type}</MyText>
+                    </View>
                 ))}
             </View>
         </TouchableOpacity>
@@ -115,11 +115,15 @@ const styles = StyleSheet.create({
     type: {
         paddingHorizontal: 3,
         paddingVertical: 2,
+        borderRadius: 2,
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 2,
+    },
+    typeText: {
         color: colors.typeText,
         fontSize: 9,
         lineHeight: 12,
-        borderRadius: 2,
-
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: { width: 0.5, height: 0.5 },
         textShadowRadius: 3,

@@ -1,44 +1,119 @@
 import { FontAwesome } from '@expo/vector-icons';
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { useNavigation, useScrollToTop } from '@react-navigation/native';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
-import React, { useLayoutEffect, useMemo, useRef } from 'react';
-import { Dimensions, Pressable, StyleSheet, TextInput, View } from 'react-native';
-import Animated, { FadeIn, FadeOut } from 'react-native-reanimated';
+import { BlurView } from 'expo-blur';
+import React, { useCallback, useLayoutEffect, useMemo, useRef, useState } from 'react';
+import { Dimensions, Keyboard, Pressable, StyleSheet, TextInput, View, ScrollView } from 'react-native';
+import Animated, {
+    FadeIn,
+    FadeOut,
+    useAnimatedStyle,
+    useSharedValue,
+    withSpring,
+    withTiming,
+} from 'react-native-reanimated';
 
 import ClearInputButton from '../components/ClearInputButton';
+import { EmptyView } from '../components/EmptyView';
+import { GradientBackground } from '../components/GradientBackground';
 import PokemonCard from '../components/PokemonCard';
 import PokemonCellItem from '../components/PokemonCellItem';
-import { colors } from '../constants/colors';
-import { fonts } from '../constants/fonts';
 import pokemonDetails from '../constants/POKEMON_DETAILS';
-import useIsSearchVisible from '../hooks/useIsSearchVisible';
+import { colors, typeColor } from '../constants/colors';
+import { fonts } from '../constants/fonts';
 import useSearchableList from '../hooks/useSearchableList';
 import { PokemonSmDetailType, StackParamList } from '../types';
-import { LinearGradient } from 'expo-linear-gradient';
-import { GradientBackground } from '../components/GradientBackground';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { BlurView } from 'expo-blur';
-import { EmptyView } from '../components/EmptyView';
+import MyText from '../components/MyText';
+import { PokemonTypeIcon, PokemonTypeList } from '../components/PokemonTypeIcon';
 
 const { height } = Dimensions.get('window');
+
+const SEARCH_INPUT_INITIAL_TOP_OFFSET = -65;
+const TYPE_FILTER_INITIAL_TOP_OFFSET = -400;
 
 export default function PokeDex() {
     const bTabBarHeight = useBottomTabBarHeight();
 
-    const pokemons: PokemonSmDetailType[] = useMemo(
-        () =>
-            Object.values(pokemonDetails).map(details => ({
-                name: details.name,
-                sprite: details.profile.sprite,
-                types: details.profile.types,
-                id: details.id,
-            })),
-        [],
-    );
+    const searchInputRef = useRef<TextInput>(null);
+    const searchInputTop = useSharedValue(SEARCH_INPUT_INITIAL_TOP_OFFSET);
+    const typeFilterTop = useSharedValue(TYPE_FILTER_INITIAL_TOP_OFFSET);
+
+    const [selectedType, setSelectedType] = useState<PokemonSmDetailType['types'][number] | null>(null);
+
+    const pokemons: PokemonSmDetailType[] = useMemo(() => {
+        const theList = Object.values(pokemonDetails).map(details => ({
+            name: details.name,
+            sprite: details.profile.sprite,
+            types: details.profile.types,
+            id: details.id,
+        }));
+
+        if (!!selectedType) {
+            return theList.filter(p => p.types[0] === selectedType);
+        } else {
+            return theList;
+        }
+    }, [selectedType]);
 
     const { list, value, handleChangeText, clearInput } = useSearchableList(pokemons);
-    const { animatedStyles, isVisible, toggle, ref } = useIsSearchVisible();
+
+    const [searchInputVisible, setSearchInputVisible] = useState(false);
+    const [typeFilterVisible, setTypeFilterVisible] = useState(false);
+
+    const searchInputAnimatedStyles = useAnimatedStyle(() => {
+        return {
+            transform: [{ translateY: searchInputTop.value }],
+        };
+    });
+
+    const typeFilterAnimatedStyles = useAnimatedStyle(() => {
+        return {
+            transform: [{ translateY: typeFilterTop.value }],
+        };
+    });
+
+    const openSearchInput = useCallback(() => {
+        setSearchInputVisible(true);
+        searchInputTop.value = withTiming(10);
+        searchInputRef?.current?.focus();
+    }, []);
+
+    const closeSearchInput = useCallback(() => {
+        setSearchInputVisible(false);
+        searchInputTop.value = withTiming(SEARCH_INPUT_INITIAL_TOP_OFFSET);
+        Keyboard.dismiss();
+    }, []);
+
+    const openTypeFilter = useCallback(() => {
+        setTypeFilterVisible(true);
+        typeFilterTop.value = withTiming(10);
+    }, []);
+
+    const closeTypeFilter = useCallback(() => {
+        setTypeFilterVisible(false);
+        typeFilterTop.value = withTiming(TYPE_FILTER_INITIAL_TOP_OFFSET);
+    }, []);
+
+    const toggleSearchInputVisibility = () => {
+        if (searchInputTop.value === SEARCH_INPUT_INITIAL_TOP_OFFSET) {
+            openSearchInput();
+            closeTypeFilter();
+        } else {
+            closeSearchInput();
+        }
+    };
+
+    const toggleTypeFilterVisibility = () => {
+        if (typeFilterTop.value === TYPE_FILTER_INITIAL_TOP_OFFSET) {
+            openTypeFilter();
+            closeSearchInput();
+        } else {
+            closeTypeFilter();
+        }
+    };
+
     const listRef = useRef(null);
     const navigation = useNavigation<NativeStackNavigationProp<StackParamList, 'PokeDex'>>();
     // @ts-ignore
@@ -47,20 +122,68 @@ export default function PokeDex() {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <Pressable onPress={toggle}>
-                    <FontAwesome
-                        name="search"
-                        style={StyleSheet.flatten([styles.searchBtn, { color: isVisible ? 'tomato' : colors.text }])}
-                    />
-                </Pressable>
+                <View style={styles.headerRightContainer}>
+                    <Pressable onPress={toggleTypeFilterVisibility} style={styles.searchBtn}>
+                        {!!selectedType ? (
+                            <PokemonTypeIcon name={selectedType} size={22} />
+                        ) : (
+                            <FontAwesome
+                                name="filter"
+                                style={{ color: typeFilterVisible ? 'tomato' : colors.text }}
+                                size={22}
+                            />
+                        )}
+                    </Pressable>
+                    <Pressable onPress={toggleSearchInputVisibility} style={styles.searchBtn}>
+                        <FontAwesome
+                            name="search"
+                            style={{ color: searchInputVisible ? 'tomato' : colors.text }}
+                            size={22}
+                        />
+                    </Pressable>
+                </View>
             ),
         });
-    }, [navigation, isVisible]);
+    }, [navigation, searchInputVisible, typeFilterVisible, selectedType]);
 
     return (
         <View style={styles.container}>
             <GradientBackground />
-            <Animated.View style={[StyleSheet.absoluteFill, styles.searchBoxContainer, animatedStyles]}>
+            <Animated.View
+                pointerEvents="box-none"
+                style={[StyleSheet.absoluteFill, styles.typeFilterBoxContainer, typeFilterAnimatedStyles]}
+            >
+                <View style={styles.typeFilterBox}>
+                    <BlurView
+                        tint="dark"
+                        experimentalBlurMethod="dimezisBlurView"
+                        intensity={80}
+                        style={StyleSheet.absoluteFill}
+                    />
+                    <View style={styles.typeFilterScrollContent}>
+                        <TypeChip
+                            type="All types"
+                            isSelected={!selectedType}
+                            onPress={() => {
+                                setSelectedType(null);
+                                closeTypeFilter();
+                            }}
+                        />
+                        {PokemonTypeList.map(type => (
+                            <TypeChip
+                                type={type}
+                                key={type}
+                                isSelected={type === selectedType}
+                                onPress={() => {
+                                    setSelectedType(type);
+                                    closeTypeFilter();
+                                }}
+                            />
+                        ))}
+                    </View>
+                </View>
+            </Animated.View>
+            <Animated.View style={[StyleSheet.absoluteFill, styles.searchBoxContainer, searchInputAnimatedStyles]}>
                 <View style={styles.searchBox}>
                     <BlurView
                         tint="dark"
@@ -69,7 +192,7 @@ export default function PokeDex() {
                         style={StyleSheet.absoluteFill}
                     />
                     <TextInput
-                        ref={ref}
+                        ref={searchInputRef}
                         style={styles.searchInput}
                         value={value}
                         onChangeText={handleChangeText}
@@ -80,7 +203,7 @@ export default function PokeDex() {
                     <ClearInputButton onPress={clearInput} />
                 </View>
             </Animated.View>
-            {!!value.trim() && isVisible && (
+            {!!value.trim() && searchInputVisible && (
                 <Animated.View
                     entering={FadeIn.duration(275)}
                     exiting={FadeOut.duration(275)}
@@ -114,7 +237,12 @@ export default function PokeDex() {
                     numColumns={3}
                     contentInsetAdjustmentBehavior="automatic"
                     keyboardShouldPersistTaps="handled"
-                    onScrollBeginDrag={() => isVisible && toggle()}
+                    onScrollBeginDrag={() => {
+                        console.log('onScrollBeginDrag');
+
+                        closeSearchInput();
+                        closeTypeFilter();
+                    }}
                     ListFooterComponent={() => <View style={{ height: bTabBarHeight }} />}
                 />
             </View>
@@ -122,10 +250,61 @@ export default function PokeDex() {
     );
 }
 
+type TypeChipProps = {
+    type: PokemonSmDetailType['types'][number] | 'All types';
+    onPress: () => void;
+    isSelected: boolean;
+};
+
+const TypeChip = ({ type, onPress, isSelected }: TypeChipProps) => {
+    const chipActiveColor = type !== 'All types' ? typeColor[type] : 'tomato';
+
+    return (
+        <Pressable
+            onPress={onPress}
+            style={[
+                styles.chip,
+                isSelected
+                    ? { borderColor: chipActiveColor, backgroundColor: `${chipActiveColor}50` }
+                    : styles.chipInactive,
+            ]}
+        >
+            {type !== 'All types' && <PokemonTypeIcon name={type} size={18} />}
+            <MyText style={styles.chipText}>{type}</MyText>
+        </Pressable>
+    );
+};
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
         paddingHorizontal: 6,
+    },
+    headerRightContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    typeFilterBoxContainer: {
+        top: 0,
+        left: 20,
+        right: 20,
+        zIndex: 2,
+    },
+    typeFilterBox: {
+        overflow: 'hidden',
+        borderColor: colors.tomato,
+        borderWidth: 1,
+        borderRadius: 10,
+        zIndex: 2,
+        paddingVertical: 16,
+        paddingHorizontal: 14,
+    },
+    typeFilterScrollContent: {
+        flexDirection: 'row',
+        flexWrap: 'wrap',
+        alignItems: 'center',
+        justifyContent: 'center',
+        gap: 10,
     },
     searchBoxContainer: {
         height: 40,
@@ -139,7 +318,6 @@ const styles = StyleSheet.create({
         borderColor: colors.tomato,
         borderWidth: 1,
         borderRadius: 10,
-        position: 'relative',
         flexDirection: 'row',
         justifyContent: 'space-between',
         zIndex: 2,
@@ -152,14 +330,14 @@ const styles = StyleSheet.create({
         width: '90%',
         color: colors.cardText,
         letterSpacing: 1,
-        lineHeight: 25,
         fontSize: 14,
         zIndex: 2,
     },
     searchBtn: {
-        paddingVertical: 10,
-        paddingLeft: 25,
-        fontSize: 22,
+        width: 48,
+        height: 48,
+        justifyContent: 'center',
+        alignItems: 'center',
     },
     suggestionListView: {
         top: 60,
@@ -175,7 +353,26 @@ const styles = StyleSheet.create({
     },
     pokedex: {
         flex: 1,
-        // height: Dimensions.get('screen').height,
-        // zIndex: -1,
+    },
+    chip: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 6,
+        borderWidth: 1,
+        borderRadius: 8,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+    },
+    chipInactive: {
+        borderColor: 'rgba(255,255,255,0.2)',
+        backgroundColor: 'rgba(0,0,0,0.2)',
+    },
+    chipText: {
+        textShadowColor: 'rgba(0, 0, 0, 0.6)',
+        textShadowOffset: { width: 0.5, height: 0.5 },
+        textShadowRadius: 2,
+        textTransform: 'capitalize',
+        fontSize: 13,
+        fontFamily: fonts.NotoSans_400Regular,
     },
 });
