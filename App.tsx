@@ -12,7 +12,7 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 SplashScreen.preventAutoHideAsync();
 
 SplashScreen.setOptions({
-    duration: 5000,
+    duration: 500,
     fade: true,
 });
 

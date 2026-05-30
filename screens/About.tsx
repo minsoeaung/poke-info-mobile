@@ -2,13 +2,12 @@ import * as Application from 'expo-application';
 import { Image, Linking, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
 
 import Card from '../components/Card';
-import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
 import { colors } from '../constants/colors';
 
 const PokeAPIURL = 'https://pokeapi.co/';
-const EXPENNY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.minso.expenny';
-const POKE_INFO_STORE_URL = 'https://play.google.com/store/apps/details?id=com.minsoeaung.pokeinfo';
+const EXPENNY_STORE_URL = 'market://details?id=com.minso.expenny';
+const POKE_INFO_STORE_URL_RATING = 'market://details?id=com.minsoeaung.pokeinfo&showAllReviews=true';
 const EXPENNY_LANDING_URL = 'https://getexpenny.com';
 
 const About = () => {
@@ -24,19 +23,36 @@ const About = () => {
                     Copyright The Pokémon Company.
                 </MyText>
             </Card>
-
-            <View style={{ gap: 5, marginLeft: 10 }}>
-                <LabelAndValue
-                    label="Version"
-                    value={<MyText style={styles.valueText}>{Application.nativeApplicationVersion}</MyText>}
-                />
-                <LabelAndValue
-                    label="Build"
-                    value={<MyText style={styles.valueText}>{Application.nativeBuildVersion}</MyText>}
-                />
+            <View />
+            <View style={styles.appRow}>
+                <View
+                    style={{
+                        width: 48,
+                        height: 48,
+                        elevation: 2,
+                        borderRadius: 22222,
+                        overflow: 'hidden',
+                        marginTop: 4,
+                    }}
+                >
+                    <Image source={require('../assets/icon.png')} style={{ width: '100%', height: '100%' }} />
+                </View>
+                <View style={styles.appInfo}>
+                    <MyText style={styles.appName}>
+                        Poke Info - v{Application.nativeApplicationVersion}({Application.nativeBuildVersion})
+                    </MyText>
+                    <MyText style={styles.appTagline}>Find any Pokémon's info - fast, simple, accurate!</MyText>
+                    <View style={styles.buttons}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            activeOpacity={0.75}
+                            onPress={() => Linking.openURL(POKE_INFO_STORE_URL_RATING)}
+                        >
+                            <MyText style={styles.buttonText}>Rate</MyText>
+                        </TouchableOpacity>
+                    </View>
+                </View>
             </View>
-
-            <MyText style={styles.sectionTitle}>Other apps</MyText>
             <View style={styles.appRow}>
                 <View style={styles.appIconContainer}>
                     <Image source={require('../assets/expenny.png')} style={styles.appIcon} />
@@ -78,21 +94,11 @@ const styles = StyleSheet.create({
     container: {
         padding: 10,
         gap: 15,
-        paddingBottom: 30,
+        paddingBottom: 70,
     },
     description: {
         paddingVertical: 10,
         color: colors.cardText,
-    },
-    sectionTitle: {
-        marginTop: 10,
-        fontSize: 13,
-        color: colors.text,
-        textTransform: 'uppercase',
-        textAlign: 'center',
-        textDecorationLine: 'underline',
-        letterSpacing: 0.8,
-        opacity: 0.6,
     },
     appRow: {
         flexDirection: 'row',
@@ -103,15 +109,17 @@ const styles = StyleSheet.create({
     appIconContainer: {
         width: 48,
         height: 48,
-        borderRadius: 12,
+        borderRadius: 22222,
         overflow: 'hidden',
         alignItems: 'center',
         justifyContent: 'center',
-        marginTop: 2,
+        marginTop: 4,
+        backgroundColor: 'white',
+        elevation: 2,
     },
     appIcon: {
-        width: 80,
-        height: 80,
+        width: 70,
+        height: 70,
     },
     appInfo: {
         flex: 1,
@@ -149,16 +157,6 @@ const styles = StyleSheet.create({
     },
     buttonPrimaryText: {
         color: colors.background,
-    },
-    footer: {
-        marginBottom: 10,
-    },
-    valueText: {
-        color: colors.cardText,
-        fontSize: 14,
-    },
-    text: {
-        color: colors.text,
     },
 });
 

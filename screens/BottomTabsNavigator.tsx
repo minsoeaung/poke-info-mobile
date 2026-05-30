@@ -1,5 +1,5 @@
-import { AntDesign, FontAwesome6, Ionicons, MaterialCommunityIcons, MaterialIcons, Octicons } from '@expo/vector-icons';
-import { createBottomTabNavigator, useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { AntDesign, MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BlurView } from 'expo-blur';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
@@ -25,11 +25,11 @@ export const BottomTabsNavigator: React.FC = () => {
                             if (route.name === 'PokeDexStack') {
                                 return <MaterialIcons size={size} color={color} name="catching-pokemon" />;
                             } else if (route.name === 'MovesStack') {
-                                return <MaterialCommunityIcons size={size} color={color} name="lightning-bolt" />;
+                                return <MaterialCommunityIcons size={size} color={color} name="sword-cross" />;
                             } else if (route.name === 'AbilitiesStack') {
-                                return <FontAwesome6 size={size} color={color} name="dumbbell" />;
+                                return <MaterialCommunityIcons size={size} color={color} name="star-four-points" />;
                             } else if (route.name === 'ItemsStack') {
-                                return <Octicons size={size} color={color} name="tools" />;
+                                return <MaterialCommunityIcons size={size} color={color} name="bag-personal" />;
                             } else if (route.name === 'AboutStack') {
                                 return <AntDesign size={size} color={color} name="info-circle" />;
                             }

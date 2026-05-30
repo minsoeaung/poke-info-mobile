@@ -2,22 +2,22 @@
     "expo": {
         "name": "Poke Info",
         "slug": "poke_info",
-        "version": "2.0.0",
+        "version": "2.1.1",
         "newArchEnabled": true,
         "platforms": ["android"],
         "orientation": "portrait",
         "icon": "./assets/icon.png",
-        "backgroundColor": "#0D2F41",
+        "backgroundColor": "#142850",
         "assetBundlePatterns": ["**/*"],
         "ios": {
             "supportsTablet": false,
             "bundleIdentifier": "com.minsoeaung.pokeinfo",
-            "buildNumber": "2.0.0"
+            "buildNumber": "2.1.1"
         },
         "android": {
             "adaptiveIcon": {
                 "foregroundImage": "./assets/adaptive-icon.png",
-                "backgroundColor": "#0D2F41"
+                "backgroundColor": "#142850"
             },
             "package": "com.minsoeaung.pokeinfo",
             "edgeToEdgeEnabled": true
@@ -29,9 +29,9 @@
             [
                 "expo-splash-screen",
                 {
-                    "backgroundColor": "#0D2F41",
+                    "backgroundColor": "#142850",
                     "image": "./assets/splash.png",
-                    "imageWidth": 200
+                    "imageWidth": 150
                 }
             ],
             "expo-font",
