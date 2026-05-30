@@ -8,6 +8,7 @@ import { Pressable, StyleSheet, View } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
 
 import { CardBody, CardTitle } from '../components/Card';
+import { EmptyView } from '../components/EmptyView';
 import ErrorDisplay from '../components/ErrorDisplay';
 import Evolutions from '../components/Evolutions';
 import LabelAndValue from '../components/LabelAndValue';
@@ -23,9 +24,11 @@ import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
 
 import hairlineWidth = StyleSheet.hairlineWidth;
+
 import { GradientBackground } from '../components/GradientBackground';
+
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { EmptyView } from '../components/EmptyView';
+import { useReviewPrompt } from '../hooks/useReviewPrompt';
 
 type SectionItem =
     | {
@@ -67,6 +70,12 @@ export default function PokemonDetail() {
     const { data, error, isLoading } = useFetchPokemonDetail(name);
 
     const bTabBarHeight = useBottomTabBarHeight();
+
+    const { checkAndRequest } = useReviewPrompt();
+
+    useEffect(() => {
+        checkAndRequest();
+    }, []);
 
     const sectionData = useMemo(() => {
         if (!data) return [];

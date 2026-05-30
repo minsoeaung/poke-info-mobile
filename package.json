@@ -26,6 +26,7 @@
     "expo-splash-screen": "~31.0.11",
     "expo-sqlite": "~16.0.9",
     "expo-status-bar": "~3.0.8",
+    "expo-store-review": "~9.0.9",
     "expo-updates": "~29.0.14",
     "pokeapi-types": "^0.0.2",
     "react": "19.1.0",

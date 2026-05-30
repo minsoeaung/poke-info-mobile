@@ -1,3 +1,4 @@
+import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { FlashList } from '@shopify/flash-list';
 import { PokeAPI } from 'pokeapi-types';
@@ -6,7 +7,9 @@ import { StyleSheet, View } from 'react-native';
 import Animated, { FadeOut } from 'react-native-reanimated';
 
 import Card from '../components/Card';
+import { EmptyView } from '../components/EmptyView';
 import ErrorDisplay from '../components/ErrorDisplay';
+import { GradientBackground } from '../components/GradientBackground';
 import LabelAndValue from '../components/LabelAndValue';
 import { MoveDamageClass } from '../components/MoveDamageClass';
 import MyText from '../components/MyText';
@@ -18,9 +21,7 @@ import { colors, typeColor } from '../constants/colors';
 import useFetchData from '../hooks/useFetchData';
 import { MoveLearnMethod, StackParamList } from '../types';
 import getFormattedName from '../utils/getFormattedName';
-import { GradientBackground } from '../components/GradientBackground';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { EmptyView } from '../components/EmptyView';
+import { PokemonTypeIcon } from '../components/PokemonTypeIcon';
 
 type Props = NativeStackScreenProps<StackParamList, 'MoveDetail'>;
 
@@ -147,16 +148,17 @@ export default function MoveDetail({ navigation, route }: Props) {
                             <LabelAndValue
                                 label="Type"
                                 value={
-                                    <MyText
-                                        style={StyleSheet.flatten([
+                                    <View
+                                        style={[
                                             styles.type,
                                             {
                                                 backgroundColor: typeColor[type as keyof typeof typeColor],
                                             },
-                                        ])}
+                                        ]}
                                     >
-                                        {type}
-                                    </MyText>
+                                        <PokemonTypeIcon name={type} size={19} />
+                                        <MyText style={styles.typeText}>{type}</MyText>
+                                    </View>
                                 }
                             />
                             <LabelAndValue
@@ -244,11 +246,15 @@ const styles = StyleSheet.create({
         backgroundColor: colors.card,
     },
     type: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        gap: 3,
         paddingHorizontal: 6,
+        borderRadius: 4,
+    },
+    typeText: {
         color: colors.typeText,
         fontSize: 10,
-        borderRadius: 4,
-
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: { width: 0.5, height: 0.5 },
         textShadowRadius: 3,

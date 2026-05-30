@@ -3,6 +3,7 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { Pressable, StyleSheet, View } from 'react-native';
 
 import MyText from './MyText';
+import { PokemonTypeIcon } from './PokemonTypeIcon';
 import { colors, typeColor } from '../constants/colors';
 import { StackParamList } from '../types';
 
@@ -25,17 +26,18 @@ export default function PokemonTypes({ types }: Props) {
                     }}
                 >
                     {({ pressed }) => (
-                        <MyText
-                            style={StyleSheet.flatten([
-                                styles.typeText,
+                        <View
+                            style={[
+                                styles.type,
                                 {
                                     backgroundColor: typeColor[type],
                                     borderColor: pressed ? 'tomato' : 'transparent',
                                 },
-                            ])}
+                            ]}
                         >
-                            {type}
-                        </MyText>
+                            <PokemonTypeIcon name={type} size={lineHeight} />
+                            <MyText style={styles.typeText}>{type}</MyText>
+                        </View>
                     )}
                 </Pressable>
             ))}
@@ -43,21 +45,29 @@ export default function PokemonTypes({ types }: Props) {
     );
 }
 
+const lineHeight = 20;
+
 const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         flexWrap: 'wrap',
         gap: 10,
     },
-    typeText: {
-        paddingHorizontal: 10,
+    type: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        gap: 3,
+        paddingLeft: 5,
+        paddingRight: 10,
         paddingVertical: 1,
         borderRadius: 5,
-        textTransform: 'capitalize',
         borderWidth: 2,
+    },
+    typeText: {
+        textTransform: 'capitalize',
         color: colors.typeText,
         fontSize: 14,
-        lineHeight: 20,
+        lineHeight,
 
         textShadowColor: 'rgba(0, 0, 0, 0.9)',
         textShadowOffset: { width: 0.5, height: 0.5 },

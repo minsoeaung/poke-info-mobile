@@ -1,99 +1,19 @@
-import { useSQLiteContext } from 'expo-sqlite';
-import { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import * as Application from 'expo-application';
+import { Image, Linking, StyleSheet, TouchableOpacity, View, ScrollView } from 'react-native';
 
 import Card from '../components/Card';
-import { GradientBackground } from '../components/GradientBackground';
 import LabelAndValue from '../components/LabelAndValue';
 import MyText from '../components/MyText';
-import OpenURLTextButton from '../components/OpenURLTextButton';
 import { colors } from '../constants/colors';
-import * as Application from 'expo-application';
 
 const PokeAPIURL = 'https://pokeapi.co/';
-const SourceCodeURL = 'https://github.com/minsoeaung/poke-info-mobile/';
+const EXPENNY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.minso.expenny';
+const POKE_INFO_STORE_URL = 'https://play.google.com/store/apps/details?id=com.minsoeaung.pokeinfo';
+const EXPENNY_LANDING_URL = 'https://getexpenny.com';
 
 const About = () => {
-    const db = useSQLiteContext();
-    const [refresh, setRefresh] = useState(false);
-    const [notWork, setNotWork] = useState(false);
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-        (async () => {
-            try {
-                const result = await db.getFirstAsync('SELECT COUNT(*) FROM pokeApis');
-                // @ts-ignore
-                const count = result['COUNT(*)'];
-                if (typeof count === 'number') setCount(count);
-                setNotWork(false);
-            } catch {
-                setNotWork(true);
-            }
-        })();
-    }, [refresh]);
-
-    const fix = async () => {
-        await db.execAsync(`
-                PRAGMA journal_mode = 'wal';
-                CREATE TABLE IF NOT EXISTS pokeApis (key VARCHAR(300) PRIMARY KEY NOT NULL, value TEXT NOT NULL);
-            `);
-        await db.execAsync(`PRAGMA user_version = 1`);
-        setRefresh(prevState => !prevState);
-    };
-
-    const clearCache = async () => {
-        await db.runAsync('DELETE FROM pokeApis');
-        setRefresh(prevState => !prevState);
-    };
-
     return (
-        <View style={styles.container}>
-            <GradientBackground />
-            {/* <Card title="Caching">
-                <LabelAndValue
-                    label="Status"
-                    value={
-                        <MyText style={{ color: colors.cardText }}>
-                            <Octicons name="dot-fill" color={notWork ? 'red' : 'green'} />{' '}
-                            {notWork ? 'Unavailable' : 'Working'}
-                        </MyText>
-                    }
-                />
-                <LabelAndValue
-                    label="Cache count"
-                    value={<MyText style={{ color: colors.cardText }}>{count}</MyText>}
-                />
-                <View style={styles.buttons}>
-                    {notWork ? (
-                        <Pressable onPress={fix}>
-                            {({ pressed }) => (
-                                <View
-                                    style={StyleSheet.flatten([
-                                        styles.button,
-                                        { borderColor: pressed ? 'tomato' : 'transparent' },
-                                    ])}
-                                >
-                                    <MyText style={styles.text}>Fix</MyText>
-                                </View>
-                            )}
-                        </Pressable>
-                    ) : (
-                        <Pressable onPress={clearCache}>
-                            {({ pressed }) => (
-                                <View
-                                    style={StyleSheet.flatten([
-                                        styles.button,
-                                        { borderColor: pressed ? 'tomato' : 'transparent' },
-                                    ])}
-                                >
-                                    <MyText style={styles.text}>Clear cache</MyText>
-                                </View>
-                            )}
-                        </Pressable>
-                    )}
-                </View>
-            </Card> */}
+        <ScrollView style={styles.scrollView} contentContainerStyle={styles.container}>
             <Card>
                 <MyText style={styles.description}>
                     PokeInfo is a free, simple, and unofficial app that consumes REST API from {PokeAPIURL}. The app
@@ -104,9 +24,7 @@ const About = () => {
                     Copyright The Pokémon Company.
                 </MyText>
             </Card>
-            <MyText fontWeight="medium" style={{ fontSize: 18, marginTop: 10, marginLeft: 10 }}>
-                {Application.applicationName}
-            </MyText>
+
             <View style={{ gap: 5, marginLeft: 10 }}>
                 <LabelAndValue
                     label="Version"
@@ -116,25 +34,121 @@ const About = () => {
                     label="Build"
                     value={<MyText style={styles.valueText}>{Application.nativeBuildVersion}</MyText>}
                 />
-                <LabelAndValue
-                    label="Source"
-                    value={<OpenURLTextButton url={SourceCodeURL}>GitHub</OpenURLTextButton>}
-                />
             </View>
-        </View>
+
+            <MyText style={styles.sectionTitle}>Other apps</MyText>
+            <View style={styles.appRow}>
+                <View style={styles.appIconContainer}>
+                    <Image source={require('../assets/expenny.png')} style={styles.appIcon} />
+                </View>
+                <View style={styles.appInfo}>
+                    <MyText style={styles.appName}>Expenny</MyText>
+                    <MyText style={styles.appTagline}>
+                        Offline expense tracker & budget planner. Smarter with AI scan.
+                    </MyText>
+                    <View style={styles.buttons}>
+                        <TouchableOpacity
+                            style={styles.button}
+                            activeOpacity={0.75}
+                            onPress={() => Linking.openURL(EXPENNY_LANDING_URL)}
+                        >
+                            <MyText style={styles.buttonText}>Website</MyText>
+                        </TouchableOpacity>
+                        <TouchableOpacity
+                            style={[styles.button, styles.buttonPrimary]}
+                            activeOpacity={0.75}
+                            onPress={() => Linking.openURL(EXPENNY_STORE_URL)}
+                        >
+                            <MyText style={StyleSheet.flatten([styles.buttonText, styles.buttonPrimaryText])}>
+                                Get on Play Store
+                            </MyText>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            </View>
+        </ScrollView>
     );
 };
 
 const styles = StyleSheet.create({
-    container: {
+    scrollView: {
         flex: 1,
-        padding: 10,
         backgroundColor: colors.background,
+    },
+    container: {
+        padding: 10,
         gap: 15,
+        paddingBottom: 30,
     },
     description: {
         paddingVertical: 10,
         color: colors.cardText,
+    },
+    sectionTitle: {
+        marginTop: 10,
+        fontSize: 13,
+        color: colors.text,
+        textTransform: 'uppercase',
+        textAlign: 'center',
+        textDecorationLine: 'underline',
+        letterSpacing: 0.8,
+        opacity: 0.6,
+    },
+    appRow: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        gap: 12,
+        paddingHorizontal: 10,
+    },
+    appIconContainer: {
+        width: 48,
+        height: 48,
+        borderRadius: 12,
+        overflow: 'hidden',
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 2,
+    },
+    appIcon: {
+        width: 80,
+        height: 80,
+    },
+    appInfo: {
+        flex: 1,
+        gap: 6,
+    },
+    appName: {
+        fontSize: 16,
+        fontWeight: '600',
+        color: colors.cardText,
+    },
+    appTagline: {
+        fontSize: 13,
+        color: colors.cardText,
+        opacity: 0.65,
+    },
+    buttons: {
+        flexDirection: 'row',
+        gap: 8,
+        marginTop: 2,
+    },
+    button: {
+        paddingVertical: 5,
+        paddingHorizontal: 12,
+        borderRadius: 6,
+        borderWidth: 1,
+        borderColor: colors.cardText,
+    },
+    buttonPrimary: {
+        backgroundColor: colors.cardText,
+        borderColor: colors.cardText,
+    },
+    buttonText: {
+        fontSize: 12,
+        color: colors.cardText,
+    },
+    buttonPrimaryText: {
+        color: colors.background,
     },
     footer: {
         marginBottom: 10,
@@ -142,17 +156,6 @@ const styles = StyleSheet.create({
     valueText: {
         color: colors.cardText,
         fontSize: 14,
-    },
-    buttons: {
-        flexDirection: 'row',
-        gap: 15,
-    },
-    button: {
-        paddingVertical: 3,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        backgroundColor: colors.background,
-        borderWidth: 2,
     },
     text: {
         color: colors.text,
